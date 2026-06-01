@@ -1,0 +1,572 @@
+/* ═══════════════════════════════════════════════════════════════
+   PATRICK MILHAUPT — chapter.css
+   Scroll-narrative shell extracted from v3.4 "Dazzle Edition" standalone.
+   Pairs with brand-shared.css + brand-dark.css + liquid-bg.js.
+   ═══════════════════════════════════════════════════════════════ */
+
+  /* ─── Page shell ─── */
+  html, body { overflow-x: hidden; }
+  body {
+    background: var(--navy-0);
+    color: var(--ink-1);
+    overscroll-behavior: none;
+  }
+
+  /* ─── Lenis-required overrides ─────────────────────────────────
+     CRITICAL: without these, Lenis hijacks wheel events but cannot
+     scroll because html/body are locked to viewport height. The
+     dazzle-edition standalone bundle had these rules; they were
+     missed when chapter.css was extracted.
+     ─────────────────────────────────────────────────────────── */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-stopped { overflow: hidden; }
+  .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+  /* Gold-foil em — must target the innermost span, because the
+     word-stagger JS wraps the em's text in <span class="w"><span>WORD</span></span>.
+     background-clip:text needs to be on the element rendering the text
+     glyphs themselves, not the em ancestor. */
+  h1 em, h2 em, h3 em, .headline em { font-style: italic; }
+  .headline em > .w > span,
+  .headline em > .w span,
+  h1 em > .w > span, h2 em > .w > span, h3 em > .w > span {
+    background: var(--gold-gradient, linear-gradient(90deg,#4A3210,#B8860B,#F0D68A,#FFF4D0,#FFD700,#B8860B,#4A3210));
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+  /* Fallback for em without the word-wrap JS (or if it errors): em itself gets the foil */
+  .no-js .headline em,
+  h1 em:not(:has(.w)), h2 em:not(:has(.w)), h3 em:not(:has(.w)) {
+    background: var(--gold-gradient, linear-gradient(90deg,#4A3210,#B8860B,#F0D68A,#FFF4D0,#FFD700,#B8860B,#4A3210));
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ─── Horizontal page nav (top-right cluster) ─── */
+  .nav-links {
+    display: flex;
+    gap: clamp(14px, 1.6vw, 24px);
+    align-items: center;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+  }
+  .nav-links a {
+    color: var(--ink-2);
+    text-decoration: none;
+    transition: color 0.25s var(--ease-cinema);
+    position: relative;
+    padding: 4px 0;
+  }
+  .nav-links a:hover { color: var(--gold-lit); }
+  .nav-links a.current {
+    color: var(--gold-lit);
+  }
+  .nav-links a.current::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 1px;
+    background: var(--gold-gradient, linear-gradient(90deg,#4A3210,#B8860B,#F0D68A,#FFF4D0,#FFD700,#B8860B,#4A3210));
+    background-size: 240% 100%;
+  }
+  .nav-links a.cta {
+    padding: 7px 14px;
+    border: 1px solid rgba(240, 214, 138, 0.45);
+    border-radius: var(--radius-xs, 4px);
+    color: var(--gold-lit);
+    background: rgba(240,214,138,0.05);
+  }
+  .nav-links a.cta:hover {
+    background: rgba(240,214,138,0.10);
+    border-color: var(--gold-lit);
+  }
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+  }
+
+  /* Three.js canvas — fixed full-bleed behind everything */
+  #paint {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  /* Vignette + grain overlay above shader */
+  .veil {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 100% 90% at 50% 55%, transparent 35%, rgba(3, 8, 20, 0.50) 100%);
+  }
+
+  /* ─── Persistent lockup ─── */
+  .nav {
+    position: fixed;
+    top: clamp(20px, 2.5vw, 32px);
+    left: clamp(20px, 4vw, 56px);
+    right: clamp(20px, 4vw, 56px);
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .nav > * { pointer-events: auto; }
+  .nav .lockup { display: flex; align-items: center; gap: 14px; }
+  .nav .lockup img { height: 26px; width: auto; }
+  .nav .lockup .bar { width: 1px; height: 26px; background: var(--gold-lit); opacity: 0.55; }
+  .nav .lockup .name { line-height: 1.05; }
+  .nav .lockup .who {
+    display: block;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--white);
+  }
+  .nav .lockup .role {
+    display: block;
+    margin-top: 3px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 8px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold-lit);
+  }
+  .nav .status {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gold-lit);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .nav .status .live-dot { background: var(--indigo-base); }
+
+  /* ─── Chapter rail (right edge) ─── */
+  .rail {
+    position: fixed;
+    right: clamp(16px, 2.4vw, 32px);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .rail .dot {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--ink-3);
+    transition: color 0.35s var(--ease-cinema);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .rail .dot::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+    transition: all 0.35s var(--ease-cinema);
+  }
+  .rail .dot .label {
+    opacity: 0;
+    transform: translateX(8px);
+    transition: opacity 0.35s var(--ease-cinema), transform 0.35s var(--ease-cinema);
+  }
+  .rail .dot:hover .label { opacity: 1; transform: translateX(0); }
+  .rail .dot:hover { color: var(--gold-lit); }
+  .rail .dot.active {
+    color: var(--gold-lit);
+  }
+  .rail .dot.active::before {
+    width: 10px; height: 10px;
+    box-shadow: 0 0 12px var(--gold-lit);
+  }
+  .rail .dot.active .label { opacity: 1; transform: translateX(0); }
+
+  /* ─── Footer fixed cue ─── */
+  .scroll-cue {
+    position: fixed;
+    bottom: clamp(20px, 2.5vw, 32px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--gold-lit);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    transition: opacity 0.6s var(--ease-cinema);
+  }
+  .scroll-cue.gone { opacity: 0; pointer-events: none; }
+  .scroll-cue .arrow {
+    width: 1px;
+    height: 36px;
+    background: var(--gold-gradient);
+    background-size: 240% 100%;
+    animation: goldRule 14s linear infinite;
+  }
+
+  /* ─── Sections ─── */
+  main { position: relative; z-index: 2; }
+  .chapter {
+    min-height: 120vh;
+    position: relative;
+    padding: clamp(80px, 12vh, 140px) clamp(40px, 8vw, 120px);
+    display: flex;
+    align-items: center;
+  }
+  .chapter .inner {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(28px, 4vh, 56px);
+  }
+
+  /* Chapter header — eyebrow + number */
+  .ch-head {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .ch-head .num {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 60px;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--gold-lit);
+    line-height: 1;
+    opacity: 0.85;
+  }
+  .ch-head .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 1px solid var(--hairline-gold);
+    padding-left: 20px;
+  }
+  .ch-head .eyebrow { color: var(--gold-lit); }
+  .ch-head .sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+
+  /* Headline */
+  .headline {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(44px, 7.2vw, 108px);
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    color: var(--white);
+    max-width: 1100px;
+    text-wrap: balance;
+  }
+  .headline em {
+    /* foil styling inherited from brand-dark.css; we just nudge the timing per-page */
+    display: inline-block;
+  }
+  /* Word-stagger machinery — each word is wrapped in .w on hydrate */
+  .headline .w {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    line-height: 1;
+  }
+  .headline .w > span {
+    display: inline-block;
+    transform: translateY(0);          /* visible by default — GSAP animates from this on enter if libs load */
+    will-change: transform;
+  }
+
+  /* Body */
+  .body {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(15px, 1.15vw, 18px);
+    line-height: 1.65;
+    color: var(--ink-2);
+    max-width: 580px;
+    text-wrap: pretty;
+  }
+  .body strong { color: var(--white); font-weight: 500; }
+
+  .cta-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  /* ─── Device: KPI grid (intelligence) ─── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .kpi {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(18px);
+    padding: 22px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transform: none;
+    opacity: 1;
+  }
+  .kpi .l {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold-lit);
+  }
+  .kpi .v {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 30px;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .kpi.pop .v {
+    background: var(--gold-gradient);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: foilSweep 11s ease-in-out infinite;
+  }
+  .kpi .d {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+  .kpi .d.up { color: var(--indigo-soft); }
+  .kpi .d.dn { color: var(--status-sold); }
+
+  /* ─── Device: Property cards ─── */
+  .props {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  .prop {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    backdrop-filter: blur(18px);
+    transform: none;
+    opacity: 1;
+  }
+  .prop .img {
+    aspect-ratio: 4/3;
+    background:
+      linear-gradient(135deg, #0A1838 0%, #1A3470 50%, #0A1838 100%);
+    position: relative;
+    display: flex; align-items: flex-start;
+    padding: 14px;
+  }
+  .prop .img::after {
+    content: 'IMG · PRIVATE';
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.32em; color: rgba(255,255,255,0.18);
+  }
+  .prop .b { padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .prop .a {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+    color: var(--white);
+  }
+  .prop .priceline {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--hairline);
+  }
+  .prop .p {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--gold-lit);
+  }
+  .prop .s {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ─── Device: Lock card (ZenList) ─── */
+  .lock-card {
+    max-width: 640px;
+    padding: 36px 32px;
+    background: var(--glass-strong);
+    border: 1px solid var(--hairline-gold);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(20px);
+    display: flex; flex-direction: column; gap: 18px;
+    position: relative;
+    overflow: hidden;
+    transform: none;
+    opacity: 1;
+  }
+  .lock-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold-gradient);
+    background-size: 240% 100%;
+    animation: goldRule 14s linear infinite;
+  }
+  .lock-card .lock-row { display: flex; align-items: center; gap: 14px; }
+  .lock-card .pad {
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold-lit);
+    border-radius: var(--radius-xs);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold-lit);
+  }
+  .lock-card .pad svg { width: 18px; height: 18px; }
+  .lock-card h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: -0.005em;
+  }
+  .lock-card .l {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+    line-height: 1.7;
+  }
+  .lock-card .l span { color: var(--gold-lit); }
+
+  /* ─── Device: Process steps ─── */
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--hairline);
+    align-items: baseline;
+    transform: none;
+    opacity: 1;
+  }
+  .step .n {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--gold-lit);
+  }
+  .step .t {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+  .step .d {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink-3);
+    max-width: 620px;
+  }
+
+  /* ─── Device: Begin (contact) ─── */
+  .begin-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: end;
+  }
+  .begin-block .col {
+    border-top: 1px solid var(--hairline-gold);
+    padding-top: 20px;
+  }
+  .begin-block .l {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold-lit);
+    margin-bottom: 10px;
+  }
+  .begin-block .v {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .begin-block .v a { color: var(--white); }
+  .begin-block .v a:hover { color: var(--gold-lit); }
+
+  /* ─── Reveal helpers ─── */
+  /* Visible by default so the site degrades gracefully when GSAP fails to load.
+     When libs DO load, GSAP .to(...) animates these properties to themselves — a no-op visually
+     but harmless. The dramatic chapter-enter reveal animations are sacrificed in exchange for
+     a site that works regardless of lib load state. */
+  .fade-up { opacity: 1; transform: none; }
+  .pinch-in { opacity: 1; transform: none; }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .props { grid-template-columns: 1fr; }
+    .begin-block { grid-template-columns: 1fr; }
+    .rail { display: none; }
+    .nav .lockup img { height: 22px; }
+  }

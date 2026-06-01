@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patrick Milhaupt — A North Shore Practice</title>
+<meta name="description" content="Patrick Milhaupt — Global Advisor at Jameson Sotheby's International Realty. A curated North Shore real-estate practice with a live market intelligence dashboard. Lake Forest, Winnetka, Glencoe, Wilmette, Kenilworth, Highland Park, Lake Bluff.">
+
+<link rel="stylesheet" href="brand/brand-shared.css">
+<link rel="stylesheet" href="brand/brand-dark.css">
+<link rel="stylesheet" href="brand/chapter.css?v=3">
+
+<!-- Plotly + BrandCharts for the embedded Intelligence dashboard (Chapter 02) -->
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="brand/charts/plotly-brand.js"></script>
+
+<style>
+/* ════════════ Dashboard (Chapter 02 — Intelligence) ════════════ */
+.dashboard-mount {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  width: 100%;
+}
+.dashboard-mount .control-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 18px;
+  padding: 18px 22px;
+  background: rgba(10,24,56,0.62);
+  border: 1px solid rgba(197,165,114,0.18);
+  border-radius: 14px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.dashboard-mount .village-select {
+  display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 auto;
+}
+.dashboard-mount .village-chip {
+  font-family: var(--font-sans);
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.6px;
+  padding: 8px 14px; border-radius: 999px;
+  border: 1px solid rgba(197,165,114,0.25);
+  background: rgba(5,14,38,0.35);
+  color: var(--ink-2, #C6CDDA);
+  cursor: pointer;
+  transition: all .22s ease;
+}
+.dashboard-mount .village-chip:hover {
+  color: var(--gold-lit, #E0BC7E); border-color: var(--gold-lit, #E0BC7E);
+}
+.dashboard-mount .village-chip.active {
+  background: linear-gradient(135deg, rgba(197,165,114,0.22), rgba(224,188,126,0.10));
+  border-color: var(--gold-lit, #E0BC7E);
+  color: #FFF6E0;
+  box-shadow: 0 0 0 1px rgba(224,188,126,0.32) inset;
+}
+.dashboard-mount .scope-toggle {
+  display: inline-flex; padding: 4px; gap: 4px;
+  background: rgba(5,14,38,0.5);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 999px;
+}
+.dashboard-mount .scope-btn {
+  font-family: var(--font-mono);
+  font-size: 10.5px; letter-spacing: 1.2px; text-transform: uppercase;
+  padding: 7px 14px; border-radius: 999px;
+  background: transparent; color: var(--ink-3, #8896AD);
+  border: 0; cursor: pointer;
+  transition: all .22s ease;
+}
+.dashboard-mount .scope-btn.active {
+  background: var(--navy-2, #112650);
+  color: var(--gold-lit, #E0BC7E);
+}
+.dashboard-mount .status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1px;
+  color: var(--ink-3, #8896AD); text-transform: uppercase;
+  padding: 7px 14px; border-radius: 999px;
+  background: rgba(5,14,38,0.5);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.dashboard-mount .status-pill .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--indigo-base, #4A4AF6);
+  box-shadow: 0 0 8px var(--indigo-base, #4A4AF6);
+}
+.dashboard-mount .status-pill.error .dot { background: #ff6b6b; box-shadow: 0 0 8px #ff6b6b; }
+.dashboard-mount .status-pill.loading .dot { background: #fbbf24; box-shadow: 0 0 8px #fbbf24; animation: pulseDot 1.4s ease-in-out infinite; }
+@keyframes pulseDot { 0%,100% { opacity: 0.4; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.1); } }
+
+.dashboard-mount .momentum-section,
+.dashboard-mount .kpi-section { display: flex; flex-direction: column; gap: 18px; }
+.dashboard-mount .section-title {
+  font-family: var(--font-serif, 'Cormorant Garamond', serif);
+  font-size: clamp(20px, 2vw, 28px); font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #F0E6D2;
+}
+.dashboard-mount .section-title em {
+  font-style: italic;
+  background: linear-gradient(120deg, #C5A572 0%, #E0BC7E 35%, #F0D68A 50%, #E0BC7E 65%, #C5A572 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.dashboard-mount .section-sub {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.4px;
+  text-transform: uppercase; color: var(--ink-3, #8896AD);
+  margin-top: -8px;
+}
+.dashboard-mount .momentum-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.dashboard-mount .mom-card {
+  padding: 22px;
+  background: rgba(10,24,56,0.55);
+  border: 1px solid rgba(197,165,114,0.16);
+  border-radius: 14px;
+  display: flex; flex-direction: column; gap: 10px;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+.dashboard-mount .mom-card.vis { opacity: 1; transform: translateY(0); }
+.dashboard-mount .mom-card .mom-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1.4px;
+  text-transform: uppercase; color: var(--ink-3, #8896AD);
+}
+.dashboard-mount .mom-card .mom-tier { color: var(--gold-lit, #E0BC7E); }
+.dashboard-mount .mom-card .mom-title {
+  font-family: var(--font-serif); font-size: 22px; font-weight: 400;
+  color: #FFF6E0; letter-spacing: -0.01em;
+}
+.dashboard-mount .mom-score-row {
+  display: flex; align-items: baseline; gap: 10px;
+}
+.dashboard-mount .mom-score {
+  font-family: var(--font-mono); font-size: 32px; font-weight: 600;
+  color: var(--gold-lit, #E0BC7E);
+}
+.dashboard-mount .mom-score-meta {
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-3, #8896AD);
+}
+.dashboard-mount .mom-bar {
+  position: relative; height: 4px;
+  background: rgba(255,255,255,0.06); border-radius: 2px;
+  overflow: hidden;
+}
+.dashboard-mount .mom-bar-zero {
+  position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px;
+  background: rgba(197,165,114,0.6);
+}
+.dashboard-mount .mom-bar-fill {
+  position: absolute; top: 0; bottom: 0;
+  background: linear-gradient(90deg, #C5A572, #E0BC7E);
+}
+.dashboard-mount .mom-sparkline { width: 100%; height: 48px; }
+.dashboard-mount .mom-narr {
+  font-family: var(--font-sans); font-size: 12.5px; line-height: 1.55;
+  color: var(--ink-2, #C6CDDA);
+}
+
+.dashboard-mount .kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+.dashboard-mount .kpi-card {
+  padding: 22px;
+  background: rgba(10,24,56,0.55);
+  border: 1px solid rgba(197,165,114,0.16);
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex; flex-direction: column; gap: 10px;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .8s ease, transform .8s ease, border-color .3s ease;
+}
+.dashboard-mount .kpi-card.vis { opacity: 1; transform: translateY(0); }
+.dashboard-mount .kpi-card:hover { border-color: var(--gold-lit, #E0BC7E); }
+.dashboard-mount .kpi-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1.4px;
+  text-transform: uppercase; color: var(--ink-3, #8896AD);
+}
+.dashboard-mount .kpi-help { font-size: 12px; cursor: help; color: rgba(255,255,255,0.4); }
+.dashboard-mount .kpi-hero { display: flex; align-items: baseline; gap: 12px; }
+.dashboard-mount .kpi-value {
+  font-family: var(--font-mono); font-size: 30px; font-weight: 600;
+  color: #FFF6E0; letter-spacing: -0.5px;
+}
+.dashboard-mount .kpi-delta {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.4px; padding: 3px 8px; border-radius: 999px;
+}
+.dashboard-mount .kpi-delta.up   { background: rgba(115,199,120,0.14); color: #73C778; }
+.dashboard-mount .kpi-delta.down { background: rgba(255,107,122,0.16); color: #FF6B7A; }
+.dashboard-mount .kpi-delta.flat { background: rgba(255,255,255,0.06); color: var(--ink-3, #8896AD); }
+.dashboard-mount .kpi-sub {
+  font-family: var(--font-sans); font-size: 11.5px; line-height: 1.5;
+  color: var(--ink-3, #8896AD);
+}
+.dashboard-mount .kpi-spark { width: 100%; height: 46px; }
+.dashboard-mount .kpi-foot {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--ink-3, #8896AD); opacity: 0.7;
+}
+.dashboard-mount .kpi-foot .expand { color: var(--gold-lit, #E0BC7E); }
+#kpiVillageLabel { color: var(--gold-lit, #E0BC7E); }
+
+/* Drawer */
+.chart-drawer {
+  position: fixed; inset: 0; background: rgba(3,8,20,0.72);
+  display: none; z-index: 9999;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.chart-drawer.open { display: flex; }
+.chart-drawer .drawer-inner {
+  width: min(1100px, 100%); max-height: 88vh;
+  background: linear-gradient(180deg, #0A1838 0%, #050E26 100%);
+  border: 1px solid rgba(197,165,114,0.25);
+  border-radius: 18px;
+  padding: 28px; display: flex; flex-direction: column; gap: 18px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+.chart-drawer .drawer-head {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 18px;
+}
+.chart-drawer .drawer-title-block { display: flex; flex-direction: column; gap: 4px; }
+.chart-drawer .drawer-title {
+  font-family: var(--font-serif); font-size: 26px; font-weight: 400; color: #FFF6E0;
+}
+.chart-drawer .drawer-title em {
+  font-style: italic;
+  background: linear-gradient(120deg,#C5A572,#E0BC7E,#F0D68A,#E0BC7E,#C5A572);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.chart-drawer .drawer-meta {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--ink-3, #8896AD);
+}
+.chart-drawer .drawer-close {
+  background: none; border: 1px solid rgba(255,255,255,0.15);
+  width: 36px; height: 36px; border-radius: 50%;
+  color: var(--ink-2, #C6CDDA); cursor: pointer;
+  font-size: 18px; line-height: 1;
+}
+.chart-drawer .drawer-close:hover { color: var(--gold-lit, #E0BC7E); border-color: var(--gold-lit, #E0BC7E); }
+.chart-drawer .drawer-body {
+  flex: 1; min-height: 380px; height: 60vh;
+  position: relative; padding: 12px;
+  background: rgba(7,18,41,0.5); border-radius: 12px;
+}
+.chart-drawer #bigChart { width: 100%; height: 100%; }
+.chart-drawer .overlay-row { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 6px; }
+.chart-drawer .overlay-toggle {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1px;
+  text-transform: uppercase; padding: 6px 12px; border-radius: 999px;
+  background: rgba(5,14,38,0.5);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--ink-3, #8896AD); cursor: pointer;
+}
+.chart-drawer .overlay-toggle.active {
+  color: var(--gold-lit, #E0BC7E); border-color: var(--gold-lit, #E0BC7E);
+  background: rgba(197,165,114,0.10);
+}
+
+/* ZenList compare (ch-04) */
+.zl-compare {
+  background: rgba(10,24,56,0.55);
+  border: 1px solid rgba(197,165,114,0.18);
+  border-radius: 14px; padding: 24px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.zl-compare h3 {
+  font-family: var(--font-serif); font-size: 18px; font-weight: 400;
+  color: #FFF6E0;
+}
+.zl-compare h3 em {
+  font-style: italic;
+  background: linear-gradient(120deg,#C5A572,#E0BC7E,#F0D68A,#E0BC7E,#C5A572);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.zl-row { display: grid; grid-template-columns: 84px 1fr; gap: 12px; align-items: center; }
+.zl-label {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--ink-3, #8896AD);
+}
+.zl-track {
+  height: 32px; background: rgba(255,255,255,0.04); border-radius: 6px;
+  overflow: hidden;
+}
+.zl-fill {
+  height: 100%; display: flex; align-items: center; padding: 0 12px;
+  font-family: var(--font-mono); font-size: 10.5px; color: #FFF;
+  width: 0; transition: width 1.5s cubic-bezier(0.16,1,0.3,1);
+}
+.zl-fill.gold { background: linear-gradient(90deg,#C5A572,#E0BC7E); }
+.zl-fill.mls  { background: rgba(148,163,184,0.55); }
+.zl-fill.slow { background: rgba(255,107,122,0.42); }
+.zl-note {
+  font-family: var(--font-sans); font-size: 12px; line-height: 1.6;
+  color: var(--ink-3, #8896AD); text-align: center;
+}
+
+@media (max-width: 900px) {
+  .dashboard-mount .control-bar { gap: 12px; padding: 14px; }
+  .chart-drawer .drawer-inner { padding: 18px; }
+}
+</style>
+</head>
+<body data-liquid-palette="0.38">
+
+<!-- Painterly background canvas (liquid-bg.js mounts here) -->
+<canvas id="paint"></canvas>
+<div class="veil"></div>
+
+<!-- Fixed lockup -->
+<nav class="nav">
+  <a class="lockup" href="index.html">
+    <img src="brand/assets/logos/wordmark-white-md.png" alt="Sotheby's International Realty">
+    <span class="bar"></span>
+    <span class="name">
+      <span class="who">Patrick Milhaupt</span>
+      <span class="role">Global Advisor</span>
+    </span>
+  </a>
+  <div class="nav-links">
+    <a href="properties.html">Properties</a>
+    <a href="neighborhoods.html">Neighborhoods</a>
+    <a href="intelligence.html">Intelligence</a>
+    <a href="buying.html">Buying</a>
+    <a href="selling.html">Selling</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" class="cta">Contact</a>
+  </div>
+</nav>
+
+<!-- Chapter rail -->
+<aside class="rail" aria-label="Chapter index">
+  <a class="dot active" href="#ch-00" data-rail="0">00<span class="label">&nbsp;&nbsp;Opening</span></a>
+  <a class="dot" href="#ch-01" data-rail="1">01<span class="label">&nbsp;&nbsp;The North Shore</span></a>
+  <a class="dot" href="#ch-02" data-rail="2">02<span class="label">&nbsp;&nbsp;Intelligence</span></a>
+  <a class="dot" href="#ch-03" data-rail="3">03<span class="label">&nbsp;&nbsp;Curated</span></a>
+  <a class="dot" href="#ch-04" data-rail="4">04<span class="label">&nbsp;&nbsp;ZenList</span></a>
+  <a class="dot" href="#ch-05" data-rail="5">05<span class="label">&nbsp;&nbsp;The Practice</span></a>
+  <a class="dot" href="#ch-06" data-rail="6">06<span class="label">&nbsp;&nbsp;Begin</span></a>
+</aside>
+
+<!-- Scroll cue -->
+<div class="scroll-cue" id="cue">
+  Scroll to enter<span class="arrow"></span>
+</div>
+
+<main>
+
+  <!-- ═══════════════════════ 00 — OPENING ═══════════════════════ -->
+  <section class="chapter" id="ch-00" data-chapter="0" data-palette="0.00">
+    <div class="inner" style="text-align:center; align-items:center;">
+      <div class="ch-head fade-up" style="justify-content:center;">
+        <span class="hashmark"><i></i></span>
+        <div class="meta" style="border:0; padding:0;">
+          <span class="eyebrow">A North Shore Practice · 2026</span>
+        </div>
+      </div>
+      <h1 class="headline" data-headline="">
+        The North Shore,<br><em>rendered</em> in <em>intelligence</em>.
+      </h1>
+      <p class="body fade-up" style="margin: 0 auto; text-align:center;">
+        Seven chapters. A practice built on conversation, curation, and the conviction that the best homes on the North Shore are never sold &mdash; they're <strong>introduced</strong>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 01 — THE NORTH SHORE ═══════════════════════ -->
+  <section class="chapter" id="ch-01" data-chapter="1" data-palette="0.15">
+    <div class="inner">
+      <div class="ch-head fade-up">
+        <span class="num">01</span>
+        <div class="meta">
+          <span class="eyebrow">Chapter One</span>
+          <span class="sub">The North Shore</span>
+        </div>
+      </div>
+      <h2 class="headline" data-headline="">
+        Eighteen miles of <em>coastline</em>,<br>a corridor that trades by introduction.
+      </h2>
+      <p class="body fade-up">
+        Lake Forest to Highland Park. Seven villages, six school districts, one corridor of architecturally significant homes that has traded the same way for a century &mdash; through introductions, by appointment, between trusted advisors. <strong>More than fifteen years across institutional real estate and luxury brokerage</strong> &mdash; the last decade of it inside these conversations.
+      </p>
+      <div class="kpi-grid">
+        <div class="kpi pop"><span class="l">Top 2% of Realtors</span><span class="v" style="font-size:32px;">Nationally</span><span class="d up">RealTrends Verified Top Agent &middot; 2024</span></div>
+        <div class="kpi"><span class="l">2024 Closed Volume</span><span class="v">$13.1M</span><span class="d up">$2.02M average home price</span></div>
+        <div class="kpi"><span class="l">Career Arc</span><span class="v" style="font-size:30px;">15+ yrs</span><span class="d">Investment &middot; asset management &middot; brokerage</span></div>
+        <div class="kpi"><span class="l">Villages Covered</span><span class="v">7</span><span class="d">The full North Shore corridor</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 02 — INTELLIGENCE (LIVE DASHBOARD) ═══════════════════════ -->
+  <section class="chapter" id="ch-02" data-chapter="2" data-palette="0.30">
+    <div class="inner" style="max-width: 1280px;">
+      <div class="ch-head fade-up">
+        <span class="num">02</span>
+        <div class="meta">
+          <span class="eyebrow">Chapter Two</span>
+          <span class="sub">Intelligence &middot; Live</span>
+        </div>
+      </div>
+      <h2 class="headline" data-headline="">
+        Numbers move the market.<br><em>Discipline</em> moves the numbers.
+      </h2>
+      <p class="body fade-up">
+        A live dashboard of every micro-market on the North Shore &mdash; median, days on market, sale-to-list, absorption, months of supply &mdash; refreshed daily from the MLS, scoped by village and price band, reconciled against a five-year Infosparks baseline. <strong>The market doesn't reward intuition. It rewards reconciliation.</strong>
+      </p>
+
+      <!-- ── Embedded dashboard ──────────────────────────────────────── -->
+      <div class="dashboard-mount fade-up">
+
+        <!-- Control bar -->
+        <div class="control-bar">
+          <div class="village-select" id="villageSelect" role="tablist" aria-label="Village"></div>
+          <div class="scope-toggle" role="tablist" aria-label="Price scope">
+            <button class="scope-btn active" data-scope="all"    aria-selected="true">All SF</button>
+            <button class="scope-btn"        data-scope="luxury" aria-selected="false">$2M+ Luxury</button>
+          </div>
+          <div class="status-pill loading" id="statusPill"><span class="dot"></span><span id="statusText">Connecting&hellip;</span></div>
+          <div class="status-pill" id="heroDateBadge">Updated &mdash;</div>
+        </div>
+
+        <!-- Momentum -->
+        <div class="momentum-section">
+          <div class="section-title">Market <em>Momentum</em></div>
+          <div class="section-sub">Composite scores across 28 days &middot; latest five tiers</div>
+          <div class="momentum-grid" id="momentumGrid"></div>
+        </div>
+
+        <!-- 11 KPIs -->
+        <div class="kpi-section">
+          <div class="section-title">Eleven <em>KPIs</em></div>
+          <div class="section-sub" id="kpiVillageLabelWrap">Live for <span id="kpiVillageLabel">&mdash;</span> &middot; click any card for the full 5-year chart</div>
+          <div class="kpi-grid" id="kpiGrid"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 03 — CURATED ═══════════════════════ -->
+  <section class="chapter" id="ch-03" data-chapter="3" data-palette="0.50">
+    <div class="inner">
+      <div class="ch-head fade-up">
+        <span class="num">03</span>
+        <div class="meta">
+          <span class="eyebrow">Chapter Three</span>
+          <span class="sub">Curated</span>
+        </div>
+      </div>
+      <h2 class="headline" data-headline="">
+        An <em>extraordinary</em> collection,<br>carried with restraint.
+      </h2>
+      <p class="body fade-up">
+        Every property vetted for provenance and architectural distinction, photographed at golden hour, narrated in long-form. <strong>Each home a gateway, not a transaction.</strong> Featured listings below; <a href="properties.html" style="color:var(--gold-lit, #E0BC7E)">the full portfolio is here &rarr;</a>
+      </p>
+      <div class="props">
+        <div class="prop">
+          <div class="img"><span class="pill live">Active</span></div>
+          <div class="b">
+            <div class="a">999 Lake Road<br>Lake Forest</div>
+            <div class="priceline"><span class="p">$12,990,000</span><span class="s">Howard Van Doren Shaw, 1914 &middot; 16,000 SF &middot; 3.6 acres</span></div>
+          </div>
+        </div>
+        <div class="prop">
+          <div class="img"><span class="pill live">Active</span></div>
+          <div class="b">
+            <div class="a">2441 Woodbridge Lane<br>Highland Park</div>
+            <div class="priceline"><span class="p">$6,900,000</span><span class="s">The Harris estate &middot; 10,800 SF &middot; two pools &middot; beachfront</span></div>
+          </div>
+        </div>
+        <div class="prop">
+          <div class="img"><span class="pill sold">Sold</span></div>
+          <div class="b">
+            <div class="a">1000 East Illinois Road<br>Lake Forest</div>
+            <div class="priceline"><span class="p">$2,950,000</span><span class="s">6BD &middot; 6,268 SF &middot; Sold July 2023</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 04 — ZENLIST ═══════════════════════ -->
+  <section class="chapter" id="ch-04" data-chapter="4" data-palette="0.70">
+    <div class="inner">
+      <div class="ch-head fade-up">
+        <span class="num">04</span>
+        <div class="meta">
+          <span class="eyebrow">Chapter Four</span>
+          <span class="sub">ZenList &middot; Private</span>
+        </div>
+      </div>
+      <h2 class="headline" data-headline="">
+        The market you <em>can't</em> see.
+      </h2>
+      <p class="body fade-up">
+        ZenList is Sotheby's pre-MLS network &mdash; a real-time channel for private and pre-listing inventory across the North Shore. Buyers see what's coming before it appears on Zillow, Redfin, or any public feed. Below, the latency gap that matters in a market where 30% of homes sell over asking.
+      </p>
+
+      <div class="zl-compare fade-up" id="zlCompare">
+        <h3>How fast do you see <em>listings?</em></h3>
+        <div class="zl-row"><div class="zl-label">ZenList</div><div class="zl-track"><div class="zl-fill gold" data-w="95%">Real-time &middot; 2 min</div></div></div>
+        <div class="zl-row"><div class="zl-label">MLS</div><div class="zl-track"><div class="zl-fill mls"  data-w="82%">Same day</div></div></div>
+        <div class="zl-row"><div class="zl-label">Redfin</div><div class="zl-track"><div class="zl-fill slow" data-w="50%">15&ndash;45 min delay</div></div></div>
+        <div class="zl-row"><div class="zl-label">Zillow</div><div class="zl-track"><div class="zl-fill slow" data-w="35%">24&ndash;48 hr delay</div></div></div>
+        <p class="zl-note">In a market where ~30% of homes sell over asking and median DOM is under 60 days, every hour counts.</p>
+      </div>
+
+      <div class="lock-card fade-up" style="margin-top: 32px;">
+        <div class="lock-row">
+          <span class="pad" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+              <path d="M7 11V7a5 5 0 0110 0v4"></path>
+            </svg>
+          </span>
+          <h3>Access by introduction</h3>
+        </div>
+        <div class="l">
+          Sotheby's Pre-MLS Network &middot; <span>free for active clients</span><br>
+          Activate your private search at <a href="https://zenlist.realestate" target="_blank" rel="noopener" style="color:var(--gold-lit,#E0BC7E)">zenlist.realestate</a> or request a personal invite below.
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-outline" href="#ch-06">Request introduction</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 05 — PRACTICE ═══════════════════════ -->
+  <section class="chapter" id="ch-05" data-chapter="5" data-palette="0.85">
+    <div class="inner">
+      <div class="ch-head fade-up">
+        <span class="num">05</span>
+        <div class="meta">
+          <span class="eyebrow">Chapter Five</span>
+          <span class="sub">The Practice</span>
+        </div>
+      </div>
+      <h2 class="headline" data-headline="">
+        Six steps.<br><em>Forty-nine</em> details.
+      </h2>
+      <p class="body fade-up">
+        A selling process refined across more than fifteen years of institutional asset management and luxury brokerage. Provenance research, architectural narrative, photography choreography, pricing reconciliation &mdash; each step carries its own checklist, its own choreography, its own <strong>discipline</strong>.
+      </p>
+      <div class="steps">
+        <div class="step">
+          <span class="n">STEP &middot; 01</span>
+          <div>
+            <div class="t">Provenance &amp; Architectural Research</div>
+            <div class="d">Original architect, build date, ownership chain, restoration history, comparable sales of similarly authored homes. The story your buyer will read on the listing is built here.</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="n">STEP &middot; 02</span>
+          <div>
+            <div class="t">Reconciliation Pricing</div>
+            <div class="d">Three independent methods &mdash; sales comparison, replacement cost, income-equivalent. The number we go to market with is the one those three agree on.</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="n">STEP &middot; 03</span>
+          <div>
+            <div class="t">Photography &amp; Long-form Narrative</div>
+            <div class="d">Golden-hour exterior, twilight pool, interior across two weather days. Five hundred words of architectural narrative, written by me. No bullet points.</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="n">STEP &middot; 04</span>
+          <div>
+            <div class="t">ZenList Pre-Market Window</div>
+            <div class="d">Seven to ten days of private exposure inside the Sotheby's pre-MLS network before public listing &mdash; frequently enough to find the buyer without the listing ever going broadly live.</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="n">STEP &middot; 05</span>
+          <div>
+            <div class="t">MLS &amp; Open-House Choreography</div>
+            <div class="d">If we go to broad market, three open houses across three weather conditions, two private brokers' opens, and a curated invite list of forty Sotheby's advisors with active matched buyers.</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="n">STEP &middot; 06</span>
+          <div>
+            <div class="t">Closing Discipline</div>
+            <div class="d">Attorney review, inspection negotiation, appraisal defense, closing-day audit. Forty-nine line items on the closing checklist. None of them skipped.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 06 — BEGIN ═══════════════════════ -->
+  <section class="chapter" id="ch-06" data-chapter="6" data-palette="1.00">
+    <div class="inner" style="text-align:center; align-items:center;">
+      <div class="ch-head fade-up" style="justify-content:center;">
+        <span class="num">06</span>
+        <div class="meta">
+          <span class="eyebrow">Begin</span>
+          <span class="sub">A 30-minute call</span>
+        </div>
+      </div>
+      <h2 class="headline" data-headline="">
+        Let's <em>talk</em>.
+      </h2>
+      <p class="body fade-up" style="margin: 0 auto; text-align: center;">
+        Thirty minutes. No pitch. A discussion of what you're trying to do, and an honest read on whether I'm the right advisor to help you do it. If I'm not, I know who is.
+      </p>
+      <div class="begin-block fade-up">
+        <div class="col">
+          <div class="l">Direct</div>
+          <div class="v">(847) 849-9828</div>
+        </div>
+        <div class="col">
+          <div class="l">Email</div>
+          <div class="v"><a href="mailto:pmilhaupt@jamesonsir.com">pmilhaupt@jamesonsir.com</a></div>
+        </div>
+      </div>
+      <div class="cta-row fade-up" style="justify-content:center; margin-top: 32px;">
+        <a class="btn" href="mailto:pmilhaupt@jamesonsir.com">Schedule the Call &rarr;</a>
+        <a class="btn btn-outline" href="#ch-00">Begin Again</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════ DRAWER (modal for KPI deep-dive) ═══════════════════════ -->
+<div class="chart-drawer" id="chartDrawer" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="drawer-inner">
+    <div class="drawer-head">
+      <div class="drawer-title-block">
+        <div class="drawer-title" id="drawerTitle">&mdash;</div>
+        <div class="drawer-meta"  id="drawerMeta">&mdash;</div>
+      </div>
+      <button class="drawer-close" id="drawerClose" aria-label="Close chart">&times;</button>
+    </div>
+    <div class="drawer-body"><div id="bigChart"></div></div>
+    <div class="overlay-row">
+      <button class="overlay-toggle active" data-ov="raw">Daily / Monthly</button>
+      <button class="overlay-toggle active" data-ov="ma30">30-day avg</button>
+      <button class="overlay-toggle"        data-ov="ma7">7-day avg</button>
+      <button class="overlay-toggle"        data-ov="ma90">90-day avg</button>
+      <button class="overlay-toggle"        data-ov="ma180">180-day avg</button>
+      <button class="overlay-toggle"        data-ov="ma365">12-month avg</button>
+      <button class="overlay-toggle active" data-ov="marker">Infosparks &rarr; MLS</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ LIBS (vendored, local) ═══════════════════════ -->
+<script src="lib/three.min.js"></script>
+<script src="lib/lenis.min.js"></script>
+<script src="lib/gsap.min.js"></script>
+<script src="lib/ScrollTrigger.min.js"></script>
+
+<!-- Signature liquid background -->
+<script src="brand/liquid-bg.js"></script>
+
+<!-- ═══════════════════════ DASHBOARD (Chapter 02 data wiring) ═══════════════════════ -->
+<script>
+/* ─── Supabase config (anon read-only) ─── */
+const SUPA = {
+  URL: 'https://itupjrknklzvmmqicuyc.supabase.co',
+  KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjE4dTV3Mm1HU1VWeTVoVm0ifQ.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0dXBqcmtua2x6dm1tcWljdXljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0MTk5NDcsImV4cCI6MjA3Njk5NTk0N30.k_4yJa7NydJDLcMaGB-9C0K3rmL85Tza2NEy1NWBPFA'
+};
+const CUTOFF_DATE = '2026-03-01';
+const VILLAGES = ['North Shore','Glencoe','Highland Park','Kenilworth','Lake Bluff','Lake Forest','Wilmette','Winnetka'];
+
+const STATE = {
+  village: 'North Shore',
+  scope: 'all',
+  data: {},
+  overlays: { raw: true, ma7: false, ma30: true, ma90: false, ma180: false, ma365: false, marker: true }
+};
+let CURRENT_DRAWER_KPI = null;
+
+const KPIS = [
+  { id:'median_price',   label:'Median Price',         help:'Median closed-sale price for the period (rolling).', unit:'$',  metric:'median_sale_price',          monthly:'median_close_price', fmt:'money',  spark:true,  invert:false },
+  { id:'units_sold',     label:'Closed Sales',          help:'Number of closed transactions.',                     unit:'',   metric:'closed_sales',               monthly:'closed_sales',       fmt:'int',    spark:true,  invert:false },
+  { id:'dom',            label:'Days on Market',        help:'Median days on market for closed sales.',            unit:'d',  metric:'median_dom',                 monthly:'median_dom',         fmt:'int',    spark:true,  invert:true  },
+  { id:'sp_lp',          label:'SP / OLP',              help:'Sale price as % of original list price.',            unit:'%',  metric:'median_sp_lp_ratio',         monthly:'sp_lp_ratio',        fmt:'pct',    spark:true,  invert:false },
+  { id:'new_listings',   label:'New Listings',          help:'Newly listed properties this period.',               unit:'',   metric:'new_listings',               monthly:'new_listings',       fmt:'int',    spark:true,  invert:false },
+  { id:'inventory_ratio',label:'Inventory Ratio',       help:'Active inventory / new listings.',                   unit:'',   metric:'inventory_to_new_ratio',     monthly:'inventory_to_new_ratio', fmt:'dec1',  spark:true,  invert:false },
+  { id:'absorption',     label:'Absorption Rate',       help:'Closed ÷ Active. >25% favors sellers.',              unit:'%',  metric:'absorption_rate',            monthly:'absorption_rate',    fmt:'pct01',  spark:true,  invert:false },
+  { id:'months_supply',  label:'Months of Supply',      help:'Active inventory at current pace.',                  unit:'mo', metric:'months_supply',              monthly:'months_supply',      fmt:'dec1',   spark:true,  invert:true  },
+  { id:'ppsf_reduc',     label:'$ / SqFt',              help:'Median sale price per finished sqft.',               unit:'$',  metric:'median_price_per_sqft',      monthly:'price_per_sqft',     fmt:'money0', spark:true,  invert:false },
+  { id:'pending',        label:'Pending Sales',         help:'Under contract count.',                              unit:'',   metric:'under_contract',             monthly:'under_contract',     fmt:'int',    spark:true,  invert:false },
+  { id:'r7_contracts',   label:'7-day Contract Pace',   help:'Pending velocity, last 7 days.',                     unit:'',   metric:'pending_last_7_days',        monthly:null,                 fmt:'int',    spark:true,  invert:false }
+];
+
+const FMT = {
+  money:  v => v==null?'—':'$'+Number(v).toLocaleString(undefined,{maximumFractionDigits:0}),
+  money0: v => v==null?'—':'$'+Number(v).toLocaleString(undefined,{maximumFractionDigits:0}),
+  int:    v => v==null?'—':Number(v).toLocaleString(undefined,{maximumFractionDigits:0}),
+  pct:    v => v==null?'—':Number(v).toFixed(1)+'%',
+  pct01:  v => v==null?'—':(Number(v)*100).toFixed(1)+'%',
+  ratio:  v => v==null?'—':Number(v).toFixed(2)+'×',
+  dec1:   v => v==null?'—':Number(v).toFixed(1)
+};
+
+async function supaFetch(path, params={}) {
+  const url = new URL(SUPA.URL + '/rest/v1/' + path);
+  Object.entries(params).forEach(([k,v]) => url.searchParams.append(k,v));
+  const r = await fetch(url, { headers: { apikey: SUPA.KEY, Authorization: 'Bearer ' + SUPA.KEY }});
+  if (!r.ok) throw new Error('supabase '+r.status);
+  return r.json();
+}
+async function supaRpc(name, body={}) {
+  const r = await fetch(SUPA.URL + '/rest/v1/rpc/' + name, {
+    method: 'POST',
+    headers: { apikey: SUPA.KEY, Authorization: 'Bearer ' + SUPA.KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error('supabase rpc '+r.status);
+  return r.json();
+}
+
+async function loadVillageSeries(village, scope) {
+  if (village === 'North Shore') {
+    const rows = await supaFetch('mv_market_intelligence', {
+      select: 'village,scope,d,source,metric,value',
+      'village': 'in.(' + VILLAGES.filter(v=>v!=='North Shore').map(v=>`"${v}"`).join(',') + ')',
+      'scope': 'in.(all,luxury)',
+      order: 'd.asc',
+      limit: 50000
+    });
+    return rows;
+  }
+  return supaFetch('mv_market_intelligence', {
+    select: 'village,scope,d,source,metric,value',
+    village: `eq.${village}`,
+    'scope': 'in.(all,luxury)',
+    order: 'd.asc',
+    limit: 50000
+  });
+}
+
+function aggregateNorthShore(rows, scopeFilter) {
+  const SUMS = new Set(['closed_sales','new_listings','under_contract','active_inventory','pending_last_7_days']);
+  const buckets = {};
+  for (const r of rows) {
+    if (r.source === 'mls_daily' && r.scope !== scopeFilter) continue;
+    const key = r.d + '|' + r.metric + '|' + r.source;
+    if (!buckets[key]) buckets[key] = [];
+    buckets[key].push(Number(r.value));
+  }
+  const out = [];
+  for (const key in buckets) {
+    const [d, metric, source] = key.split('|');
+    const arr = buckets[key].filter(v => !isNaN(v));
+    if (!arr.length) continue;
+    const v = SUMS.has(metric) ? arr.reduce((a,b)=>a+b,0) : (arr.sort((a,b)=>a-b)[Math.floor(arr.length/2)]);
+    out.push({ d, source, metric, value: v });
+  }
+  return out;
+}
+
+function indexByMetric(rows, scopeFilter) {
+  const data = {};
+  for (const r of rows) {
+    if (r.source === 'mls_daily' && r.scope !== scopeFilter) continue;
+    if (r.source === 'infosparks' && r.scope !== 'all') continue;
+    if (!data[r.metric]) data[r.metric] = [];
+    data[r.metric].push({ d: r.d, source: r.source, value: Number(r.value) });
+  }
+  for (const m in data) data[m].sort((a,b)=>a.d.localeCompare(b.d));
+  return data;
+}
+
+function rollingMean(series, days) {
+  const out = [], n = series.length;
+  let sum = 0, q = [];
+  const ms = days * 86400000;
+  for (let i = 0; i < n; i++) {
+    const t = new Date(series[i].d+'T00:00:00Z').getTime();
+    q.push({ t, v: series[i].value });
+    sum += series[i].value;
+    while (q.length && t - q[0].t > ms) { sum -= q[0].v; q.shift(); }
+    out.push({ d: series[i].d, value: sum / q.length });
+  }
+  return out;
+}
+function linearInterpolate(series) {
+  if (!series.length) return [];
+  const sorted = [...series].filter(p=>p.value!=null && !isNaN(p.value)).sort((a,b)=>a.d.localeCompare(b.d));
+  if (sorted.length < 2) return sorted;
+  const out = [];
+  for (let i = 0; i < sorted.length-1; i++) {
+    out.push(sorted[i]);
+    const t0 = new Date(sorted[i].d+'T00:00:00Z').getTime();
+    const t1 = new Date(sorted[i+1].d+'T00:00:00Z').getTime();
+    const gap = Math.round((t1-t0)/86400000);
+    if (gap > 1 && gap < 60) {
+      for (let j = 1; j < gap; j++) {
+        const t = new Date(t0 + j*86400000);
+        const f = j/gap;
+        const v = sorted[i].value + (sorted[i+1].value - sorted[i].value)*f;
+        out.push({ d: t.toISOString().slice(0,10), value: v });
+      }
+    }
+  }
+  out.push(sorted[sorted.length-1]);
+  return out;
+}
+function pctChange(now, prev) { if (now==null||prev==null||prev===0) return null; return ((now-prev)/prev)*100; }
+function latestOf(series) { return series.length ? series[series.length-1] : null; }
+function findNearDaysAgo(series, days) {
+  if (!series.length) return null;
+  const last = new Date(series[series.length-1].d+'T00:00:00Z').getTime();
+  const target = last - days*86400000;
+  let best=null, bd=Infinity;
+  for (const p of series) {
+    const t = new Date(p.d+'T00:00:00Z').getTime();
+    const d = Math.abs(t-target);
+    if (d < bd) { bd=d; best=p; }
+  }
+  return best;
+}
+
+function renderVillageChips() {
+  const wrap = document.getElementById('villageSelect');
+  wrap.innerHTML = '';
+  VILLAGES.forEach(v => {
+    const b = document.createElement('button');
+    b.className = 'village-chip' + (v === STATE.village ? ' active' : '');
+    b.textContent = v;
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', v === STATE.village ? 'true':'false');
+    b.addEventListener('click', () => { STATE.village = v; refresh(); });
+    wrap.appendChild(b);
+  });
+}
+function setStatus(kind, msg) {
+  const pill = document.getElementById('statusPill');
+  pill.classList.remove('loading','error');
+  if (kind === 'loading') pill.classList.add('loading');
+  if (kind === 'error')   pill.classList.add('error');
+  document.getElementById('statusText').textContent = msg || '';
+}
+
+async function loadMomentum(scope) {
+  try {
+    const res = await supaRpc('get_smart_momentum', { scope_filter: scope });
+    renderMomentum(res || []);
+  } catch(e) { console.warn('momentum rpc failed', e); }
+}
+function renderMomentum(data) {
+  const grid = document.getElementById('momentumGrid');
+  grid.innerHTML = '';
+  if (!data.length) {
+    grid.innerHTML = '<div class="mom-card vis"><div class="mom-title">No momentum data yet</div></div>';
+    return;
+  }
+  data.slice(0,5).forEach((m,i) => {
+    const score = m.composite_score != null ? Number(m.composite_score) : null;
+    const fillPct = score != null ? Math.max(0, Math.min(100, 50 + score/2)) : 50;
+    const card = document.createElement('div');
+    card.className = 'mom-card';
+    card.style.transitionDelay = (i*60)+'ms';
+    card.innerHTML = `
+      <div class="mom-head"><span class="mom-tier">${(m.tier||'').toUpperCase()}</span><span>${m.scope||''}</span></div>
+      <div class="mom-title">${m.village || 'North Shore'}</div>
+      <div class="mom-score-row">
+        <div class="mom-score">${score==null?'—':(score>0?'+':'')+score.toFixed(1)}</div>
+        <div class="mom-score-meta">${m.confidence || '—'} confidence</div>
+      </div>
+      <div class="mom-bar"><div class="mom-bar-zero"></div><div class="mom-bar-fill" style="left:${score==null?50:Math.min(fillPct,50)}%;width:${Math.abs(fillPct-50)}%"></div></div>
+      <canvas class="mom-sparkline" id="sp_mom_${i}"></canvas>
+      <div class="mom-narr">${m.narrative || ''}</div>
+    `;
+    grid.appendChild(card);
+    setTimeout(()=>{
+      const canvas = card.querySelector('canvas');
+      const spark = m.sparkline_28d || [];
+      renderMiniSpark(canvas, spark.map((v,idx)=>({x:idx,y:Number(v)})), true);
+      card.classList.add('vis');
+    }, 40);
+  });
+}
+function renderMiniSpark(canvas, points, bipolar) {
+  if (!canvas || !points.length) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.clientWidth, H = canvas.clientHeight;
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+  const xs = points.map(p=>p.x), ys = points.map(p=>p.y);
+  const minY = bipolar ? -100 : Math.min(...ys), maxY = bipolar ? 100 : Math.max(...ys);
+  const padY = (maxY-minY)*0.1 || 1;
+  const y0 = minY-padY, y1 = maxY+padY;
+  const minX = Math.min(...xs), maxX = Math.max(...xs);
+  const toX = x => 4 + (x-minX)/(maxX-minX||1)*(W-8);
+  const toY = y => (H-4) - (y-y0)/(y1-y0||1)*(H-8);
+  if (bipolar) {
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0,toY(0)); ctx.lineTo(W,toY(0)); ctx.stroke();
+  }
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'rgba(197,165,114,0.32)');
+  grad.addColorStop(1,'rgba(197,165,114,0)');
+  ctx.beginPath();
+  ctx.moveTo(toX(points[0].x), toY(0));
+  points.forEach(p=>ctx.lineTo(toX(p.x), toY(p.y)));
+  ctx.lineTo(toX(points[points.length-1].x), toY(0));
+  ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+  ctx.beginPath(); ctx.strokeStyle = '#E0BC7E'; ctx.lineWidth = 1.5;
+  points.forEach((p,i)=>{ const x=toX(p.x), y=toY(p.y); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+  ctx.stroke();
+}
+
+function renderKpis() {
+  const grid = document.getElementById('kpiGrid');
+  grid.innerHTML = '';
+  KPIS.forEach((k,i) => {
+    const series = (STATE.data?.[k.metric]) || [];
+    const last = latestOf(series);
+    const prior30 = findNearDaysAgo(series, 30);
+    const delta = prior30 ? pctChange(last?.value, prior30.value) : null;
+    const v = last?.value;
+    const formatted = (FMT[k.fmt] || FMT.int)(v);
+    let deltaCls = 'flat', deltaTxt = '—';
+    if (delta != null && !isNaN(delta)) {
+      const favorable = k.invert ? (delta < 0) : (delta > 0);
+      deltaCls = Math.abs(delta) < 0.5 ? 'flat' : (favorable ? 'up' : 'down');
+      deltaTxt = (delta > 0 ? '+' : '') + delta.toFixed(1) + '% vs 30d';
+    }
+    const card = document.createElement('div');
+    card.className = 'kpi-card';
+    card.style.transitionDelay = (i*45)+'ms';
+    card.setAttribute('role','button');
+    card.setAttribute('tabindex','0');
+    card.setAttribute('aria-label', `${k.label}: ${formatted}. Click for detail.`);
+    card.innerHTML = `
+      <div class="kpi-head">
+        <div>${k.label}</div>
+        <div class="kpi-help" title="${k.help}">&#9432;</div>
+      </div>
+      <div class="kpi-hero">
+        <div class="kpi-value">${formatted}</div>
+        <div class="kpi-delta ${deltaCls}">${deltaTxt}</div>
+      </div>
+      <div class="kpi-sub">${k.help}</div>
+      <canvas class="kpi-spark" id="sp_kpi_${k.id}"></canvas>
+      <div class="kpi-foot">
+        <span>${series.length ? series.length+' data points' : 'no data'}</span>
+        <span class="expand">Open chart &rarr;</span>
+      </div>
+    `;
+    card.addEventListener('click', ()=>openDrawer(k));
+    card.addEventListener('keydown', e=>{ if (e.key==='Enter'||e.key===' ') { e.preventDefault(); openDrawer(k); } });
+    grid.appendChild(card);
+    setTimeout(()=>{
+      const canvas = card.querySelector('canvas');
+      const recent = series.slice(-90);
+      const sparkPoints = recent.map((s,idx)=>({x:idx,y:s.value}));
+      renderMiniSpark(canvas, sparkPoints, false);
+      card.classList.add('vis');
+    }, 20);
+  });
+  document.getElementById('kpiVillageLabel').textContent = STATE.village + ' — ' + (STATE.scope==='luxury' ? '$2M+ Luxury' : 'All SF');
+}
+
+function openDrawer(k) {
+  const drawer = document.getElementById('chartDrawer');
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden','false');
+  document.getElementById('drawerTitle').innerHTML = `${k.label} <em>${STATE.village}</em>`;
+  document.getElementById('drawerMeta').textContent = `${STATE.scope==='luxury'?'Luxury ($2M+) · ':'All SF · '}${k.help}`;
+  renderBigChart(k);
+}
+function closeDrawer() {
+  const drawer = document.getElementById('chartDrawer');
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden','true');
+  const el = document.getElementById('bigChart');
+  if (el && typeof Plotly !== 'undefined') Plotly.purge(el);
+  CURRENT_DRAWER_KPI = null;
+}
+document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+document.getElementById('chartDrawer').addEventListener('click', e=>{ if (e.target.id==='chartDrawer') closeDrawer(); });
+document.addEventListener('keydown', e=>{ if (e.key==='Escape') closeDrawer(); });
+
+function renderBigChart(k) {
+  CURRENT_DRAWER_KPI = k;
+  if (typeof Plotly === 'undefined' || !window.BrandCharts) return;
+  const C = window.BrandCharts;
+  const el = document.getElementById('bigChart');
+  const raw = STATE.data[k.metric] || [];
+  const dense = linearInterpolate(raw);
+  const x = dense.map(p => p.d);
+  const y = dense.map(p => p.value);
+
+  const traces = [];
+  if (STATE.overlays.raw) {
+    traces.push(C.area('Daily / Monthly', x, y, 'gold', { width: 1.5 }));
+  }
+  const ovs = [
+    { key:'ma7',   days:7,   tone:'teal',    label:'7-day avg' },
+    { key:'ma30',  days:30,  tone:'yellow',  label:'30-day avg' },
+    { key:'ma90',  days:90,  tone:'indigo',  label:'90-day avg' },
+    { key:'ma180', days:180, tone:'pink',    label:'180-day avg' },
+    { key:'ma365', days:365, tone:'blue',    label:'12-month avg' }
+  ];
+  ovs.forEach(o => {
+    if (!STATE.overlays[o.key]) return;
+    const ma = rollingMean(dense.filter(p=>p.value!=null), o.days);
+    traces.push(C.line(o.label, ma.map(p=>p.d), ma.map(p=>p.value), o.tone, { axis: 'left', width: o.key==='ma365' ? 2.5 : 2 }));
+  });
+
+  const tickformat = (k.fmt === 'money' || k.fmt === 'money0') ? '$,.0f'
+                   : k.fmt === 'pct' ? '.1f'
+                   : k.fmt === 'pct01' ? '.1%'
+                   : k.fmt === 'dec1' ? '.1f'
+                   : ',d';
+
+  const layout = C.layout({
+    title: `${k.label} &middot; ${STATE.village}<br><sub style="font-size:12px;font-weight:400;color:#9FB0CC">${STATE.scope==='luxury'?'$2M+ Luxury':'All single-family'}</sub>`,
+    y: { title: '', tickformat },
+    watermark: { src: 'brand/assets/logos/wordmark-white-xl.png', opacity: 0.04 },
+    margin: { l: 72, r: 32, t: 84, b: 64 },
+    showlegend: true
+  });
+  if (STATE.overlays.marker) {
+    layout.shapes = [{
+      type: 'line', xref: 'x', yref: 'paper',
+      x0: CUTOFF_DATE, x1: CUTOFF_DATE, y0: 0, y1: 1,
+      line: { color: 'rgba(197,165,114,0.55)', width: 1, dash: 'dash' }
+    }];
+    layout.annotations = [{
+      x: CUTOFF_DATE, xref: 'x', y: 1, yref: 'paper', yanchor: 'top',
+      text: ' Infosparks → MLS daily', showarrow: false,
+      font: { family: 'JetBrains Mono', size: 10, color: 'rgba(224,188,126,0.95)' },
+      xshift: 6
+    }];
+  }
+  Plotly.react(el, traces, layout, C.config);
+}
+
+document.querySelectorAll('.overlay-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const ov = btn.dataset.ov;
+    STATE.overlays[ov] = !STATE.overlays[ov];
+    btn.classList.toggle('active');
+    if (CURRENT_DRAWER_KPI) renderBigChart(CURRENT_DRAWER_KPI);
+  });
+});
+
+async function refresh({ villageOnly, scopeOnly } = {}) {
+  setStatus('loading','Loading data…');
+  try {
+    const rows = await loadVillageSeries(STATE.village, STATE.scope);
+    if (STATE.village === 'North Shore') {
+      const agg = aggregateNorthShore(rows, STATE.scope);
+      STATE.data = {};
+      for (const r of agg) {
+        if (!STATE.data[r.metric]) STATE.data[r.metric] = [];
+        STATE.data[r.metric].push({ d:r.d, source:r.source, value:r.value });
+      }
+      for (const m in STATE.data) STATE.data[m].sort((a,b)=>a.d.localeCompare(b.d));
+    } else {
+      STATE.data = indexByMetric(rows, STATE.scope);
+    }
+    renderKpis();
+    if (!villageOnly) loadMomentum(STATE.scope);
+    document.querySelectorAll('.village-chip').forEach(c => {
+      c.classList.toggle('active', c.textContent === STATE.village);
+      c.setAttribute('aria-selected', c.textContent === STATE.village ? 'true':'false');
+    });
+    document.querySelectorAll('.scope-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.scope === STATE.scope);
+      b.setAttribute('aria-selected', b.dataset.scope === STATE.scope ? 'true':'false');
+    });
+    const today = new Date();
+    document.getElementById('heroDateBadge').textContent = 'Updated ' + today.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+    setStatus('ok', 'Live');
+  } catch(e) {
+    console.error(e);
+    setStatus('error','Data unavailable');
+  }
+}
+document.querySelectorAll('.scope-btn').forEach(b => {
+  b.addEventListener('click', () => { STATE.scope = b.dataset.scope; refresh(); });
+});
+
+// Boot dashboard
+renderVillageChips();
+refresh();
+
+/* ─── ZenList bar fill on Chapter 04 enter ─── */
+(function() {
+  const el = document.getElementById('zlCompare');
+  if (!el) return;
+  let done = false;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting && !done) {
+        done = true;
+        el.querySelectorAll('.zl-fill').forEach(f => { f.style.width = f.dataset.w; });
+        obs.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.25 });
+  obs.observe(el);
+})();
+</script>
+
+<!-- ═══════════════════════ SCROLL ORCHESTRATOR (Lenis + GSAP) ═══════════════════════ -->
+<script>
+(() => {
+  // 1. Wrap each headline word for stagger reveal
+  document.querySelectorAll('[data-headline]').forEach(h => {
+    const walk = (node) => {
+      Array.from(node.childNodes).forEach(child => {
+        if (child.nodeType === Node.TEXT_NODE) {
+          const text = child.nodeValue;
+          if (!text.trim()) return;
+          const frag = document.createDocumentFragment();
+          text.split(/(\s+)/).forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); }
+            else {
+              const w = document.createElement('span'); w.className = 'w';
+              const inner = document.createElement('span'); inner.textContent = part;
+              w.appendChild(inner); frag.appendChild(w);
+            }
+          });
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === Node.ELEMENT_NODE) {
+          if (child.tagName === 'BR') return;
+          walk(child);
+        }
+      });
+    };
+    walk(h);
+  });
+
+  if (typeof Lenis === 'undefined' || typeof gsap === 'undefined') {
+    console.warn('[v11] Animation libs not loaded — falling back to native scroll. Check lib/ paths.');
+    return;
+  }
+
+  let lenis;
+  try {
+    lenis = new Lenis({
+      duration: 1.4,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true, smoothTouch: false, wheelMultiplier: 1, lerp: 0.08
+    });
+  } catch(e) {
+    console.error('[v11] Lenis init failed — native scroll preserved.', e);
+    return;
+  }
+
+  // EVERYTHING below this point must run successfully or we must destroy Lenis
+  // to release the wheel-event hijack and restore native scroll.
+  try {
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      if (!href || href === '#') return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: 0, duration: 1.6 });
+    });
+  });
+
+  gsap.registerPlugin(ScrollTrigger);
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(time => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  if (window.__paintUniforms) {
+    ScrollTrigger.create({
+      trigger: 'main', start: 'top top', end: 'bottom bottom',
+      onUpdate: self => { window.__paintUniforms.uScroll.value = self.progress; }
+    });
+  }
+
+  const chapters = gsap.utils.toArray('.chapter');
+  chapters.forEach((ch, i) => {
+    const headline = ch.querySelector('[data-headline]');
+    const words = headline ? headline.querySelectorAll('.w > span') : [];
+    const fades = ch.querySelectorAll('.fade-up');
+    const kpis = ch.querySelectorAll('.kpi');
+    const props = ch.querySelectorAll('.prop');
+    const lockCard = ch.querySelector('.lock-card');
+    const steps = ch.querySelectorAll('.step');
+    const palette = parseFloat(ch.dataset.palette || '0');
+
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: ch, start: 'top 70%', end: 'top 10%', toggleActions: 'play none none reverse' }
+    });
+    if (window.__paintUniforms) {
+      tl.to(window.__paintUniforms.uPaletteMix, { value: palette, duration: 1.6, ease: 'power2.out' }, 0);
+    }
+    if (fades.length) tl.to(fades, { opacity:1, y:0, duration:1.0, stagger:0.10, ease:'power3.out' }, 0.05);
+    if (words.length) tl.to(words, { y:0, duration:1.1, stagger:0.045, ease:'power3.out' }, 0.15);
+    if (kpis.length)  tl.to(kpis,  { opacity:1, y:0, duration:0.9, stagger:0.10, ease:'power3.out' }, 0.5);
+    if (props.length) tl.to(props, { opacity:1, y:0, duration:0.9, stagger:0.12, ease:'power3.out' }, 0.55);
+    if (lockCard)     tl.to(lockCard, { opacity:1, y:0, duration:1.0, ease:'power3.out' }, 0.5);
+    if (steps.length) tl.to(steps, { opacity:1, y:0, duration:0.7, stagger:0.08, ease:'power2.out' }, 0.5);
+
+    if (i === 0) { requestAnimationFrame(() => tl.play(0)); }
+  });
+
+  const dots = document.querySelectorAll('.rail .dot');
+  chapters.forEach((ch, i) => {
+    ScrollTrigger.create({
+      trigger: ch, start: 'top 50%', end: 'bottom 50%',
+      onToggle: self => {
+        if (self.isActive) dots.forEach(d => d.classList.toggle('active', +d.dataset.rail === i));
+      }
+    });
+  });
+
+  const cue = document.getElementById('cue');
+  let cueGone = false;
+  lenis.on('scroll', (e) => {
+    if (cueGone) return;
+    const s = (e && typeof e.scroll === 'number') ? e.scroll
+            : (e && typeof e.animatedScroll === 'number') ? e.animatedScroll
+            : (lenis && typeof lenis.animatedScroll === 'number') ? lenis.animatedScroll
+            : window.scrollY;
+    if (s > 40) { cue.classList.add('gone'); cueGone = true; }
+  });
+
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+
+  } catch(orchErr) {
+    console.error('[v11] Scroll orchestrator failed — destroying Lenis to restore native scroll.', orchErr);
+    try { lenis.destroy(); } catch(_) {}
+  }
+})();
+</script>
+
+</body>
+</html>

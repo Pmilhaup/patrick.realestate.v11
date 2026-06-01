@@ -1,0 +1,30 @@
+# OS / OneDrive metadata
+Thumbs.db
+.DS_Store
+desktop.ini
+~$*
+
+# Editor scratch
+*.swp
+*.swo
+*~
+
+# Python cache (only if any tooling lives here)
+__pycache__/
+*.pyc
+
+# Local notes / internal docs not for public site
+_voice-guide.md
+
+# Cloudflare / deploy artifacts
+.wrangler/
+.cloudflare/
+node_modules/
+
+# Build outputs (none yet, but defensive)
+dist/
+build/
+.cache/
+
+# Logs
+*.log

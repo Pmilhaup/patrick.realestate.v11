@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>v11 Preview &mdash; Patrick Milhaupt</title>
+<link rel="stylesheet" href="brand/brand-shared.css">
+<link rel="stylesheet" href="brand/brand-dark.css">
+<style>
+body { background: var(--navy-0, #050E26); color: var(--ink-1, #F0E6D2); min-height: 100vh; padding: 40px 32px; }
+.shell { max-width: 1400px; margin: 0 auto; }
+header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 32px; border-bottom: 1px solid rgba(197,165,114,0.18); margin-bottom: 40px; }
+header .l { display: flex; align-items: center; gap: 14px; }
+header .l img { height: 26px; }
+header .l .bar { width: 1px; height: 26px; background: var(--gold-lit, #E0BC7E); opacity: 0.55; }
+header .name { display: flex; flex-direction: column; line-height: 1.05; }
+header .who { font-family: var(--font-serif); font-size: 18px; color: #FFF6E0; }
+header .role { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-3, #8896AD); }
+header .meta { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-3, #8896AD); }
+h1 {
+  font-family: var(--font-serif); font-size: clamp(36px, 5vw, 64px); font-weight: 400;
+  letter-spacing: -0.02em; line-height: 1.05; color: #FFF6E0; margin-bottom: 12px;
+}
+h1 em {
+  font-style: italic;
+  background: linear-gradient(120deg, #C5A572 0%, #E0BC7E 35%, #F0D68A 50%, #E0BC7E 65%, #C5A572 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.lede { font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink-2, #C6CDDA); max-width: 760px; margin-bottom: 48px; }
+.lede strong { color: #FFF6E0; font-weight: 500; }
+
+.group { margin-bottom: 56px; }
+.group-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--gold-lit, #E0BC7E); margin-bottom: 18px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+.card {
+  display: flex; flex-direction: column;
+  background: rgba(10,24,56,0.55);
+  border: 1px solid rgba(197,165,114,0.18);
+  border-radius: 14px; overflow: hidden;
+  text-decoration: none; color: inherit;
+  transition: border-color .22s ease, transform .35s ease;
+}
+.card:hover { border-color: var(--gold-lit, #E0BC7E); transform: translateY(-2px); }
+.card .frame { position: relative; aspect-ratio: 16/10; overflow: hidden; background: #071229; }
+.card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none;
+  transform: scale(0.45); transform-origin: top left; width: 222%; height: 222%; }
+.card .body { padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; }
+.card .name { font-family: var(--font-serif); font-size: 18px; color: #FFF6E0; }
+.card .open {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.4px;
+  text-transform: uppercase; color: var(--gold-lit, #E0BC7E);
+}
+.card .name em {
+  font-style: italic;
+  background: linear-gradient(120deg, #C5A572, #E0BC7E, #F0D68A, #E0BC7E, #C5A572);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.note {
+  margin-top: 64px; padding: 24px;
+  background: rgba(7,18,41,0.55);
+  border: 1px solid rgba(197,165,114,0.18);
+  border-radius: 14px;
+  font-family: var(--font-sans); font-size: 13.5px; line-height: 1.7;
+  color: var(--ink-2, #C6CDDA);
+}
+.note h3 { font-family: var(--font-serif); font-weight: 400; color: #FFF6E0; margin-bottom: 10px; font-size: 18px; }
+.note code { font-family: var(--font-mono); font-size: 12.5px; color: var(--gold-lit, #E0BC7E); background: rgba(5,14,38,0.55); padding: 2px 6px; border-radius: 4px; }
+.note ul { margin-top: 10px; padding-left: 20px; }
+.note li { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <header>
+    <div class="l">
+      <img src="brand/assets/logos/wordmark-white-md.png" alt="Sotheby's">
+      <span class="bar"></span>
+      <div class="name">
+        <span class="who">Patrick Milhaupt &middot; v11 Preview</span>
+        <span class="role">Chrome-first rollout &middot; Content rewrite next</span>
+      </div>
+    </div>
+    <div class="meta">Built 2026-05-31 &middot; v3.4 "Dazzle Edition"</div>
+  </header>
+
+  <h1>The full <em>v11</em> site, at a glance.</h1>
+  <p class="lede">
+    Every page rebuilt on the v3.4 "Dazzle Edition" brand kit &mdash; painterly liquid background, chapter-narrative scroll, gold-foil em headlines, Plotly intelligence dashboard. Content is placeholder from v10; <strong>the deep Sotheby's + Patrick content research happens next session.</strong>
+  </p>
+
+  <div class="group">
+    <div class="group-title">Top-level pages</div>
+    <div class="grid">
+      <a class="card" href="index.html" target="_blank"><div class="frame"><iframe src="index.html" loading="lazy"></iframe></div><div class="body"><span class="name">Home &middot; <em>seven chapters</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="intelligence.html" target="_blank"><div class="frame"><iframe src="intelligence.html" loading="lazy"></iframe></div><div class="body"><span class="name"><em>Intelligence</em> &middot; live</span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="properties.html" target="_blank"><div class="frame"><iframe src="properties.html" loading="lazy"></iframe></div><div class="body"><span class="name">Properties &middot; <em>curated</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="neighborhoods.html" target="_blank"><div class="frame"><iframe src="neighborhoods.html" loading="lazy"></iframe></div><div class="body"><span class="name">Neighborhoods &middot; <em>seven</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="buying.html" target="_blank"><div class="frame"><iframe src="buying.html" loading="lazy"></iframe></div><div class="body"><span class="name">Buying &middot; <em>find it first</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="selling.html" target="_blank"><div class="frame"><iframe src="selling.html" loading="lazy"></iframe></div><div class="body"><span class="name">Selling &middot; <em>six steps</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="about.html" target="_blank"><div class="frame"><iframe src="about.html" loading="lazy"></iframe></div><div class="body"><span class="name">About &middot; <em>the practice</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="contact.html" target="_blank"><div class="frame"><iframe src="contact.html" loading="lazy"></iframe></div><div class="body"><span class="name">Contact &middot; <em>begin</em></span><span class="open">Open &rarr;</span></div></a>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-title">Village pages</div>
+    <div class="grid">
+      <a class="card" href="neighborhoods/lake-forest.html" target="_blank"><div class="frame"><iframe src="neighborhoods/lake-forest.html" loading="lazy"></iframe></div><div class="body"><span class="name">Lake <em>Forest</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="neighborhoods/winnetka.html" target="_blank"><div class="frame"><iframe src="neighborhoods/winnetka.html" loading="lazy"></iframe></div><div class="body"><span class="name"><em>Winnetka</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="neighborhoods/kenilworth.html" target="_blank"><div class="frame"><iframe src="neighborhoods/kenilworth.html" loading="lazy"></iframe></div><div class="body"><span class="name"><em>Kenilworth</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="neighborhoods/glencoe.html" target="_blank"><div class="frame"><iframe src="neighborhoods/glencoe.html" loading="lazy"></iframe></div><div class="body"><span class="name"><em>Glencoe</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="neighborhoods/wilmette.html" target="_blank"><div class="frame"><iframe src="neighborhoods/wilmette.html" loading="lazy"></iframe></div><div class="body"><span class="name"><em>Wilmette</em></span><span class="open">Open &rarr;</span></div></a>
+      <a class="card" href="neighborhoods/highland-park.html" target="_blank"><div class="frame"><iframe src="neighborhoods/highland-park.html" loading="lazy"></iframe></div><div class="body"><span class="name">Highland <em>Park</em></span><span class="open">Open &rarr;</span></div></a>
+    </div>
+  </div>
+
+  <div class="note">
+    <h3>What's locked in this build</h3>
+    <ul>
+      <li><strong>Brand kit v3.4 "Dazzle Edition"</strong> — Cormorant Garamond + Inter + JetBrains Mono, navy <code>#050E26</code> canvas, 7-stop gold-foil <code>&lt;em&gt;</code>, indigo signal-only.</li>
+      <li><strong>Painterly liquid background</strong> on every page (<code>brand/liquid-bg.js</code>) driven by Lenis smooth-scroll + GSAP per-chapter palette mix.</li>
+      <li><strong>Chapter rail</strong> (right edge) auto-highlights current chapter; headline words stagger up on enter.</li>
+      <li><strong>Plotly intelligence dashboard</strong> on both <code>index.html#ch-02</code> AND standalone <code>intelligence.html</code> using the canonical <code>BrandCharts</code> theme (<code>brand/charts/plotly-brand.js</code>) &mdash; supply areas + demand signal lines + Sotheby's wordmark watermark.</li>
+      <li><strong>Vendored libs</strong> in <code>lib/</code> (three.js, gsap, ScrollTrigger, lenis) &mdash; no CDN dep for the engine. Plotly + Chart.js adapter still from CDN.</li>
+    </ul>
+    <h3 style="margin-top:24px;">What's coming next (Phase B)</h3>
+    <ul>
+      <li><strong>Deep + sourced content research</strong> &mdash; Sotheby's International Realty brand DNA (sothebysrealty.com), Jameson SIR leadership content, Patrick's public bio + closed-listing record + reviews + designations. Every claim cited.</li>
+      <li><strong>v10 copy rewrite</strong> &mdash; existing placeholder copy gets replaced with the researched Sotheby's-Patrick fusion voice. You become the focus; the Sotheby's brand becomes inseparable.</li>
+      <li><strong>Per-village live data hooks</strong> &mdash; the six village pages currently show static KPIs. Phase B wires them to <code>mv_market_intelligence</code> per village.</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

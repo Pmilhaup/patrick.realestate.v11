@@ -1,0 +1,296 @@
+/* ═══════════════════════════════════════════════════════════════
+   PATRICK MILHAUPT — BRAND SYSTEM   v3.4 "Dazzle Edition"
+   brand-light.css   →   PRINT / MARKETING / STATIC theme
+
+   Use this for: listing brochures, property flyers, mailers,
+   open-house signage, business cards, email signature graphics,
+   PDF presentations, print ads, anything that lives off-screen
+   or that needs to print clean on white paper.
+
+   Pair with brand-shared.css (loaded first).
+
+   Visual DNA:
+   - Warm off-white paper (#fafaf6) — never pure #fff. Reads as
+     editorial card stock, not screen.
+   - Sotheby's navy (#001b3a) is the ONLY ink color. It carries
+     the wordmark, headlines, body text, rules, marks.
+   - One reserved accent — Sotheby's blue-bright (#2563ff) — for
+     a single moment per page. Print sparingly with one Pantone-
+     equivalent ink if needed.
+   - NO motion. NO glow. NO gradient. NO transparency tricks.
+     Everything must hold up at 300 DPI on coated stock.
+   - No italics. No serif. The signature emphasis is BOLD weight
+     (700) of the Manrope family — print-safe parity with the
+     dark theme's italic-gold-foil gesture.
+
+   Print intentionally diverges from the dark theme's Cormorant
+   + foil-italic vocabulary: serif italics don't always print clean
+   at small sizes, and there is no foil sweep in static media.
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
+:root {
+
+  /* ─────────────────────────────────────────
+     TYPE OVERRIDES — swap shared theme back to Manrope sans.
+     Print theme uses ONE sans family across display + body.
+     ───────────────────────────────────────── */
+  --font-sans:     'Manrope', 'Söhne', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-serif:    var(--font-sans);          /* print does not use serif */
+  --display-font:  var(--font-sans);          /* h1/h2/h3 → Manrope */
+  --body-font:     var(--font-sans);
+  --eyebrow-font:  var(--font-sans);
+
+  /* Print-traditional eyebrow tracking (overrides shared 0.32em). */
+  --tracking-caps: 0.24em;
+
+  /* ─────────────────────────────────────────
+     PAPER  —  warm off-whites, editorial
+     ───────────────────────────────────────── */
+  --paper:    #fafaf6;       /* primary page color */
+  --paper-1:  #f3f2ec;       /* panel / sidebar */
+  --paper-2:  #e8e6df;       /* rule field, callout */
+  --paper-3:  #dcdacf;       /* deeper neutral */
+
+  /* ─────────────────────────────────────────
+     INK  —  Sotheby's canonical navy
+     Used for: wordmark, body, rules, marks.
+     ───────────────────────────────────────── */
+  --navy:      #001b3a;      /* canonical Sotheby's navy */
+  --navy-2:    #0a2548;      /* slightly elevated */
+  --navy-3:    #2a3b5e;      /* secondary text */
+  --navy-4:    #5a6a85;      /* muted */
+  --navy-5:    #8995ad;      /* fine print, captions */
+
+  /* ─────────────────────────────────────────
+     ACCENT  —  one reserved pop, used like spot ink
+     Rule of one: one accent moment per spread.
+     ───────────────────────────────────────── */
+  --accent:    #2563ff;      /* deep electric blue */
+  --accent-2:  rgba(37, 99, 255, 0.08);
+
+  /* ─────────────────────────────────────────
+     BORDERS  —  hairlines in navy, no transparency
+     ───────────────────────────────────────── */
+  --hairline:    rgba(0, 27, 58, 0.10);
+  --hairline-2:  rgba(0, 27, 58, 0.18);
+  --rule:        #001b3a;
+  --rule-fade:   rgba(0, 27, 58, 0.45);
+
+  /* ─────────────────────────────────────────
+     STATUS  —  for property cards in print
+     ───────────────────────────────────────── */
+  --status-live:    #006d3a;   /* deep forest green */
+  --status-pending: #b85c00;
+  --status-sold:    #8a0e2e;
+  --status-coming:  #2a3b5e;   /* navy itself */
+
+  /* ─────────────────────────────────────────
+     SHADOWS — print-safe (use sparingly; print
+     uses real ink, not screen shadows)
+     ───────────────────────────────────────── */
+  --shadow-sm:  0 1px 2px rgba(0, 27, 58, 0.06);
+  --shadow-md:  0 4px 14px rgba(0, 27, 58, 0.08);
+  --shadow-lg:  0 12px 32px rgba(0, 27, 58, 0.12);
+
+  /* ─────────────────────────────────────────
+     SEMANTIC ROLES  (mirror dark — same names)
+     ───────────────────────────────────────── */
+  --surface:        var(--paper);
+  --surface-1:      var(--paper-1);
+  --surface-2:      var(--paper-2);
+  --surface-3:      var(--paper-3);
+  --surface-glass:  var(--paper);          /* no glass in print */
+
+  --fg:         var(--navy);
+  --fg-strong:  var(--navy);
+  --fg-muted:   var(--navy-3);
+  --fg-dim:     var(--navy-4);
+  --fg-fade:    var(--navy-5);
+  --fg-pop:     var(--accent);             /* used only by .emph */
+  --fg-link:    var(--accent);
+
+  --border:    var(--hairline);
+  --border-2:  var(--hairline-2);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME APPLICATION
+   ═══════════════════════════════════════════════════════════════ */
+
+body {
+  background: var(--paper);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-weight: 400;
+}
+
+a:hover { color: var(--accent); }
+::selection { background: rgba(37, 99, 255, 0.16); color: var(--navy); }
+
+/* Scrollbar — a thin navy thread on paper. Quiet, precise, on-brand
+   even when these print specs are reviewed on screen. */
+html { scrollbar-width: thin; scrollbar-color: rgba(0, 27, 58, 0.28) transparent; }
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 27, 58, 0.26);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 27, 58, 0.46); background-clip: padding-box; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADLINE OVERRIDES
+   The shared sheet sets Cormorant Garamond and italic foil-style
+   <em> for dark-theme use. Print swaps both back to Manrope sans:
+   roman weight 300 for headlines, bold 700 navy for emphasis.
+   ═══════════════════════════════════════════════════════════════ */
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-style: normal;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+}
+h1 { letter-spacing: -0.035em; line-height: 1.05; }
+h2 { letter-spacing: -0.02em;  line-height: 1.1; }
+h3 { letter-spacing: -0.005em; line-height: 1.2; }
+h4, h5 { font-weight: 500; }
+
+/* Emphasis — bold navy, not italic, not foil, no animation. */
+h1 em, h2 em, h3 em,
+.gold-foil,
+.emph {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-weight: 700;
+  background: none;
+  -webkit-background-clip: border-box;
+          background-clip: border-box;
+  color: var(--navy);
+  -webkit-text-fill-color: currentColor;
+  filter: none;
+  animation: none;
+}
+
+p {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  color: var(--fg);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CANONICAL COMPONENTS  (light / print)
+   No motion, no glow, no transparency tricks.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── EYEBROW ─────────────────────────────────── */
+.eyebrow { color: var(--navy); }
+.eyebrow.dim { color: var(--navy-4); }
+
+/* ── PAPER CARD ──────────────────────────────── */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--hairline-2);
+  border-radius: var(--radius-md);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+/* ── PRIMARY CTA  —  print-friendly navy ─────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 14px 28px;
+  background: var(--navy);
+  border: 1px solid var(--navy);
+  border-radius: var(--radius-sm);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--hairline-2);
+  color: var(--navy);
+}
+
+/* ── INPUT ───────────────────────────────────── */
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--paper);
+  border: 1px solid var(--hairline-2);
+  border-radius: var(--radius-sm);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}
+.input::placeholder { color: var(--navy-4); }
+.input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+/* ── STATUS PILL ─────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  background: var(--paper);
+}
+.pill::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.pill.live    { color: var(--status-live); }
+.pill.pending { color: var(--status-pending); }
+.pill.sold    { color: var(--status-sold); }
+.pill.coming  { color: var(--status-coming); }
+
+/* ── DIVIDER ─────────────────────────────────── */
+.divider {
+  height: 1px;
+  width: 120px;
+  background: var(--navy);
+  margin: var(--space-12) auto;
+  opacity: 0.45;
+}
+
+/* ── KPI / DATA NUMERAL ──────────────────────── */
+.kpi {
+  font-family: var(--data-font);
+  font-weight: var(--w-semi);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-3xl);
+  letter-spacing: var(--tracking-tight);
+  color: var(--navy);
+  line-height: 1;
+}
+.kpi.pop { color: var(--accent); }
