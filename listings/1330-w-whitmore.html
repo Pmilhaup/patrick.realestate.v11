@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#06080f">
+<title>1330 W. Whitmore Court &middot; Lake Forest &middot; Milhaupt &middot; Jakaitis</title>
+<meta name="description" content="1330 W. Whitmore Court — a stately stone manor on a private cul-de-sac in Lake Forest, Illinois. Listed at $3,250,000 by Patrick Milhaupt of Jameson Sotheby's International Realty.">
+<meta property="og:title" content="1330 W. Whitmore Court · Lake Forest, IL · $3,250,000">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://patrick.realestate/listings/1330-w-whitmore.html">
+<meta property="og:description" content="A stately stone manor on a private cul-de-sac in Lake Forest — 5 bedrooms, 5.5 baths, 7,200 sq ft on 1.2 acres. Presented by Patrick Milhaupt, Jameson Sotheby's International Realty.">
+<meta property="og:image" content="https://patrick.realestate/listings/1330-w-whitmore/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="896">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   1330 W. WHITMORE COURT — Property Site
+   v11 brand · Three.js liquid-bg + particle field · Dark theme
+   Reusable template — duplicate for every listing
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg-0: #06080f;
+  --bg-1: #0c1021;
+  --bg-2: #131a30;
+  --bg-3: #1a2340;
+  --navy: #0A1838;
+  --navy2: #1B2C5C;
+  --border-1: #1e2d52;
+  --border-2: #2a3e6a;
+  --gold: #c9a96e;
+  --gold-light: #e0c992;
+  --gold-deep: #a8782a;
+  --gold-lux: #b98b3c;
+  --burgundy: #5C1A1A;
+  --text-1: #e8e0d4;
+  --text-2: #b0b8d1;
+  --text-3: #6b7a99;
+  --white: #ffffff;
+  --glass: rgba(12, 16, 33, 0.72);
+  --glass-2: rgba(6, 8, 15, 0.82);
+  --glass-border: rgba(201, 169, 110, 0.20);
+
+  --display: 'Playfair Display', Georgia, serif;
+  --serif: 'EB Garamond', Georgia, serif;
+  --sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+
+  --maxw: 1280px;
+  --maxw-text: 720px;
+  --pad-x: clamp(20px, 5vw, 56px);
+  --pad-y: clamp(56px, 12vh, 120px);
+
+  --ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --atmosphere:
+    radial-gradient(140% 110% at 18% 12%, rgba(201, 169, 110, 0.12) 0%, rgba(201, 169, 110, 0.0) 42%),
+    radial-gradient(120% 100% at 88% 78%, rgba(168, 120, 42, 0.20) 0%, rgba(168, 120, 42, 0.0) 50%),
+    radial-gradient(180% 140% at 50% 50%, rgba(27, 44, 92, 0.58) 0%, rgba(6, 8, 15, 0.95) 75%),
+    linear-gradient(180deg, #060815 0%, #0c1021 50%, #060815 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  background: var(--atmosphere);
+  background-attachment: fixed;
+  color: var(--text-1);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* ═══════════════ MOTION CANVASES ═══════════════ */
+#paint { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+         filter: brightness(1.15) saturate(1.12); }
+#particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; mix-blend-mode: screen; opacity: 0.85; }
+.veil {
+  position: fixed; inset: 0; z-index: 2; pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% 10%, rgba(6, 8, 15, 0.04) 0%, rgba(6, 8, 15, 0.32) 60%, rgba(6, 8, 15, 0.58) 100%),
+    linear-gradient(180deg, rgba(6, 8, 15, 0.10) 0%, rgba(6, 8, 15, 0.02) 30%, rgba(6, 8, 15, 0.02) 70%, rgba(6, 8, 15, 0.42) 100%);
+}
+
+/* ═══════════════ CUSTOM CURSOR (desktop only) ═══════════════ */
+.cursor {
+  position: fixed; top: 0; left: 0;
+  width: 28px; height: 28px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out),
+              border-color 0.25s, background 0.25s;
+  mix-blend-mode: difference;
+  display: none;
+}
+.cursor.scale { width: 56px; height: 56px; background: rgba(201, 169, 110, 0.12); }
+@media (hover: hover) and (pointer: fine) { .cursor { display: block; } body { cursor: none; } a, button { cursor: none; } }
+
+/* ═══════════════ TOP BAR ═══════════════ */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 80;
+  padding: 18px var(--pad-x);
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(180deg, rgba(6, 8, 15, 0.85) 0%, rgba(6, 8, 15, 0.0) 100%);
+  transition: background 0.4s var(--ease);
+}
+.topbar.scrolled {
+  background: rgba(6, 8, 15, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(201, 169, 110, 0.12);
+  padding: 12px var(--pad-x);
+}
+.topbar .back {
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--gold);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+}
+.topbar .back::before { content: '←'; font-size: 14px; }
+.topbar .back:hover { color: var(--gold-light); }
+.topbar .price-tag {
+  font-family: var(--display);
+  font-size: 18px;
+  color: var(--gold-light);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.005em;
+  opacity: 0; transform: translateY(-8px);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.topbar.scrolled .price-tag { opacity: 1; transform: translateY(0); }
+.topbar .cta {
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-light);
+  text-decoration: none;
+  padding: 9px 18px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  transition: all 0.3s var(--ease);
+  background: rgba(201, 169, 110, 0.05);
+}
+.topbar .cta:hover { background: rgba(201, 169, 110, 0.15); border-color: var(--gold-light); }
+
+/* ═══════════════ TYPOGRAPHY ═══════════════ */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.32em;
+  text-transform: uppercase; color: var(--gold);
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--gold);
+  display: inline-block;
+  position: relative;
+  margin-bottom: 24px;
+}
+.eyebrow::after {
+  content: ''; position: absolute;
+  left: 0; bottom: -3px;
+  width: 28px; height: 1px;
+  background: var(--gold-deep);
+}
+.h-hero {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(48px, 9vw, 112px);
+  line-height: 0.98;
+  letter-spacing: -0.022em;
+  color: var(--text-1);
+  text-wrap: balance;
+}
+.h-hero em { font-style: italic; font-weight: 500; color: var(--gold-light); }
+.h-display {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+  color: var(--text-1);
+  margin-bottom: 22px;
+}
+.h-display em { font-style: italic; font-weight: 500; color: var(--gold-light); }
+.h-section {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(28px, 4.4vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  color: var(--text-1);
+  margin-bottom: 18px;
+}
+.h-section em { font-style: italic; color: var(--gold-light); }
+.lede {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(17px, 2.4vw, 22px);
+  line-height: 1.52;
+  color: var(--text-2);
+  margin-bottom: 24px;
+  max-width: 620px;
+}
+.body-text, p.body {
+  font-family: var(--serif);
+  font-size: clamp(15px, 2vw, 17.5px);
+  line-height: 1.66;
+  color: var(--text-2);
+  margin-bottom: 18px;
+}
+.body-text strong { color: var(--text-1); font-weight: 500; }
+.pull {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(22px, 3.4vw, 32px);
+  line-height: 1.32;
+  color: var(--text-1);
+  padding-left: 24px;
+  border-left: 2px solid var(--gold);
+  margin: 32px 0 24px;
+}
+.pull em { font-weight: 500; color: var(--gold-light); }
+.fine {
+  font-family: var(--mono);
+  font-size: 9.5px; letter-spacing: 0.10em;
+  line-height: 1.7; color: var(--text-3);
+}
+
+/* ═══════════════ REVEAL ANIMATIONS ═══════════════ */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+.reveal.delay-1 { transition-delay: 0.10s; }
+.reveal.delay-2 { transition-delay: 0.20s; }
+.reveal.delay-3 { transition-delay: 0.30s; }
+.reveal.delay-4 { transition-delay: 0.40s; }
+.reveal.delay-5 { transition-delay: 0.50s; }
+.reveal.delay-6 { transition-delay: 0.60s; }
+
+/* ═══════════════ SECTION SHELL ═══════════════ */
+section {
+  position: relative; z-index: 4;
+  padding: var(--pad-y) var(--pad-x);
+}
+.inner { max-width: var(--maxw); margin: 0 auto; width: 100%; }
+.inner.narrow { max-width: var(--maxw-text); }
+
+/* ═══════════════ HERO ═══════════════ */
+.hero {
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 100px var(--pad-x) 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-photo-wrap {
+  position: absolute; inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+.hero-photo {
+  position: absolute; inset: 0;
+  background-image: url('1330-w-whitmore/hero.jpg'),
+                    url('../lf-market-assets/1330-w-whitmore.jpg');
+  background-size: cover;
+  background-position: center 35%;
+  transform: scale(1.04);
+  will-change: transform;
+  /* Slow parallax — adjusted by JS on scroll */
+}
+.hero-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 8, 15, 0.35) 0%, rgba(6, 8, 15, 0.0) 30%, rgba(6, 8, 15, 0.0) 50%, rgba(6, 8, 15, 0.85) 100%),
+    linear-gradient(90deg, rgba(6, 8, 15, 0.42) 0%, rgba(6, 8, 15, 0.0) 50%);
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  width: 100%;
+}
+.hero-meta {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold-light); margin-bottom: 18px;
+}
+.hero-meta::before {
+  content: ''; width: 36px; height: 1px;
+  background: var(--gold);
+}
+.hero-title { margin-bottom: 24px; }
+.hero-addr {
+  font-family: var(--display);
+  font-weight: 400; font-style: italic;
+  font-size: clamp(20px, 2.8vw, 28px);
+  color: var(--text-1); margin-bottom: 32px;
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 18px 32px;
+  margin-bottom: 28px;
+  padding: 22px 0;
+  border-top: 1px solid rgba(201, 169, 110, 0.30);
+  border-bottom: 1px solid rgba(201, 169, 110, 0.30);
+  max-width: 720px;
+}
+.hero-stat .lbl {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 4px; display: block;
+}
+.hero-stat .val {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(22px, 3vw, 28px);
+  color: var(--text-1);
+  letter-spacing: -0.012em;
+  font-variant-numeric: tabular-nums;
+}
+.hero-price {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(36px, 5.4vw, 54px);
+  color: var(--gold-light);
+  letter-spacing: -0.022em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 6px 28px rgba(201, 169, 110, 0.20);
+}
+.hero-scroll-cue {
+  position: absolute; bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold-light); opacity: 0.75;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  animation: bounce 2.4s infinite;
+  z-index: 5;
+}
+.hero-scroll-cue::after {
+  content: ''; width: 1px; height: 28px;
+  background: linear-gradient(180deg, var(--gold) 0%, transparent 100%);
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.75; }
+  50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
+}
+
+/* ═══════════════ THE STORY ═══════════════ */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+}
+@media (min-width: 920px) {
+  .story-grid { grid-template-columns: 1fr 1fr; gap: 64px; }
+}
+.story-narrative .lede { font-size: clamp(18px, 2.4vw, 22px); }
+.story-aside {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-left: 2px solid var(--gold);
+  padding: 28px 30px;
+  border-radius: 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  height: fit-content;
+  align-self: start;
+  position: sticky;
+  top: 96px;
+}
+.story-aside .tag {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.30em; text-transform: uppercase;
+  color: var(--gold-deep); display: block; margin-bottom: 14px;
+}
+.story-aside-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+}
+.story-aside-row:last-child { border-bottom: none; }
+.story-aside-row .k {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.10em; color: var(--text-3);
+  text-transform: uppercase;
+}
+.story-aside-row .v {
+  font-family: var(--display);
+  font-size: 15px; color: var(--text-1);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.003em;
+}
+.story-aside-row .v.gold { color: var(--gold-light); }
+
+/* ═══════════════ GALLERY ═══════════════ */
+.gallery-section { padding-top: 40px; }
+.gallery-header {
+  display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between;
+  gap: 20px; margin-bottom: 36px;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 700px) {
+  .gallery {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-auto-rows: minmax(180px, auto);
+    gap: 16px;
+  }
+  .gallery .g-1 { grid-row: span 2; }
+  .gallery .g-4 { grid-column: span 2; }
+}
+@media (min-width: 1000px) {
+  .gallery {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-auto-rows: 200px;
+  }
+  .gallery .g-1 { grid-row: span 2; grid-column: span 2; }
+  .gallery .g-2 { grid-row: span 1; }
+  .gallery .g-3 { grid-row: span 1; }
+  .gallery .g-4 { grid-row: span 1; grid-column: span 2; }
+  .gallery .g-5 { grid-row: span 1; }
+  .gallery .g-6 { grid-row: span 2; }
+  .gallery .g-7 { grid-row: span 1; grid-column: span 2; }
+  .gallery .g-8 { grid-row: span 1; }
+}
+.g-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  cursor: pointer;
+  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out), border-color 0.4s;
+  will-change: transform;
+}
+.g-item::before {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, transparent 60%, rgba(6, 8, 15, 0.4) 100%);
+  opacity: 0; transition: opacity 0.4s var(--ease);
+}
+.g-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  border-color: rgba(201, 169, 110, 0.35);
+}
+.g-item:hover::before { opacity: 1; }
+.g-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s var(--ease-out);
+}
+.g-item:hover img { transform: scale(1.05); }
+.g-item .g-cap {
+  position: absolute; bottom: 14px; left: 16px; right: 16px;
+  z-index: 2;
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text-1); opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s, transform 0.4s var(--ease-out);
+}
+.g-item:hover .g-cap { opacity: 1; transform: translateY(0); }
+.g-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-3);
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  text-align: center;
+  padding: 12px;
+}
+
+/* ═══════════════ VIDEO PLAYER STUB ═══════════════ */
+.video-section { padding-top: 48px; padding-bottom: 48px; }
+.video-frame {
+  position: relative;
+  aspect-ratio: 16/9;
+  background: var(--bg-1);
+  border: 1px solid var(--border-1);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+.video-frame .play {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+}
+.video-frame .play-btn {
+  width: 92px; height: 92px;
+  border-radius: 999px;
+  background: rgba(201, 169, 110, 0.16);
+  border: 1px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.4s var(--ease-out), background 0.4s;
+}
+.video-frame:hover .play-btn { transform: scale(1.12); background: rgba(201, 169, 110, 0.28); }
+.video-frame .play-btn::before {
+  content: '';
+  width: 0; height: 0;
+  border-left: 18px solid var(--gold-light);
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  margin-left: 5px;
+}
+.video-frame .label {
+  position: absolute; bottom: 20px; left: 24px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--gold-light);
+  z-index: 2;
+}
+.video-frame .label b { color: var(--text-1); font-weight: 500; }
+.video-frame .poster {
+  position: absolute; inset: 0; z-index: 1;
+  background-image: url('1330-w-whitmore/hero.jpg'),
+                    url('../lf-market-assets/1330-w-whitmore.jpg');
+  background-size: cover; background-position: center;
+  filter: brightness(0.65) blur(1px);
+}
+
+/* ═══════════════ MARKET CONTEXT ═══════════════ */
+.market-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+}
+@media (min-width: 920px) {
+  .market-grid { grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+}
+.market-stat-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-top: 2px solid var(--gold);
+  padding: 32px 32px 36px;
+  border-radius: 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+}
+.market-stat-card .lbl {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.30em; text-transform: uppercase;
+  color: var(--gold); display: block; margin-bottom: 16px;
+}
+.market-stat-card .figure {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(56px, 8vw, 96px);
+  color: var(--gold-light);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 12px;
+}
+.market-stat-card .figure sup {
+  font-size: 0.35em; color: var(--gold);
+  font-style: italic; vertical-align: 0.65em;
+  font-weight: 400;
+}
+.market-stat-card .caption {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--text-2); line-height: 1.5;
+}
+.chart-frame {
+  background: linear-gradient(180deg, rgba(12, 16, 33, 0.78) 0%, rgba(6, 8, 15, 0.72) 100%);
+  border: 1px solid rgba(201, 169, 110, 0.30);
+  border-radius: 8px;
+  padding: 18px 12px 14px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.50);
+  position: relative;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.chart-frame::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 36px; height: 2px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+}
+.chart-mount { width: 100%; height: 320px; }
+.chart-cap {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); text-align: center;
+  margin-top: 12px; padding-top: 10px;
+  border-top: 1px solid rgba(201, 169, 110, 0.20);
+}
+
+/* ═══════════════ LOCATION ═══════════════ */
+.location-section { padding-bottom: 48px; }
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+@media (min-width: 800px) {
+  .location-grid { grid-template-columns: 1.4fr 1fr; gap: 36px; }
+}
+.amenities {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+.amenity {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  padding: 18px 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.4s var(--ease-out), border-color 0.3s;
+}
+.amenity:hover {
+  transform: translateY(-3px);
+  border-color: rgba(201, 169, 110, 0.30);
+}
+.amenity .lbl {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--gold); display: block; margin-bottom: 6px;
+}
+.amenity .v {
+  font-family: var(--display); font-size: 16px;
+  color: var(--text-1); font-weight: 500;
+  letter-spacing: -0.005em; line-height: 1.2;
+}
+
+/* ═══════════════ ADVISORS ═══════════════ */
+.advisors {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+}
+@media (min-width: 760px) {
+  .advisors { grid-template-columns: 1fr 1fr; gap: 48px; }
+}
+.advisor-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-left: 2px solid var(--gold);
+  padding: 28px 30px 32px;
+  border-radius: 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.advisor-card .role {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.30em; text-transform: uppercase;
+  color: var(--gold-deep); display: block; margin-bottom: 12px;
+}
+.advisor-card .name {
+  font-family: var(--display); font-weight: 500;
+  font-size: 28px; color: var(--text-1);
+  margin-bottom: 14px; letter-spacing: -0.012em;
+  padding-bottom: 10px; position: relative;
+}
+.advisor-card .name::after {
+  content: ''; position: absolute;
+  left: 0; bottom: 0;
+  width: 32px; height: 1px;
+  background: var(--gold-deep);
+}
+.advisor-card .phone {
+  font-family: var(--display);
+  font-size: 26px; color: var(--gold-light);
+  letter-spacing: -0.005em;
+  display: block; margin-bottom: 8px;
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+.advisor-card .email {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.04em; color: var(--text-2);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 169, 110, 0.25);
+  padding-bottom: 1px;
+  display: inline-block;
+}
+.advisor-card .email:hover { color: var(--gold-light); border-color: var(--gold); }
+
+/* ═══════════════ PRIVATE SHOWING (CTA) ═══════════════ */
+.cta-section {
+  text-align: center;
+  padding-top: 80px; padding-bottom: 80px;
+}
+.cta-form-wrap {
+  max-width: 540px;
+  margin: 32px auto 0;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-top: 2px solid var(--gold);
+  padding: 32px 28px;
+  border-radius: 6px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-align: left;
+}
+.cta-form-wrap label {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); display: block; margin: 14px 0 6px;
+}
+.cta-form-wrap input, .cta-form-wrap textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--serif); font-size: 16px;
+  background: rgba(6, 8, 15, 0.4);
+  border: 1px solid var(--border-1);
+  border-radius: 3px;
+  color: var(--text-1);
+  outline: none;
+  transition: border-color 0.3s;
+}
+.cta-form-wrap input:focus, .cta-form-wrap textarea:focus {
+  border-color: var(--gold);
+  background: rgba(6, 8, 15, 0.55);
+}
+.cta-form-wrap textarea { min-height: 100px; resize: vertical; }
+.cta-form-wrap button {
+  margin-top: 22px;
+  width: 100%;
+  padding: 14px;
+  font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold-light);
+  background: rgba(201, 169, 110, 0.10);
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+}
+.cta-form-wrap button:hover {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+/* ═══════════════ FOOTER ═══════════════ */
+footer.site-foot {
+  padding: 36px var(--pad-x);
+  border-top: 1px solid var(--border-1);
+  text-align: center;
+  position: relative;
+  z-index: 4;
+}
+footer.site-foot .row {
+  font-family: var(--mono); font-size: 9.5px;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  color: var(--text-3); line-height: 1.7;
+  margin: 4px 0;
+}
+footer.site-foot .gold-line {
+  display: inline-block; width: 40px; height: 1px;
+  background: var(--gold); margin-bottom: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .hero-scroll-cue { animation: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body data-liquid-palette="0.62">
+
+<!-- ═══════════════ MOTION LAYERS ═══════════════ -->
+<canvas id="paint"></canvas>
+<div class="veil"></div>
+
+<!-- ═══════════════ CUSTOM CURSOR ═══════════════ -->
+<div class="cursor" id="cursor"></div>
+
+<!-- ═══════════════ TOP BAR ═══════════════ -->
+<nav class="topbar" id="topbar">
+  <a href="../index.html" class="back">Milhaupt &middot; Jakaitis</a>
+  <div class="price-tag">$3,250,000</div>
+  <a href="#showing" class="cta">Private Showing</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 00 — HERO (full-bleed property photo + key facts)
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-photo-wrap">
+    <div class="hero-photo" id="heroPhoto"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-meta reveal">A New Lake Forest Listing &middot; Spring 2026</div>
+    <h1 class="h-hero hero-title reveal delay-1">A stone manor on a <em>private</em><br>cul-de-sac.</h1>
+    <div class="hero-addr reveal delay-2">1330 W. Whitmore Court &middot; Lake Forest, Illinois 60045</div>
+
+    <div class="hero-stats reveal delay-3">
+      <div class="hero-stat"><span class="lbl">Bedrooms</span><div class="val" data-count="5">—</div></div>
+      <div class="hero-stat"><span class="lbl">Bathrooms</span><div class="val">5.5</div></div>
+      <div class="hero-stat"><span class="lbl">Square Feet</span><div class="val"><span data-count="7200">—</span></div></div>
+      <div class="hero-stat"><span class="lbl">Lot</span><div class="val">1.2 ac</div></div>
+      <div class="hero-stat"><span class="lbl">Year Built</span><div class="val">2002</div></div>
+    </div>
+
+    <div class="hero-price reveal delay-4">$3,250,000</div>
+  </div>
+  <div class="hero-scroll-cue">Scroll the property</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 01 — THE STORY (narrative + facts dashboard)
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="story">
+  <div class="inner">
+    <div class="story-grid">
+      <div class="story-narrative">
+        <span class="eyebrow reveal">The Residence</span>
+        <h2 class="h-display reveal delay-1">A house composed<br>for <em>generations</em>.</h2>
+        <p class="lede reveal delay-2">
+          1330 W. Whitmore Court sits at the close of a private cul-de-sac in central Lake Forest &mdash;
+          stone, slate, and copper resolved into a Tudor-inflected manor that holds its corner of the lakeshore corridor with quiet authority.
+        </p>
+        <p class="body-text reveal delay-3">
+          The architectural restraint is the point. The lime-washed stone fa&ccedil;ade reads warm in late light;
+          the copper roofs over the bay windows take on the patina the climate has been slowly painting since the home was built;
+          the slate above the central gable is hand-cut in the European measure. The result is a residence that does not announce itself
+          and, for that reason, will outlast the listings around it.
+        </p>
+        <p class="body-text reveal delay-4">
+          Inside, the home is composed in three distinct wings &mdash; a formal entertaining axis, a private family wing, and a guest-and-staff suite
+          tucked off the porte-coch&egrave;re. Ceiling heights step from twelve feet in the central hall to ten in the bedrooms, holding the proportion
+          that distinguishes a great Lake Forest house from a merely large one.
+        </p>
+        <div class="pull reveal delay-5">
+          A residence the data <em>and</em> the eye agree on:<br>
+          the kind of house that does not need to argue for itself.
+        </div>
+        <p class="body-text reveal delay-6">
+          The grounds &mdash; just over one and one-fifth acres &mdash; were laid by Doreen Atkinson, who has shaped a measured progression of garden rooms
+          around the central paver brick courtyard: a formal boxwood parterre to the south, mature serviceberry to the east, and a private rear lawn
+          framed by mature maples that screen the property from every neighbor. The result is total privacy on what is, by Lake Forest measure, an unusually deep lot.
+        </p>
+      </div>
+
+      <aside class="story-aside reveal delay-2">
+        <span class="tag">Property Card</span>
+        <div class="story-aside-row"><div class="k">Address</div><div class="v">1330 W. Whitmore Ct</div></div>
+        <div class="story-aside-row"><div class="k">City</div><div class="v">Lake Forest, IL</div></div>
+        <div class="story-aside-row"><div class="k">Bedrooms</div><div class="v">5</div></div>
+        <div class="story-aside-row"><div class="k">Full Baths</div><div class="v">5</div></div>
+        <div class="story-aside-row"><div class="k">Half Baths</div><div class="v">1</div></div>
+        <div class="story-aside-row"><div class="k">Above-grade SqFt</div><div class="v">7,200</div></div>
+        <div class="story-aside-row"><div class="k">Below-grade SqFt</div><div class="v">2,800</div></div>
+        <div class="story-aside-row"><div class="k">Lot</div><div class="v">1.20 acres</div></div>
+        <div class="story-aside-row"><div class="k">Year Built</div><div class="v">2002</div></div>
+        <div class="story-aside-row"><div class="k">Style</div><div class="v">Tudor / Stone Manor</div></div>
+        <div class="story-aside-row"><div class="k">Garage</div><div class="v">4-car attached</div></div>
+        <div class="story-aside-row"><div class="k">School Dist.</div><div class="v">LF 67 / LFHS 115</div></div>
+        <div class="story-aside-row"><div class="k">List price</div><div class="v gold">$3,250,000</div></div>
+        <div class="story-aside-row"><div class="k">Price / SqFt</div><div class="v gold">$451</div></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 02 — THE GALLERY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="gallery-section" id="gallery">
+  <div class="inner">
+    <div class="gallery-header">
+      <div>
+        <span class="eyebrow reveal">A Walk Through</span>
+        <h2 class="h-section reveal delay-1">The <em>estate</em>.</h2>
+      </div>
+      <span class="fine reveal delay-2">Aerial &amp; architectural photography &middot; full gallery at the showing</span>
+    </div>
+    <div class="gallery">
+      <div class="g-item g-1 reveal" data-img="hero">
+        <img src="1330-w-whitmore/hero.jpg"
+             onerror="this.src='../lf-market-assets/1330-w-whitmore.jpg'"
+             alt="1330 W. Whitmore — front exterior">
+        <div class="g-cap">Front exterior &middot; East elevation</div>
+      </div>
+      <div class="g-item g-2 reveal delay-1"><img src="1330-w-whitmore/02.jpg" loading="lazy" alt="1330 W. Whitmore — west aerial"><div class="g-cap">Stone manor &middot; west aerial</div></div>
+      <div class="g-item g-3 reveal delay-1"><img src="1330-w-whitmore/03.jpg" loading="lazy" alt="1330 W. Whitmore — rear terrace"><div class="g-cap">Rear terrace &middot; outdoor living</div></div>
+      <div class="g-item g-4 reveal delay-2"><img src="1330-w-whitmore/04.jpg" loading="lazy" alt="1330 W. Whitmore — rear elevation"><div class="g-cap">Rear elevation &middot; fire terrace</div></div>
+      <div class="g-item g-5 reveal delay-2"><img src="1330-w-whitmore/05.jpg" loading="lazy" alt="1330 W. Whitmore — the grounds"><div class="g-cap">The setting &middot; 1.2 private acres</div></div>
+      <div class="g-item g-6 reveal delay-3"><img src="1330-w-whitmore/06.jpg" loading="lazy" alt="1330 W. Whitmore — pond and grounds"><div class="g-cap">Pond &amp; grounds</div></div>
+      <div class="g-item g-7 reveal delay-3"><img src="1330-w-whitmore/07.jpg" loading="lazy" alt="1330 W. Whitmore — rear aerial"><div class="g-cap">Rear aerial</div></div>
+      <div class="g-item g-8 reveal delay-4"><img src="1330-w-whitmore/08.jpg" loading="lazy" alt="1330 W. Whitmore — estate aerial"><div class="g-cap">Estate aerial</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 03 — VIDEO TOUR
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="video-section" id="video">
+  <div class="inner">
+    <span class="eyebrow reveal">A Cinematic Walkthrough</span>
+    <h2 class="h-section reveal delay-1">The <em>film</em>.</h2>
+    <div class="video-frame reveal delay-2" id="videoFrame" data-src="" style="background-image:linear-gradient(to top,rgba(3,8,20,.7),rgba(3,8,20,.2)),url('1330-w-whitmore/03.jpg');background-size:cover;background-position:center;">
+      <div class="poster"></div>
+      <div class="label"><b>1330 W. Whitmore Court</b> &middot; Property film &middot; debuting with the listing</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 04 — THE MARKET CONTEXT
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="market">
+  <div class="inner">
+    <span class="eyebrow reveal">Why This Listing, This Moment</span>
+    <h2 class="h-display reveal delay-1">The seller's <em>window</em><br>has opened.</h2>
+
+    <div class="market-grid" style="margin-top: 36px;">
+      <div>
+        <div class="market-stat-card reveal delay-2">
+          <span class="lbl">Lake Forest Luxury &middot; Apr-May 2026</span>
+          <div class="figure"><span data-count="101.9">0</span><sup>%</sup></div>
+          <div class="caption">
+            Average sale-to-original-list-price ratio across Lake Forest closed luxury sales in April and May 2026 &mdash;
+            the first two-month stretch above 100% since the post-pandemic peak of summer 2022.
+          </div>
+        </div>
+
+        <p class="body-text reveal delay-3" style="margin-top: 24px;">
+          1330 W. Whitmore Court enters this corridor at $3,250,000 &mdash; in the $3M&ndash;$5M band where average days on market in the trailing twelve
+          is one hundred and forty-nine days. A correctly priced, correctly prepared, correctly presented home in this band materially outperforms the band average.
+          That is the position this listing is built on.
+        </p>
+      </div>
+
+      <div class="reveal delay-3">
+        <div class="chart-frame">
+          <div class="chart-mount" id="market-chart"></div>
+          <div class="chart-cap">Fig. 01 &middot; Lake Forest luxury SP/LP ratio &middot; trailing 36 months</div>
+        </div>
+        <p class="fine reveal delay-4" style="margin-top: 18px; text-align: center;">
+          Source &middot; MRED MLS &middot; All closed single-family transactions in Lake Forest at or above $1,000,000
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 05 — LOCATION & AMENITIES
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="location-section" id="location">
+  <div class="inner">
+    <div class="location-grid">
+      <div>
+        <span class="eyebrow reveal">The Neighborhood</span>
+        <h2 class="h-section reveal delay-1">Central <em>Lake Forest</em>.</h2>
+        <p class="body-text reveal delay-2">
+          1330 W. Whitmore Court sits inside the central Lake Forest corridor, fifteen minutes by car from the Metra into Chicago,
+          ten minutes to Lake Bluff and Onwentsia, six minutes from Lake Forest's downtown Market Square,
+          and seven minutes from the Deerpath Inn and the Lake Forest Country Day School campus.
+        </p>
+        <p class="body-text reveal delay-3">
+          The cul-de-sac itself is one of three semi-private streets that thread off Whitmore &mdash;
+          quiet, full of mature oak canopy, and adjacent to the Skokie River Forest Preserve, which provides
+          permanent open space along the entire eastern boundary of the lot.
+        </p>
+      </div>
+
+      <div>
+        <span class="eyebrow reveal delay-1">Within Reach</span>
+        <div class="amenities">
+          <div class="amenity reveal delay-2"><span class="lbl">Metra to Chicago</span><div class="v">14 minutes</div></div>
+          <div class="amenity reveal delay-2"><span class="lbl">Market Square</span><div class="v">6 minutes</div></div>
+          <div class="amenity reveal delay-3"><span class="lbl">Onwentsia Club</span><div class="v">9 minutes</div></div>
+          <div class="amenity reveal delay-3"><span class="lbl">Lake Michigan</span><div class="v">12 minutes</div></div>
+          <div class="amenity reveal delay-4"><span class="lbl">LFCDS</span><div class="v">7 minutes</div></div>
+          <div class="amenity reveal delay-4"><span class="lbl">Open space</span><div class="v">Adjacent</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 06 — THE ADVISORS
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="advisors">
+  <div class="inner">
+    <span class="eyebrow reveal">Your Advisors</span>
+    <h2 class="h-section reveal delay-1">In <em>discreet</em> hands.</h2>
+    <div class="advisors" style="margin-top: 36px;">
+      <div class="advisor-card reveal delay-2">
+        <span class="role">Listing Agent</span>
+        <div class="name">Patrick Milhaupt</div>
+        <a href="tel:8478499828" class="phone">847.849.9828</a>
+        <a href="mailto:pmilhaupt@jamesonsir.com" class="email">pmilhaupt@jamesonsir.com</a>
+      </div>
+      <div class="advisor-card reveal delay-3">
+        <span class="role">Global Advisor &middot; Partner</span>
+        <div class="name">Elizabeth Jakaitis</div>
+        <a href="tel:8478407842" class="phone">847.840.7842</a>
+        <a href="mailto:ejakaitis@jamesonsir.com" class="email">ejakaitis@jamesonsir.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 07 — PRIVATE SHOWING
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="cta-section" id="showing">
+  <div class="inner narrow">
+    <span class="eyebrow reveal">Begin a Private Showing</span>
+    <h2 class="h-display reveal delay-1">A thirty-minute<br><em>walk-through</em>.</h2>
+    <p class="lede reveal delay-2" style="margin-left: auto; margin-right: auto;">
+      Showings of 1330 W. Whitmore Court are by appointment only.
+      Leave your name and number and Patrick or Elizabeth will arrange a private window for you.
+    </p>
+
+    <form class="cta-form-wrap reveal delay-3" onsubmit="event.preventDefault(); alert('Thank you. We will be in touch within 24 hours.'); this.reset();">
+      <label for="nm">Your name</label>
+      <input id="nm" type="text" required>
+      <label for="ph">Phone</label>
+      <input id="ph" type="tel" required>
+      <label for="em">Email</label>
+      <input id="em" type="email" required>
+      <label for="ms">Preferred showing window (optional)</label>
+      <textarea id="ms" placeholder="Mornings · weekends · etc."></textarea>
+      <button type="submit">Request a Showing</button>
+    </form>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <div class="gold-line"></div>
+  <div class="row">Jameson Sotheby&rsquo;s International Realty &middot; Lake Forest Office</div>
+  <div class="row">Patrick Milhaupt &middot; Global Real Estate Advisor &middot; patrick.realestate</div>
+  <div class="row">Equal Housing Opportunity</div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     THREE.JS + LIQUID-BG + PLOTLY
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+/* Mobile WebGL hardening — force pixel ratio 1 on small viewports */
+(function() {
+  if (window.innerWidth <= 820) {
+    Object.defineProperty(window, 'devicePixelRatio', { value: 1, configurable: true });
+  }
+})();
+</script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.min.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   GOLD-DUST SHADER v2 — "Millions in liquid"
+   12-octave procedural falling particles + liquid domain-warp medium
+   Per-particle fall speed, organic sine-wave sway tied to depth,
+   caustic gold highlights under navy. No more orbs.
+   ═══════════════════════════════════════════════════════════════════ */
+(function() {
+  if (typeof THREE === 'undefined') return;
+  var canvas = document.getElementById('paint');
+  if (!canvas) return;
+  var renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: false, powerPreference: 'high-performance' });
+  } catch (e) { return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+  var uniforms = {
+    uTime:       { value: 0 },
+    uResolution: { value: new THREE.Vector2(1, 1) },
+    uScroll:     { value: 0 },
+    uDensity:    { value: window.innerWidth <= 720 ? 0.85 : 1.0 }
+  };
+
+  var vert = 'void main() { gl_Position = vec4(position, 1.0); }';
+
+  var frag = [
+    'precision highp float;',
+    'uniform float uTime;',
+    'uniform vec2  uResolution;',
+    'uniform float uScroll;',
+    'uniform float uDensity;',
+    '',
+    '// ─── HASH FUNCTIONS ───',
+    'float hash11(float n) { return fract(sin(n) * 43758.5453123); }',
+    'float hash21(vec2 p) {',
+    '  p = fract(p * vec2(443.8975, 397.2973));',
+    '  p += dot(p, p.yx + 19.19);',
+    '  return fract((p.x + p.y) * p.x);',
+    '}',
+    'vec2 hash22(vec2 p) {',
+    '  return fract(sin(vec2(dot(p, vec2(127.1, 311.7)),',
+    '                        dot(p, vec2(269.5, 183.3)))) * 43758.5453);',
+    '}',
+    '',
+    '// ─── 2D SIMPLEX-LIKE NOISE ───',
+    'vec2 hashN2(vec2 p) {',
+    '  p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));',
+    '  return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);',
+    '}',
+    'float noise(vec2 p) {',
+    '  const float K1 = 0.366025404;',
+    '  const float K2 = 0.211324865;',
+    '  vec2 i = floor(p + (p.x + p.y) * K1);',
+    '  vec2 a = p - i + (i.x + i.y) * K2;',
+    '  float m = step(a.y, a.x);',
+    '  vec2 o = vec2(m, 1.0 - m);',
+    '  vec2 b = a - o + K2;',
+    '  vec2 c = a - 1.0 + 2.0 * K2;',
+    '  vec3 h = max(0.5 - vec3(dot(a, a), dot(b, b), dot(c, c)), 0.0);',
+    '  vec3 n = h * h * h * h * vec3(',
+    '    dot(a, hashN2(i + 0.0)),',
+    '    dot(b, hashN2(i + o)),',
+    '    dot(c, hashN2(i + 1.0))',
+    '  );',
+    '  return dot(n, vec3(70.0));',
+    '}',
+    '',
+    'float fbm(vec2 p) {',
+    '  float v = 0.0; float a = 0.5;',
+    '  for (int i = 0; i < 4; i++) {',
+    '    v += a * noise(p); p = p * 2.03 + vec2(1.7, 9.2); a *= 0.5;',
+    '  }',
+    '  return v;',
+    '}',
+    '',
+    '// ─── LIQUID MEDIUM FLOW (domain warping) ───',
+    'vec2 liquidFlow(vec2 p, float t) {',
+    '  vec2 q = vec2(fbm(p + vec2(0.0, t * 0.5)),',
+    '                fbm(p + vec2(5.2, t * 0.4)));',
+    '  vec2 r = vec2(fbm(p + 2.0 * q + vec2(1.7, 9.2) + t * 0.3),',
+    '                fbm(p + 2.0 * q + vec2(8.3, 2.8) + t * 0.25));',
+    '  return r * 0.06;',
+    '}',
+    '',
+    '// ─── SINGLE OCTAVE OF FALLING PARTICLES ───',
+    '// Each cell contains AT MOST one particle, with per-particle physics.',
+    'float dustOctave(vec2 uv, float time, float seed, float density, float radius) {',
+    '  vec2 cell = floor(uv);',
+    '  vec2 local = fract(uv);',
+    '  float h = hash21(cell + seed * 17.0);',
+    '  if (h > 1.0 - density) {',
+    '    // Random center within cell',
+    '    vec2 c = vec2(0.5) + 0.40 * (hash22(cell + seed * 31.0) - 0.5);',
+    '    // Per-particle fall speed (0.5 to 1.3x layer base)',
+    '    float fallVar = 0.5 + hash21(cell + seed * 43.0) * 0.8;',
+    '    float driftPhase = hash21(cell + seed * 59.0) * 6.2832;',
+    '    // Vertical fall — modulo wraps the particle infinitely',
+    '    float yFall = mod(time * fallVar, 1.4);',
+    '    c.y -= yFall;',
+    '    // Organic horizontal drift tied to vertical position (liquid current)',
+    '    c.x += sin(time * 0.4 + driftPhase + uv.y * 2.5) * 0.045;',
+    '    c.x += cos(time * 0.18 + driftPhase * 1.3) * 0.025;',
+    '    // Wrap so particles dont vanish off the bottom',
+    '    if (c.y < -0.2) c.y += 1.4;',
+    '    float d = distance(local, c);',
+    '    // Tight radius — no more orbs',
+    '    float sz = radius * (0.45 + hash21(cell + seed * 71.0) * 0.55);',
+    '    // Soft core only — no glow halo (was creating orb feel)',
+    '    float core = smoothstep(sz, 0.0, d);',
+    '    return core * (0.45 + h * 0.55);',
+    '  }',
+    '  return 0.0;',
+    '}',
+    '',
+    '// ─── 12 OCTAVES ROLLED OUT (GLSL cannot index varying loops cleanly) ───',
+    '// Density CURVE: far layers densest, foreground sparse',
+    '// Radius CURVE: far layers tiny (pixel scale), foreground slightly larger',
+    '// Fall speed CURVE: far layers FASTER (parallax depth illusion)',
+    'void main() {',
+    '  vec2 uv = gl_FragCoord.xy / uResolution.xy;',
+    '  float aspect = uResolution.x / uResolution.y;',
+    '  vec2 auv = vec2(uv.x * aspect, uv.y);',
+    '  ',
+    '  // ── LIQUID MEDIUM BASE ──',
+    '  vec2 flow = liquidFlow(auv * 1.4, uTime * 0.04);',
+    '  float bg = fbm(auv * 2.2 + flow);',
+    '  bg = bg * 0.5 + 0.5;',
+    '  vec3 navy0 = vec3(0.012, 0.038, 0.115);',
+    '  vec3 navy1 = vec3(0.034, 0.082, 0.205);',
+    '  vec3 navy2 = vec3(0.062, 0.142, 0.310);',
+    '  vec3 col = mix(navy0, navy1, smoothstep(0.0, 0.55, bg));',
+    '  col = mix(col, navy2, smoothstep(0.50, 0.88, bg) * 0.62);',
+    '  ',
+    '  // Caustic gold-amber under-glow — light through liquid',
+    '  float caustic = pow(bg, 2.4);',
+    '  vec3 amber = vec3(0.18, 0.12, 0.03);',
+    '  col += amber * caustic * 0.35;',
+    '  ',
+    '  // Apply liquid distortion to particle UVs — they appear to bend through the medium',
+    '  vec2 puv = auv + flow * 0.045;',
+    '  float scrollY = uScroll * 0.40;',
+    '  ',
+    '  // Gold tones',
+    '  vec3 goldA = vec3(0.722, 0.525, 0.043);   // warm bronze',
+    '  vec3 goldB = vec3(0.941, 0.839, 0.541);   // lit gold',
+    '  vec3 goldC = vec3(1.000, 0.917, 0.625);   // bright pale gold',
+    '  ',
+    '  // ── 12 OCTAVES OF FALLING DUST ──',
+    '  // Density rises with depth, radius falls with depth, speed rises with depth',
+    '  ',
+    '  float p; vec3 c;',
+    '  ',
+    '  // Octave 1 — closest, slowest, sparse, slightly larger',
+    '  p = dustOctave(puv *   5.0, (uTime + scrollY) * 0.045, 1.0, 0.014 * uDensity, 0.085);',
+    '  c = mix(goldA, goldB, 0.30); col += c * p * 0.85;',
+    '  ',
+    '  // Octave 2',
+    '  p = dustOctave(puv *   8.0, (uTime + scrollY) * 0.065, 2.0, 0.022 * uDensity, 0.072);',
+    '  c = mix(goldA, goldB, 0.55); col += c * p * 0.78;',
+    '  ',
+    '  // Octave 3',
+    '  p = dustOctave(puv *  12.5, (uTime + scrollY) * 0.090, 3.0, 0.034 * uDensity, 0.060);',
+    '  c = mix(goldB, goldC, 0.20); col += c * p * 0.72;',
+    '  ',
+    '  // Octave 4',
+    '  p = dustOctave(puv *  19.0, (uTime + scrollY) * 0.118, 4.0, 0.050 * uDensity, 0.050);',
+    '  c = mix(goldA, goldB, 0.70); col += c * p * 0.65;',
+    '  ',
+    '  // Octave 5',
+    '  p = dustOctave(puv *  29.0, (uTime + scrollY) * 0.148, 5.0, 0.068 * uDensity, 0.042);',
+    '  c = mix(goldB, goldC, 0.10); col += c * p * 0.58;',
+    '  ',
+    '  // Octave 6',
+    '  p = dustOctave(puv *  44.0, (uTime + scrollY) * 0.182, 6.0, 0.090 * uDensity, 0.035);',
+    '  c = mix(goldA, goldB, 0.85); col += c * p * 0.50;',
+    '  ',
+    '  // Octave 7',
+    '  p = dustOctave(puv *  68.0, (uTime + scrollY) * 0.220, 7.0, 0.115 * uDensity, 0.028);',
+    '  c = mix(goldB, goldC, 0.05); col += c * p * 0.42;',
+    '  ',
+    '  // Octave 8',
+    '  p = dustOctave(puv * 104.0, (uTime + scrollY) * 0.260, 8.0, 0.142 * uDensity, 0.022);',
+    '  c = mix(goldA, goldB, 0.60); col += c * p * 0.34;',
+    '  ',
+    '  // Octave 9 — fine pollen',
+    '  p = dustOctave(puv * 158.0, (uTime + scrollY) * 0.300, 9.0, 0.170 * uDensity, 0.018);',
+    '  c = mix(goldB, goldC, 0.30); col += c * p * 0.28;',
+    '  ',
+    '  // Octave 10 — micro-pollen',
+    '  p = dustOctave(puv * 240.0, (uTime + scrollY) * 0.340, 10.0, 0.190 * uDensity, 0.015);',
+    '  c = mix(goldA, goldB, 0.50); col += c * p * 0.22;',
+    '  ',
+    '  // Octave 11 — pixel-scale specks',
+    '  p = dustOctave(puv * 365.0, (uTime + scrollY) * 0.380, 11.0, 0.210 * uDensity, 0.013);',
+    '  c = mix(goldB, goldC, 0.00); col += c * p * 0.17;',
+    '  ',
+    '  // Octave 12 — atmospheric far-field (millions effect)',
+    '  p = dustOctave(puv * 555.0, (uTime + scrollY) * 0.420, 12.0, 0.230 * uDensity, 0.011);',
+    '  c = goldB; col += c * p * 0.12;',
+    '  ',
+    '  // Subtle brush texture — final hand-feel',
+    '  float brush = fbm(auv * 5.5 + uTime * 0.018);',
+    '  col *= 0.92 + brush * 0.12;',
+    '  ',
+    '  // Vignette',
+    '  vec2 vu = uv - 0.5;',
+    '  float vig = smoothstep(1.05, 0.30, length(vu * vec2(1.3, 1.0)));',
+    '  col *= mix(0.42, 1.0, vig);',
+    '  ',
+    '  // Subtle grain',
+    '  float grain = (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * 0.018;',
+    '  col += grain;',
+    '  ',
+    '  gl_FragColor = vec4(col, 1.0);',
+    '}'
+  ].join('\n');
+
+  var mat = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vert, fragmentShader: frag });
+  var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
+  scene.add(mesh);
+
+  function resize() {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    renderer.setSize(w, h, false);
+    uniforms.uResolution.value.set(w, h);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  window.addEventListener('scroll', function() {
+    uniforms.uScroll.value = window.scrollY / window.innerHeight;
+  }, { passive: true });
+
+  window.__paintUniforms = uniforms;
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) {
+    uniforms.uTime.value = 8.0;
+    renderer.render(scene, camera);
+    return;
+  }
+
+  var start = performance.now();
+  (function tick() {
+    uniforms.uTime.value = (performance.now() - start) / 1000;
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   PROPERTY SITE ENGINE — particles + cursor + reveal + parallax + chart
+   ═══════════════════════════════════════════════════════════════════ */
+(function() {
+  'use strict';
+
+  // ────────────── CUSTOM CURSOR (desktop) ──────────────
+  const cursor = document.getElementById('cursor');
+  if (cursor && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let tx = 0, ty = 0, cx = 0, cy = 0;
+    window.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
+    (function trail() {
+      cx += (tx - cx) * 0.22;
+      cy += (ty - cy) * 0.22;
+      cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+      requestAnimationFrame(trail);
+    })();
+    document.querySelectorAll('a, button, .g-item, .video-frame, input, textarea').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('scale'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('scale'));
+    });
+  }
+
+  // ────────────── REVEAL ON SCROLL ──────────────
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  // ────────────── NUMBER COUNT-UP ──────────────
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+  function animateCount(el) {
+    const target = parseFloat(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const decimals = (el.dataset.count.split('.')[1] || '').length;
+    const dur = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      const v = target * easeOut(t);
+      el.textContent = prefix + (decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString()) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCount(e.target);
+        countObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+  // ────────────── HERO PARALLAX ──────────────
+  const heroPhoto = document.getElementById('heroPhoto');
+  if (heroPhoto) {
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroPhoto.style.transform = `scale(1.04) translateY(${y * 0.28}px)`;
+      }
+    }, { passive: true });
+  }
+
+  // ────────────── TOPBAR SCROLLED STATE ──────────────
+  const topbar = document.getElementById('topbar');
+  let scrolled = false;
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY > 80;
+    if (s !== scrolled) { scrolled = s; topbar.classList.toggle('scrolled', s); }
+  }, { passive: true });
+
+  // ────────────── VIDEO TAP HANDLER ──────────────
+  const vf = document.getElementById('videoFrame');
+  if (vf) {
+    vf.addEventListener('click', () => {
+      const src = vf.dataset.src;
+      if (!src) return;   // no film yet — poster stays
+      vf.innerHTML = '<video controls autoplay style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;" src="' + src + '"></video>';
+    });
+  }
+
+  // ────────────── INTERACTIVE MARKET CHART (Plotly, dark theme) ──────────────
+  if (typeof Plotly !== 'undefined' && document.getElementById('market-chart')) {
+    const NAVY = '#0A1838', GOLD = '#c9a96e', GOLD_LIT = '#e0c992';
+    const TEXT1 = '#e8e0d4', TEXT2 = '#b0b8d1', TEXT3 = '#6b7a99';
+    const months = [
+      'Jun 23','Jul 23','Aug 23','Sep 23','Oct 23','Nov 23','Dec 23',
+      'Jan 24','Feb 24','Mar 24','Apr 24','May 24','Jun 24','Jul 24','Aug 24','Sep 24','Oct 24','Nov 24','Dec 24',
+      'Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25',
+      'Jan 26','Feb 26','Mar 26','Apr 26','May 26'
+    ];
+    const splp = [97.35,95.39,95.67,96.16,92.76,92.66,97.11,
+                  94.83,97.12,96.01,99.62,96.23,98.27,96.35,98.95,98.31,100.11,95.32,93.03,
+                  95.17,93.93,96.37,95.11,95.22,98.17,99.50,98.58,97.39,91.43,98.21,99.49,
+                  100.09,90.49,94.33,102.06,101.74];
+    function r3(a) { return a.map((_, i) => { const s = a.slice(Math.max(0,i-2), i+1); return s.reduce((x,y)=>x+y,0) / s.length; }); }
+    const sR = r3(splp);
+    const tickStrs = [0,6,12,18,24,30,35].map(i => months[i]);
+    const tickLbls = ['Jun 23','Dec 23','Jun 24','Dec 24','Jun 25','Dec 25','May 26'];
+
+    Plotly.newPlot('market-chart', [
+      { x: months, y: splp, type: 'scatter', mode: 'lines+markers',
+        line: { color: TEXT3, width: 1 }, marker: { color: TEXT2, size: 3.5 },
+        opacity: 0.55, hovertemplate: '<b>%{x}</b><br>%{y:.1f}%<extra></extra>' },
+      { x: months, y: sR, type: 'scatter', mode: 'lines',
+        line: { color: GOLD_LIT, width: 3 },
+        hovertemplate: '<b>%{x}</b><br>3-mo avg: <b>%{y:.1f}%</b><extra></extra>' },
+      { x: [months[0], months[35]], y: [100, 100], type: 'scatter', mode: 'lines',
+        line: { color: GOLD, width: 1, dash: 'dash' }, opacity: 0.7,
+        hoverinfo: 'skip', showlegend: false }
+    ], {
+      paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
+      font: { family: 'EB Garamond, serif', size: 11, color: TEXT1 },
+      margin: { l: 50, r: 18, t: 20, b: 42 },
+      showlegend: false,
+      hovermode: 'closest',
+      hoverlabel: { bgcolor: NAVY, bordercolor: GOLD, font: { family: 'Inter', size: 11, color: TEXT1 } },
+      dragmode: false,
+      xaxis: { showgrid: false, linecolor: 'rgba(201,169,110,0.30)', tickmode: 'array',
+               tickvals: tickStrs, ticktext: tickLbls, tickangle: 0,
+               tickfont: { family: 'JetBrains Mono', size: 9, color: TEXT2 }, fixedrange: true },
+      yaxis: { gridcolor: 'rgba(201,169,110,0.10)', linecolor: 'rgba(201,169,110,0.25)',
+               zeroline: false, ticksuffix: '%', range: [88, 107], fixedrange: true,
+               tickfont: { family: 'JetBrains Mono', size: 9, color: TEXT2 } },
+      annotations: [
+        { x: 'Apr 26', y: 102.06, text: '<b>101.9%</b><br>Apr–May 26',
+          showarrow: true, arrowhead: 0, arrowcolor: GOLD_LIT, arrowwidth: 1.2, ax: -45, ay: -28,
+          font: { family: 'EB Garamond', size: 10, color: TEXT1 },
+          bgcolor: 'rgba(10,24,56,0.85)', bordercolor: GOLD, borderwidth: 1, borderpad: 5, align: 'center' }
+      ]
+    }, {
+      displayModeBar: false, displaylogo: false, responsive: true,
+      scrollZoom: false, doubleClick: false, showAxisDragHandles: false
+    });
+  }
+
+  // ────────────── 3D-STYLE HOVER TILT (gallery) ──────────────
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.g-item').forEach(item => {
+      item.addEventListener('mousemove', (e) => {
+        const rect = item.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top)  / rect.height - 0.5;
+        item.style.transform = `translateY(-4px) perspective(900px) rotateY(${x * 4}deg) rotateX(${-y * 4}deg)`;
+      });
+      item.addEventListener('mouseleave', () => { item.style.transform = ''; });
+    });
+  }
+
+  console.log('[1330] property site engine ready');
+})();
+</script>
+</body>
+</html>
