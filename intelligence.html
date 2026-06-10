@@ -47,7 +47,27 @@
   background: transparent; color: var(--ink-3, #8896AD);
   border: 0; cursor: pointer; transition: all .22s ease;
 }
-.dashboard-mount .scope-btn.active { background: var(--navy-2, #112650); color: var(--gold-lit, #E0BC7E); }
+.dashboard-mount .scope-btn.active {
+  background: rgba(240,214,138,0.06);
+  color: var(--gold-lit, #E0BC7E);
+  box-shadow: inset 0 0 0 1px rgba(240,214,138,0.55);
+}
+.dashboard-mount .range-toggle {
+  display: inline-flex; padding: 4px; gap: 4px;
+  background: rgba(5,14,38,0.5); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 999px;
+}
+.dashboard-mount .range-btn {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1.2px; text-transform: uppercase;
+  padding: 7px 12px; border-radius: 999px;
+  background: transparent; color: var(--ink-3, #8896AD);
+  border: 0; cursor: pointer; transition: all .22s ease;
+}
+.dashboard-mount .range-btn.active {
+  background: rgba(240,214,138,0.06);
+  color: var(--gold-lit, #E0BC7E);
+  box-shadow: inset 0 0 0 1px rgba(240,214,138,0.55);
+}
 .dashboard-mount .status-pill {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1px;
@@ -234,6 +254,7 @@
     <a href="intelligence.html" class="current">Intelligence</a>
     <a href="buying.html">Buying</a>
     <a href="selling.html">Selling</a>
+    <a href="heritage.html">Heritage</a>
     <a href="about.html">About</a>
     <a href="contact.html" class="cta">Contact</a>
   </div>
@@ -291,6 +312,13 @@
           <div class="scope-toggle" role="tablist" aria-label="Price scope">
             <button class="scope-btn active" data-scope="all"    aria-selected="true">All SF</button>
             <button class="scope-btn"        data-scope="luxury" aria-selected="false">$2M+ Luxury</button>
+          </div>
+          <div class="range-toggle" role="tablist" aria-label="Time range">
+            <button class="range-btn"        data-range="1"   aria-selected="false">1Y</button>
+            <button class="range-btn"        data-range="3"   aria-selected="false">3Y</button>
+            <button class="range-btn"        data-range="5"   aria-selected="false">5Y</button>
+            <button class="range-btn"        data-range="10"  aria-selected="false">10Y</button>
+            <button class="range-btn active" data-range="all" aria-selected="true">All</button>
           </div>
           <div class="status-pill loading" id="statusPill"><span class="dot"></span><span id="statusText">Connecting&hellip;</span></div>
           <div class="status-pill" id="heroDateBadge">Updated &mdash;</div>
@@ -374,6 +402,52 @@
 
 </main>
 
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="brand/assets/logos/wordmark-white-md.png" alt="Sotheby's International Realty" class="footer-mark">
+      <div class="footer-name">
+        <div class="footer-who">Patrick Milhaupt</div>
+        <div class="footer-role">Global Advisor</div>
+      </div>
+    </div>
+    <div class="footer-contact">
+      <span class="footer-section-label">The Practice</span>
+      <div class="footer-line">(847) 849-9828</div>
+      <div class="footer-line"><a href="mailto:pmilhaupt@jamesonsir.com">pmilhaupt@jamesonsir.com</a></div>
+      <div class="footer-line">Jameson Sotheby's International Realty</div>
+      <div class="footer-line">North Shore &middot; Chicago</div>
+    </div>
+    <div class="footer-nav-wrap">
+      <span class="footer-section-label">Index</span>
+      <div class="footer-nav">
+        <a href="properties.html">Properties</a>
+        <a href="neighborhoods.html">Neighborhoods</a>
+        <a href="intelligence.html">Intelligence</a>
+        <a href="buying.html">Buying</a>
+        <a href="selling.html">Selling</a>
+        <a href="heritage.html">Heritage</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <div class="footer-legal-row">
+      <span>&copy; 2026 Patrick Milhaupt</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Equal Housing Opportunity</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Illinois Real Estate License</span>
+    </div>
+    <div class="footer-legal-fine">
+      Each office is independently owned and operated. Sotheby&rsquo;s International Realty&reg; and the Sotheby&rsquo;s International Realty logo are registered service marks used with permission. The information presented on this site is believed to be accurate but is not warranted. A practice of Jameson Sotheby&rsquo;s International Realty.
+    </div>
+  </div>
+</footer>
+
+
+
 <div class="chart-drawer" id="chartDrawer" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="drawer-inner">
     <div class="drawer-head">
@@ -405,15 +479,26 @@
 <script>
 const SUPA = {
   URL: 'https://itupjrknklzvmmqicuyc.supabase.co',
-  KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjE4dTV3Mm1HU1VWeTVoVm0ifQ.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0dXBqcmtua2x6dm1tcWljdXljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0MTk5NDcsImV4cCI6MjA3Njk5NTk0N30.k_4yJa7NydJDLcMaGB-9C0K3rmL85Tza2NEy1NWBPFA'
+  KEY: 'sb_publishable_fQnZLJnaC-dAHBuGBHJgjQ_RUHCe_7S'
 };
 const CUTOFF_DATE = '2026-03-01';
 const VILLAGES = ['North Shore','Glencoe','Highland Park','Kenilworth','Lake Bluff','Lake Forest','Wilmette','Winnetka'];
 
 const STATE = {
-  village: 'North Shore', scope: 'all', data: {},
+  village: 'North Shore', scope: 'all', range: 'all', data: {},
   overlays: { raw: true, ma7: false, ma30: true, ma90: false, ma180: false, ma365: false, marker: true }
 };
+
+/* Compute Plotly x-axis range based on STATE.range. 'all' = autoscale (undefined). */
+function computeXRange() {
+  if (STATE.range === 'all') return undefined;
+  const yrs = parseInt(STATE.range, 10);
+  if (!yrs || isNaN(yrs)) return undefined;
+  const end = new Date();
+  const start = new Date(end.getFullYear() - yrs, end.getMonth(), end.getDate());
+  const iso = d => d.toISOString().slice(0,10);
+  return [iso(start), iso(end)];
+}
 
 const KPIS = [
   { id:'median_price',   label:'Median Price',         help:'Median closed-sale price.',                          metric:'median_sale_price',          fmt:'money',  invert:false },
@@ -462,13 +547,13 @@ async function loadVillageSeries(village, scope) {
       select: 'village,scope,d,source,metric,value',
       'village': 'in.(' + VILLAGES.filter(v=>v!=='North Shore').map(v=>`"${v}"`).join(',') + ')',
       'scope': 'in.(all,luxury)',
-      order: 'd.asc', limit: 50000
+      order: 'd.asc', limit: 250000
     });
   }
   return supaFetch('mv_market_intelligence', {
     select: 'village,scope,d,source,metric,value',
     village: `eq.${village}`, 'scope': 'in.(all,luxury)',
-    order: 'd.asc', limit: 50000
+    order: 'd.asc', limit: 250000
   });
 }
 function aggregateNorthShore(rows, scopeFilter) {
@@ -592,7 +677,8 @@ function renderHeadlineChart() {
   ];
 
   const layout = C.layout({
-    title: `${STATE.village} &middot; Supply &amp; Demand<br><sub style="font-size:13px;font-weight:400;color:#9FB0CC">${STATE.scope === 'luxury' ? '$2M+ Luxury' : 'All single-family'} &middot; live MLS &amp; Infosparks reconciled</sub>`,
+    title: `${STATE.village} · Supply & Demand<br><sub style="font-size:13px;font-weight:400;color:#9FB0CC">${STATE.scope === 'luxury' ? '$2M+ Luxury' : 'All single-family'} · live MLS & Infosparks reconciled</sub>`,
+    x:  { range: computeXRange() },
     y:  { title: 'Supply (count)' },
     y2: { title: 'Demand' },
     watermark: { src: 'brand/assets/logos/wordmark-white-xl.png', opacity: 0.04 },
@@ -663,13 +749,29 @@ function renderMiniSpark(canvas, points, bipolar) {
   const grad = ctx.createLinearGradient(0,0,0,H);
   grad.addColorStop(0,'rgba(197,165,114,0.32)');
   grad.addColorStop(1,'rgba(197,165,114,0)');
+  const pts = points.map(p => [toX(p.x), toY(p.y)]);
+  /* Smooth fill (midpoint quadratic Bezier) */
   ctx.beginPath();
-  ctx.moveTo(toX(points[0].x), toY(0));
-  points.forEach(p=>ctx.lineTo(toX(p.x), toY(p.y)));
-  ctx.lineTo(toX(points[points.length-1].x), toY(0));
+  ctx.moveTo(pts[0][0], toY(0));
+  ctx.lineTo(pts[0][0], pts[0][1]);
+  for (let i = 1; i < pts.length - 1; i++) {
+    const xc = (pts[i][0] + pts[i+1][0]) / 2;
+    const yc = (pts[i][1] + pts[i+1][1]) / 2;
+    ctx.quadraticCurveTo(pts[i][0], pts[i][1], xc, yc);
+  }
+  const last = pts[pts.length-1];
+  ctx.lineTo(last[0], last[1]);
+  ctx.lineTo(last[0], toY(0));
   ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+  /* Smooth stroke */
   ctx.beginPath(); ctx.strokeStyle = '#E0BC7E'; ctx.lineWidth = 1.5;
-  points.forEach((p,i)=>{ const x=toX(p.x), y=toY(p.y); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+  ctx.moveTo(pts[0][0], pts[0][1]);
+  for (let i = 1; i < pts.length - 1; i++) {
+    const xc = (pts[i][0] + pts[i+1][0]) / 2;
+    const yc = (pts[i][1] + pts[i+1][1]) / 2;
+    ctx.quadraticCurveTo(pts[i][0], pts[i][1], xc, yc);
+  }
+  ctx.lineTo(last[0], last[1]);
   ctx.stroke();
 }
 
@@ -779,7 +881,7 @@ function renderBigChart(k) {
                    : ',d';
 
   const layout = C.layout({
-    title: `${k.label} &middot; ${STATE.village}<br><sub style="font-size:12px;font-weight:400;color:#9FB0CC">${STATE.scope==='luxury'?'$2M+ Luxury':'All single-family'}</sub>`,
+    title: `${k.label} · ${STATE.village}<br><sub style="font-size:12px;font-weight:400;color:#9FB0CC">${STATE.scope==='luxury'?'$2M+ Luxury':'All single-family'}</sub>`,
     y: { title: '', tickformat },
     watermark: { src: 'brand/assets/logos/wordmark-white-xl.png', opacity: 0.04 },
     margin: { l: 72, r: 32, t: 84, b: 64 },
@@ -846,6 +948,17 @@ async function refresh() {
 }
 document.querySelectorAll('.scope-btn').forEach(b => {
   b.addEventListener('click', () => { STATE.scope = b.dataset.scope; refresh(); });
+});
+document.querySelectorAll('.range-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    STATE.range = b.dataset.range;
+    document.querySelectorAll('.range-btn').forEach(bb => {
+      const on = bb.dataset.range === STATE.range;
+      bb.classList.toggle('active', on);
+      bb.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    renderHeadlineChart();
+  });
 });
 
 renderVillageChips();
@@ -926,10 +1039,4 @@ refresh();
       onToggle: self => { if (self.isActive) dots.forEach(d => d.classList.toggle('active', +d.dataset.rail === i)); }
     });
   });
-  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
-})();
-</script>
-
-</body>
-</html>
+  function raf(time) { lenis.raf(time); req
