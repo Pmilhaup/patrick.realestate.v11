@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Properties &mdash; Patrick Milhaupt &middot; Sotheby's International Realty</title>
+<meta name="description" content="A curated portfolio of extraordinary North Shore residences. Vetted for provenance, architectural distinction, and pricing discipline.">
+
+<link rel="stylesheet" href="brand/brand-shared.css">
+<link rel="stylesheet" href="brand/brand-dark.css">
+<link rel="stylesheet" href="brand/chapter.css">
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   ZENLIST ICE LAYER — neon-blue branded overlay distinct from patrick.realestate
+   "A layer of ice on top of the practice" — frosted, cool, blended
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+  --zen-blue:     #4f8fff;          /* neon-blue ZenList brand */
+  --zen-blue-lit: #6FA5FF;
+  --zen-cyan:     #00d4ff;
+  --zen-ice:      rgba(79, 143, 255, 0.08);
+  --zen-frost:    rgba(180, 210, 255, 0.05);
+}
+.zen-card {
+  position: relative;
+  margin: 36px 0 0;
+  padding: 36px 32px 32px;
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(180, 210, 255, 0.06) 0%, rgba(79, 143, 255, 0.04) 50%, rgba(180, 210, 255, 0.06) 100%),
+    linear-gradient(180deg, rgba(6, 8, 15, 0.45) 0%, rgba(12, 16, 33, 0.55) 100%);
+  border: 1px solid rgba(79, 143, 255, 0.32);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(180, 210, 255, 0.10),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+/* Frost-edge top glow */
+.zen-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--zen-blue) 50%, transparent 100%);
+}
+/* Subtle ice-shimmer band */
+.zen-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgba(180, 210, 255, 0.05) 50%, transparent 65%);
+  pointer-events: none;
+  animation: ice-shimmer 8s ease-in-out infinite;
+}
+@keyframes ice-shimmer {
+  0%, 100% { transform: translateX(-100%); opacity: 0; }
+  50% { transform: translateX(100%); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .zen-card::after { animation: none; }
+}
+
+/* Ice crystal accent */
+.zen-crystal {
+  position: absolute;
+  top: 22px; right: 22px;
+  width: 48px; height: 48px;
+  color: var(--zen-blue);
+  opacity: 0.45;
+  filter: drop-shadow(0 0 6px rgba(79, 143, 255, 0.4));
+  pointer-events: none;
+}
+
+/* Wordmark */
+.zen-head {
+  display: flex; flex-direction: column;
+  gap: 6px; margin-bottom: 22px;
+}
+.zen-wordmark {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  color: var(--zen-blue);
+  display: flex; align-items: baseline; gap: 0;
+  text-shadow: 0 0 12px rgba(79, 143, 255, 0.35);
+}
+.zen-wordmark .zen-z { font-weight: 600; color: var(--zen-blue-lit); }
+.zen-wordmark .zen-list { font-weight: 400; color: var(--zen-blue); }
+.zen-wordmark .zen-tld { font-weight: 300; color: rgba(79, 143, 255, 0.72); }
+.zen-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(180, 210, 255, 0.65);
+}
+
+/* Heading inside the ice card */
+.zen-h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  color: #e8efff;
+  margin: 0 0 14px;
+}
+
+/* Body inside ice card — slightly cooler */
+.zen-body {
+  font-family: 'EB Garamond', serif;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: rgba(200, 215, 240, 0.92);
+  margin-bottom: 24px;
+}
+
+/* Buttons */
+.zen-actions {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  margin: 20px 0 14px;
+}
+.zen-btn-primary {
+  display: inline-flex; align-items: center;
+  padding: 13px 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #06080f;
+  background: linear-gradient(135deg, var(--zen-blue-lit) 0%, var(--zen-blue) 100%);
+  border: 1px solid var(--zen-blue);
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(79, 143, 255, 0.40),
+              inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+}
+.zen-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(79, 143, 255, 0.55),
+              inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+.zen-btn-secondary {
+  display: inline-flex; align-items: center;
+  padding: 13px 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--zen-blue-lit);
+  background: rgba(79, 143, 255, 0.05);
+  border: 1px solid rgba(79, 143, 255, 0.35);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.zen-btn-secondary:hover {
+  background: rgba(79, 143, 255, 0.12);
+  border-color: var(--zen-blue);
+}
+
+/* Footnote */
+.zen-foot {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(79, 143, 255, 0.18);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: rgba(180, 210, 255, 0.50);
+}
+
+/* Inline ZenList mention in body copy */
+.zen-inline {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  font-size: 0.92em;
+  color: var(--zen-blue-lit);
+  letter-spacing: 0.04em;
+  padding: 0 2px;
+  text-shadow: 0 0 8px rgba(79, 143, 255, 0.30);
+}
+</style>
+<style>
+/* SCROLL GUARANTEE — never lock */
+html, body { overflow-y: auto !important; overflow-x: hidden !important; height: auto !important; scroll-behavior: smooth; }
+body { min-height: 100vh; }
+:root {
+  --atmosphere:
+    radial-gradient(140% 110% at 18% 12%, rgba(201, 169, 110, 0.10) 0%, rgba(201, 169, 110, 0.0) 42%),
+    radial-gradient(120% 100% at 88% 78%, rgba(168, 120, 42, 0.18) 0%, rgba(168, 120, 42, 0.0) 50%),
+    radial-gradient(180% 140% at 50% 50%, rgba(27, 44, 92, 0.55) 0%, rgba(6, 8, 15, 0.95) 75%),
+    linear-gradient(180deg, #060815 0%, #0c1021 50%, #060815 100%);
+}
+body { background: var(--atmosphere) !important; background-attachment: fixed; }
+#paint { position: fixed; inset: 0; z-index: 0; pointer-events: none; width: 100vw; height: 100vh; filter: brightness(1.15) saturate(1.12); }
+.veil { z-index: 1; pointer-events: none; }
+nav.nav, main, aside.rail, footer.site-footer { position: relative; z-index: 2; }
+</style>
+</head>
+<body data-liquid-palette="0.40">
+
+<canvas id="paint"></canvas>
+<div class="veil"></div>
+
+<nav class="nav">
+  <a class="lockup" href="index.html">
+    <img src="brand/assets/logos/wordmark-white-md.png" alt="Sotheby's International Realty">
+    <span class="bar"></span>
+    <span class="name">
+      <span class="who">Patrick Milhaupt</span>
+      <span class="role">Global Advisor</span>
+    </span>
+  </a>
+  <div class="nav-links">
+    <a href="properties.html" class="current">Properties</a>
+    <a href="neighborhoods.html">Neighborhoods</a>
+    <a href="intelligence.html">Intelligence</a>
+    <a href="buying.html">Buying</a>
+    <a href="selling.html">Selling</a>
+    <a href="heritage.html">Heritage</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" class="cta">Contact</a>
+  </div>
+</nav>
+
+<aside class="rail" aria-label="Chapter index">
+  <a class="dot active" href="#ch-00" data-rail="0">00<span class="label">&nbsp;&nbsp;Opening</span></a>
+  <a class="dot" href="#ch-01" data-rail="1">01<span class="label">&nbsp;&nbsp;Active</span></a>
+  <a class="dot" href="#ch-02" data-rail="2">02<span class="label">&nbsp;&nbsp;Recently Sold</span></a>
+  <a class="dot" href="#ch-03" data-rail="3">03<span class="label">&nbsp;&nbsp;Off-Market</span></a>
+</aside>
+
+<main>
+
+  <section class="chapter" id="ch-00" data-chapter="0" data-palette="0.15">
+    <div class="inner" style="text-align:center; align-items:center;">
+      <div class="ch-head fade-up" style="justify-content:center;">
+        <span class="hashmark"><i></i></span>
+        <div class="meta" style="border:0; padding:0;">
+          <span class="eyebrow">Portfolio &middot; North Shore</span>
+        </div>
+      </div>
+      <h1 class="headline" data-headline="">
+        An <em>extraordinary</em> collection,<br>carried with restraint.
+      </h1>
+      <p class="body fade-up" style="margin: 0 auto; text-align:center;">
+        Every home vetted for provenance and architectural distinction, photographed at golden hour, narrated in long-form. <strong>A curator's portfolio &mdash; one of one, never one of many.</strong>
+      </p>
+      <div class="cta-row fade-up" style="justify-content:center;">
+        <a class="btn" href="#ch-01">View active listings &darr;</a>
+        <a class="btn btn-outline" href="#ch-03">Request off-market access</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch-01" data-chapter="1" data-palette="0.35">
+    <div class="inner">
+      <div class="ch-head fade-up">
+        <span class="num">01</span>
+        <div class="meta">
+          <span class="eyebrow">Chapter One</span>
+          <span class="sub">Active &middot; On Market</span>
+        </div>
+      </div>
+      <h2 class="headline" data-headline="">
+        Live <em>now</em>.
+      </h2>
+      <p class="body fade-up">
+        Four residences currently represented &mdash; from the storied Garriques estate on Lake Road to a new Lake Forest manor entering the market this week. Each one one-of-a-kind, each carried through the same curatorial process.
+      </p>
+      <div class="props">
+        <a class="prop featured" href="listings/1330-w-whitmore.html" style="text-decoration:none; color:inherit;">
+          <div class="img" style="background-image:url('lf-market-assets/1330-w-whitmore.jpg'); background-size:cover; background-position:center;"><span class="pill live">New &middot; Featured</span></div>
+          <div class="b">
+            <div class="a">1330 W. Whitmore Court<br>Lake Forest</div>
+            <div class="priceline"><span class="p">$3,250,000</span><span class="s">5BD &middot; 7,200 SF &middot; 1.2 acres</span></div>
+            <div class="s" style="margin-top:8px;">Tudor stone manor on a private cul-de-sac &middot; <strong>listing this week</strong> &middot; visit the property &rarr;</div>
+          </div>
+        </a>
+        <div class="prop">
+          <div class="img" style="background-image:url('lf-market-assets/999-lake-road.jpg'); background-size:cover; background-position:center;"><span class="pill live">Active</span></div>
+          <div class="b">
+            <div class="a">999 Lake Road<br>Lake Forest</div>
+            <div class="priceline"><span class="p">$12,999,000</span><span class="s">16,000 SF &middot; 3.6 acres</span></div>
+            <div class="s" style="margin-top:8px;">Howard Van Doren Shaw, 1914 &middot; 400&prime; lake frontage &middot; the Garriques estate</div>
+          </div>
+        </div>
+        <div class="prop">
+          <div class="img" style="background-image:url('lf-market-assets/28-aberdeen-court.jpg'); background-size:cover; background-position:center;"><span class="pill live">Active</span></div>
+          <div class="b">
+            <div class="a">28 Aberdeen Court<br>Bannockburn</div>
+            <div class="priceline"><span class="p">$3,890,000</span><span class="s">Bannockburn corridor</span></div>
+            <div class="s" style="margin-top:8px;">Stately European-inflected estate on a quiet Bannockburn cul-de-sac</div>
+          </div>
+        </div>
+        <div class="prop">
+          <div class="img" style="background-image:url('lf-market-assets/720-ringland.jpg'); background-size:cover; background-position:center;"><span class="pill live">Active</span></div>
+          <div class="b">
+            <div class="a">720 Ringland Road<br>Riverwoods</div>
+            <div class="priceline"><span class="p">$3,195,000</span><span class="s">Riverwoods estate</span></div>
+            <div class="s" style="margin-top:8px;">A wooded private parcel along the Des Plaines River corridor</div>
+          </div>
+        </div>
+      </div>
+
+
+    
+      <!-- PENDING / UNDER CONTRACT — buyer-side representation -->
+      <div class="ch-head fade-up" style="margin-top:64px;">
+        <span class="num">01b</span>
+        <div class="meta">
+          <span class="eyebrow">Under Contract</span>
+          <span class="sub">Buyer Representation</span>
+        </div>
+      </div>
+      <div class="props">
+        <div class="prop">
+          <div class="img" style="background-image:url('lf-market-assets/230-majestic-oak.jpg'); background-size:cover; background-position:center;"><span class="pill pending" style="background:rgba(184,140,60,0.92); color:#06080f;">Pending</span></div>
+          <div class="b">
+            <div class="a">230 Majestic Oak Drive<br>Lake Forest</div>
+            <div class="priceline"><span class="p">$2,550,000</span><span class="s">Buyer representation</span></div>
+            <div class="s" style="margin-top:8px;">Patrick represented the buyer &middot; pending close</div>
+          </div>
+        </div>
+      </div>
+</div>
+  </section>
+
+  <section class="chapter" id="ch-02" data-chapter="2" data-palette="0.65">
+    <div class="inner">
+      <div class="ch-head fade-up">
+        <span class="num">02</span>
+        <div class="meta">
+          <span class="eyebrow">Chapter Two</span>
+          <span class="sub">Recently Sold</span>
+        </div>
+      </div>
+      <h2 class="headline" data-headline="">
+        The <em>record</em>.
+      </h2>
+      <p class="body fade-up">
+        Six closings across the trailing twelve months &mdash; each one represented through the same curatorial process. Long-form narration, golden-hour photography, reconciliation pricing.
+      </p>
+      <div class="props">
+        <div class="prop">
+          <div class="img" style="background-image:url('lf-market-assets/5-barrier-beach-cove.jpg'); background-size:cover; background-position:center;"><span class="pill sold">Closed</span></div>
+          <div class="b">
+            <div class="a">5 Barrier Beach Cove<br>Hilton Head, SC</div>
+            <div class="priceline"><span class="p">$2,960,000</span><span class="s">Buyer representation</span></div>
+            <div class="s" style="margin-top:8px;">Hilton Head oceanfront &middot; out-of-state buyer representation</div>
+          </div>
+        </div>
+        <div class="prop">
+          <div class="img" style="background-image:url('lf-market-assets/925-ashland.jpg'); background-size:cover; background-position:center;"><span class="pill sold">Closed</span></div>
+          <div class="b">
+            <div class="a">925 Ashland Avenue<br>Wilmette</div>
+            <div class="priceline"><span class="p">$2,860,000</span><span class="s">Wilmette</span></div>
+            <div class="s" style="margin-top:8px;">Listing representation &middot; sold above ask</div>
+          </div>
+        </div>
+        <div class="prop">
+          <div class="img" style="background-image:url('lf-market-assets/611-oak-knoll.jpg'); background-size:cover; background-position:center;"><span class="pill sold">Closed</span></div>
+          <div class="b">
+            <div class="a">611 Oak Knoll Drive<br>Lake Forest</div>
+            <div class="priceline"><span class="p">$1,950,000</span><span class="s">Lake Forest</span></div>
+            <div class="s" style="margin-top:8px;">Listing representation &middot; the Oak Knoll corridor</div>
+          </div>
+        </div>
+        <div class="prop">
+          <div class="img" style="background-image:url('lf-market-assets/530-oak-knoll.jpg'); background-size:cover; background-position:center;"><span class="pill sold">Closed</span></div>
+          <div class="b">
+            <div class="a">530 Oak Knoll Drive<br>Lake Forest</div>
+            <div class="priceline"><span class="p">$1,849,000</span><span class="s">Lake Forest</span></div>
+            <div class="s" style="margin-top:8px;">Listing representation &middot; same street, two closings</div>
+          </div>
+        </div>
+        <div class="prop">
+          <div class="img" style="background-image:url('lf-market-assets/1339-lawrence.jpg'); background-size:cover; background-position:center;"><span class="pill sold">Closed</span></div>
+          <div class="b">
+            <div class="a">1339 Lawrence Avenue<br>Lake Forest</div>
+            <div class="priceline"><span class="p">$1,524,000</span><span class="s">Lake Forest</span></div>
+            <div class="s" style="margin-top:8px;">Listing representation</div>
+          </div>
+        </div>
+        <div class="prop">
+          <div class="img" style="background-image:url('lf-market-assets/1350-w-whitmore.jpg'); background-size:cover; background-position:center;"><span class="pill sold">Closed</span></div>
+          <div class="b">
+            <div class="a">1350 W. Whitmore Court<br>Lake Forest</div>
+            <div class="priceline"><span class="p">$1,500,000</span><span class="s">Lake Forest</span></div>
+            <div class="s" style="margin-top:8px;">Listing representation &middot; same cul-de-sac as the current 1330 listing</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter zenlist-section" id="ch-03" data-chapter="3" data-palette="0.95">
+    <div class="inner">
+      <div class="ch-head fade-up">
+        <span class="num">03</span>
+        <div class="meta">
+          <span class="eyebrow">Chapter Three</span>
+          <span class="sub">Off-Market &middot; By Introduction</span>
+        </div>
+      </div>
+      <h2 class="headline" data-headline="">
+        The market you <em>can't</em> see.
+      </h2>
+      <p class="body fade-up">
+        A quiet, curated pre-MLS pipeline measured in days, not weeks. Access is by introduction &mdash; activate your private search through the <span class="zen-inline">ZenList</span> network or request a personal invite below.
+      </p>
+
+      <!-- ZenList ice layer — distinct neon-blue brand atop the patrick.realestate base -->
+      <div class="zen-card fade-up">
+        <div class="zen-crystal" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M32 4 L52 18 L52 46 L32 60 L12 46 L12 18 Z"></path>
+            <path d="M32 4 L32 60 M12 18 L52 46 M52 18 L12 46"></path>
+            <circle cx="32" cy="32" r="6"></circle>
+          </svg>
+        </div>
+        <div class="zen-head">
+          <div class="zen-wordmark">
+            <span class="zen-z">zen</span><span class="zen-list">list</span><span class="zen-tld">.realestate</span>
+          </div>
+          <div class="zen-tagline">Private Listing Network &middot; Powered by ZenList</div>
+        </div>
+        <h3 class="zen-h3">Access by introduction.</h3>
+        <p class="zen-body">
+          ZenList&apos;s pre-MLS feed gives qualified buyers access to homes weeks before they reach public listing sites &mdash;
+          quiet sellers, off-market introductions, soft-launch pricing. Activation is complimentary for clients of the Milhaupt practice.
+        </p>
+        <div class="zen-actions">
+          <a class="zen-btn-primary" href="https://zenlist.realestate" target="_blank" rel="noopener">
+            <span>Activate ZenList access</span>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14" style="vertical-align:middle;margin-left:8px;">
+              <path d="M2 8h12M9 3l5 5-5 5"></path>
+            </svg>
+          </a>
+          <a class="zen-btn-secondary" href="contact.html">Request introduction</a>
+        </div>
+        <div class="zen-foot">A layer on top of the practice &middot; not a replacement for it</div>
+      </div>
+
+      <div class="cta-row fade-up" style="margin-top:32px;">
+        <a class="btn btn-outline" href="index.html">Back to the story</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="brand/assets/logos/wordmark-white-md.png" alt="Sotheby's International Realty" class="footer-mark">
+      <div class="footer-name">
+        <div class="footer-who">Patrick Milhaupt</div>
+        <div class="footer-role">Global Advisor</div>
+      </div>
+    </div>
+    <div class="footer-contact">
+      <span class="footer-section-label">The Practice</span>
+      <div class="footer-line">(847) 849-9828</div>
+      <div class="footer-line"><a href="mailto:pmilhaupt@jamesonsir.com">pmilhaupt@jamesonsir.com</a></div>
+      <div class="footer-line">Jameson Sotheby&rsquo;s International Realty</div>
+      <div class="footer-line">North Shore &middot; Chicago</div>
+    </div>
+    <div class="footer-nav-wrap">
+      <span class="footer-section-label">Index</span>
+      <div class="footer-nav">
+        <a href="properties.html">Properties</a>
+        <a href="neighborhoods.html">Neighborhoods</a>
+        <a href="intelligence.html">Intelligence</a>
+        <a href="buying.html">Buying</a>
+        <a href="selling.html">Selling</a>
+        <a href="heritage.html">Heritage</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <div class="footer-legal-row">
+      <span>&copy; 2026 Patrick Milhaupt</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Equal Housing Opportunity</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Illinois Real Estate License</span>
+    </div>
+    <div class="footer-legal-fine">
+      Each office is independently owned and operated. Sotheby&rsquo;s International Realty&reg; and the Sotheby&rsquo;s International Realty logo are registered service marks used with permission. The information presented on this site is believed to be accurate but is not warranted. A practice of Jameson Sotheby&rsquo;s International Realty.
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Mobile WebGL hardening */
+(function() {
+  if (window.innerWidth <= 820) {
+    Object.defineProperty(window, 'devicePixelRatio', { value: 1, configurable: true });
+  }
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.min.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   PROPERTIES ENGINE — falling-gold-dust + native scroll + reveals
+   No Lenis, no GSAP. Bulletproof scrolling.
+   ═══════════════════════════════════════════════════════════════════ */
+(function() {
+  // ── Falling gold dust shader (matches 1330 W. Whitmore) ──
+  if (typeof THREE !== 'undefined') {
+    var canvas = document.getElementById('paint');
+    if (canvas) {
+      var renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: false, powerPreference: 'high-performance' });
+      } catch (e) { renderer = null; }
+      if (renderer) {
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        var scene = new THREE.Scene();
+        var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        var uniforms = {
+          uTime: { value: 0 },
+          uResolution: { value: new THREE.Vector2(1, 1) },
+          uScroll: { value: 0 },
+          uDensity: { value: window.innerWidth <= 720 ? 0.85 : 1.0 }
+        };
+        var vert = 'void main() { gl_Position = vec4(position, 1.0); }';
+        var frag = [
+          'precision highp float;',
+          'uniform float uTime; uniform vec2 uResolution; uniform float uScroll; uniform float uDensity;',
+          'float hash21(vec2 p) { p = fract(p * vec2(443.8975, 397.2973)); p += dot(p, p.yx + 19.19); return fract((p.x + p.y) * p.x); }',
+          'vec2 hash22(vec2 p) { return fract(sin(vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)))) * 43758.5453); }',
+          'vec2 hashN2(vec2 p) { p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3))); return -1.0 + 2.0 * fract(sin(p) * 43758.5453123); }',
+          'float noise(vec2 p) { const float K1=0.366025404; const float K2=0.211324865;',
+          '  vec2 i=floor(p+(p.x+p.y)*K1); vec2 a=p-i+(i.x+i.y)*K2; float m=step(a.y,a.x);',
+          '  vec2 o=vec2(m,1.0-m); vec2 b=a-o+K2; vec2 c=a-1.0+2.0*K2;',
+          '  vec3 h=max(0.5-vec3(dot(a,a),dot(b,b),dot(c,c)),0.0);',
+          '  vec3 n=h*h*h*h*vec3(dot(a,hashN2(i)),dot(b,hashN2(i+o)),dot(c,hashN2(i+1.0)));',
+          '  return dot(n,vec3(70.0)); }',
+          'float fbm(vec2 p) { float v=0.0; float a=0.5; for(int i=0;i<4;i++){ v+=a*noise(p); p=p*2.03+vec2(1.7,9.2); a*=0.5; } return v; }',
+          'vec2 liquidFlow(vec2 p, float t) {',
+          '  vec2 q = vec2(fbm(p+vec2(0.0,t*0.5)), fbm(p+vec2(5.2,t*0.4)));',
+          '  vec2 r = vec2(fbm(p+2.0*q+vec2(1.7,9.2)+t*0.3), fbm(p+2.0*q+vec2(8.3,2.8)+t*0.25));',
+          '  return r * 0.06;',
+          '}',
+          'float dustOctave(vec2 uv, float time, float seed, float density, float radius) {',
+          '  vec2 cell=floor(uv); vec2 local=fract(uv);',
+          '  float h=hash21(cell+seed*17.0);',
+          '  if (h > 1.0-density) {',
+          '    vec2 c = vec2(0.5) + 0.40 * (hash22(cell+seed*31.0)-0.5);',
+          '    float fallVar=0.5+hash21(cell+seed*43.0)*0.8;',
+          '    float driftPhase=hash21(cell+seed*59.0)*6.2832;',
+          '    c.y -= mod(time*fallVar, 1.4);',
+          '    c.x += sin(time*0.4+driftPhase+uv.y*2.5)*0.045 + cos(time*0.18+driftPhase*1.3)*0.025;',
+          '    if (c.y < -0.2) c.y += 1.4;',
+          '    float d=distance(local,c);',
+          '    float sz=radius*(0.45+hash21(cell+seed*71.0)*0.55);',
+          '    return smoothstep(sz,0.0,d) * (0.45+h*0.55);',
+          '  }',
+          '  return 0.0;',
+          '}',
+          'void main() {',
+          '  vec2 uv = gl_FragCoord.xy / uResolution.xy;',
+          '  float aspect = uResolution.x / uResolution.y;',
+          '  vec2 auv = vec2(uv.x*aspect, uv.y);',
+          '  vec2 flow = liquidFlow(auv*1.4, uTime*0.04);',
+          '  float bg = fbm(auv*2.2+flow); bg = bg*0.5+0.5;',
+          '  vec3 navy0=vec3(0.012,0.038,0.115); vec3 navy1=vec3(0.034,0.082,0.205); vec3 navy2=vec3(0.062,0.142,0.310);',
+          '  vec3 col = mix(navy0, navy1, smoothstep(0.0,0.55,bg));',
+          '  col = mix(col, navy2, smoothstep(0.50,0.88,bg)*0.62);',
+          '  float caustic = pow(bg,2.4); col += vec3(0.18,0.12,0.03)*caustic*0.35;',
+          '  vec2 puv = auv + flow*0.045;',
+          '  float scrollY = uScroll*0.40;',
+          '  vec3 goldA=vec3(0.722,0.525,0.043); vec3 goldB=vec3(0.941,0.839,0.541); vec3 goldC=vec3(1.000,0.917,0.625);',
+          '  float p; vec3 c;',
+          '  p=dustOctave(puv*  5.0,(uTime+scrollY)*0.045, 1.0,0.014*uDensity,0.085); c=mix(goldA,goldB,0.30); col+=c*p*0.85;',
+          '  p=dustOctave(puv*  8.0,(uTime+scrollY)*0.065, 2.0,0.022*uDensity,0.072); c=mix(goldA,goldB,0.55); col+=c*p*0.78;',
+          '  p=dustOctave(puv* 12.5,(uTime+scrollY)*0.090, 3.0,0.034*uDensity,0.060); c=mix(goldB,goldC,0.20); col+=c*p*0.72;',
+          '  p=dustOctave(puv* 19.0,(uTime+scrollY)*0.118, 4.0,0.050*uDensity,0.050); c=mix(goldA,goldB,0.70); col+=c*p*0.65;',
+          '  p=dustOctave(puv* 29.0,(uTime+scrollY)*0.148, 5.0,0.068*uDensity,0.042); c=mix(goldB,goldC,0.10); col+=c*p*0.58;',
+          '  p=dustOctave(puv* 44.0,(uTime+scrollY)*0.182, 6.0,0.090*uDensity,0.035); c=mix(goldA,goldB,0.85); col+=c*p*0.50;',
+          '  p=dustOctave(puv* 68.0,(uTime+scrollY)*0.220, 7.0,0.115*uDensity,0.028); c=mix(goldB,goldC,0.05); col+=c*p*0.42;',
+          '  p=dustOctave(puv*104.0,(uTime+scrollY)*0.260, 8.0,0.142*uDensity,0.022); c=mix(goldA,goldB,0.60); col+=c*p*0.34;',
+          '  p=dustOctave(puv*158.0,(uTime+scrollY)*0.300, 9.0,0.170*uDensity,0.018); c=mix(goldB,goldC,0.30); col+=c*p*0.28;',
+          '  p=dustOctave(puv*240.0,(uTime+scrollY)*0.340,10.0,0.190*uDensity,0.015); c=mix(goldA,goldB,0.50); col+=c*p*0.22;',
+          '  p=dustOctave(puv*365.0,(uTime+scrollY)*0.380,11.0,0.210*uDensity,0.013); c=mix(goldB,goldC,0.00); col+=c*p*0.17;',
+          '  p=dustOctave(puv*555.0,(uTime+scrollY)*0.420,12.0,0.230*uDensity,0.011); c=goldB; col+=c*p*0.12;',
+          '  float brush=fbm(auv*5.5+uTime*0.018); col *= 0.92+brush*0.12;',
+          '  vec2 vu=uv-0.5; float vig=smoothstep(1.05,0.30,length(vu*vec2(1.3,1.0))); col *= mix(0.42,1.0,vig);',
+          '  float grain=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-0.5)*0.018; col += grain;',
+          '  gl_FragColor = vec4(col, 1.0);',
+          '}'
+        ].join('\n');
+        var mat = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vert, fragmentShader: frag });
+        var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
+        scene.add(mesh);
+        function resize() { var w=window.innerWidth, h=window.innerHeight; renderer.setSize(w,h,false); uniforms.uResolution.value.set(w,h); }
+        resize();
+        window.addEventListener('resize', resize);
+        window.addEventListener('scroll', function() { uniforms.uScroll.value = window.scrollY / window.innerHeight; }, { passive: true });
+        window.__paintUniforms = uniforms;
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) { uniforms.uTime.value = 8.0; renderer.render(scene, camera); }
+        else {
+          var start = performance.now();
+          (function tick() {
+            uniforms.uTime.value = (performance.now() - start) / 1000;
+            renderer.render(scene, camera);
+            requestAnimationFrame(tick);
+          })();
+        }
+      }
+    }
+  }
+
+  // ── Headline word-stagger split ──
+  document.querySelectorAll('[data-headline]').forEach(function(h) {
+    var walk = function(node) {
+      Array.from(node.childNodes).forEach(function(child) {
+        if (child.nodeType === 3) {
+          var text = child.nodeValue;
+          if (!text.trim()) return;
+          var frag = document.createDocumentFragment();
+          text.split(/(\s+)/).forEach(function(part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
+            else {
+              var w = document.createElement('span');
+              w.className = 'w-anim';
+              w.textContent = part;
+              w.style.cssText = 'display:inline-block; opacity:0; transform:translateY(28px); transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);';
+              frag.appendChild(w);
+            }
+          });
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === 1 && child.tagName !== 'BR') walk(child);
+      });
+    };
+    walk(h);
+  });
+
+  // ── Reveal-on-scroll for fade-up + cards ──
+  var fadeEls = document.querySelectorAll('.fade-up, .prop, .lock-card, .zen-card');
+  fadeEls.forEach(function(el) {
+    el.style.cssText += '; opacity:0; transform:translateY(28px); transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);';
+  });
+  var revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  fadeEls.forEach(function(el) { revealObs.observe(el); });
+
+  // ── Headline word stagger ──
+  var headlineObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        var words = e.target.querySelectorAll('.w-anim');
+        words.forEach(function(w, i) {
+          setTimeout(function() {
+            w.style.opacity = '1';
+            w.style.transform = 'translateY(0)';
+          }, i * 45);
+        });
+        headlineObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('[data-headline]').forEach(function(h) { headlineObs.observe(h); });
+
+  // ── Chapter rail dot active state ──
+  var dots = document.querySelectorAll('.rail .dot');
+  var chapters = document.querySelectorAll('.chapter');
+  var chapterObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && e.intersectionRatio > 0.3) {
+        var idx = Array.prototype.indexOf.call(chapters, e.target);
+        dots.forEach(function(d) { d.classList.toggle('active', +d.dataset.rail === idx); });
+      }
+    });
+  }, { threshold: [0.3, 0.5, 0.7] });
+  chapters.forEach(function(ch) { chapterObs.observe(ch); });
+
+  // ── Native smooth-scroll for hash links ──
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var id = a.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  console.log('[properties] engine ready · ' + chapters.length + ' chapters');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,484 @@
+/* ═══════════════════════════════════════════════════════════════
+   PATRICK MILHAUPT — BRAND SYSTEM   v3.4 "Dazzle Edition"
+   brand-dark.css   →   DIGITAL / ONLINE / WEBSITE theme
+
+   Visual DNA:
+   - Deep electric navy canvas (#050E26). Not black. Cooler than
+     Sotheby's navy. Three faint atmospheric radials baked in.
+   - 14k polished metallic gold as the primary pop — ALWAYS a
+     7-stop gradient with a slow sweep, never a flat fill.
+   - Cormorant Garamond display headlines. One italic gold-foil
+     word per headline (max two). All non-display UI in Inter.
+   - Indigo #4A4AF6 demoted to SYSTEM SIGNAL ONLY — live dots,
+     focus rings, link hovers. Never a headline color.
+   - Atmosphere: drifting gold dust particles, descending light
+     shafts, soft radial gradients. No grid, no hex pattern.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+
+  /* ─────────────────────────────────────────
+     NAVY — the canvas
+     ───────────────────────────────────────── */
+  --navy-0:    #050E26;          /* page */
+  --navy-1:    #0A1838;          /* elevated surface, nav backdrop */
+  --navy-2:    #112650;          /* card panels */
+  --navy-3:    #1A3470;          /* active / hover */
+  --navy-4:    #2A4480;          /* decorative depth (rare) */
+  --navy-edge: #030814;          /* footer, deepest edge */
+
+  /* Legacy aliases — composition sometimes asks for --bg-* */
+  --bg-0:      var(--navy-0);
+  --bg-1:      var(--navy-1);
+  --bg-2:      var(--navy-2);
+  --bg-3:      var(--navy-3);
+  --bg-edge:   var(--navy-edge);
+
+  /* ─────────────────────────────────────────
+     14K POLISHED GOLD — the pop (always a gradient)
+     Stops:
+       0%   #4A3210  shadow trough
+       18%  #B8860B  canonical 14k mid
+       38%  #F0D68A  ambient lit
+       50%  #FFF4D0  near-white specular
+       62%  #FFD700  saturation peak
+       82%  #B8860B  back to mid
+       100% #4A3210  shadow trough
+     ───────────────────────────────────────── */
+  --gold-shadow:    #4A3210;
+  --gold-copper:    #8C6520;
+  --gold-base:      #B8860B;
+  --gold-mid:       #D4A760;
+  --gold-lit:       #F0D68A;     /* eyebrow & label color when on navy */
+  --gold-bright:    #FFD700;
+  --gold-specular:  #FFF4D0;
+
+  /* The canonical gradient — paste this into background, never a flat fill */
+  --gold-gradient: linear-gradient(90deg,
+    #4A3210   0%,
+    #B8860B  18%,
+    #F0D68A  38%,
+    #FFF4D0  50%,
+    #FFD700  62%,
+    #B8860B  82%,
+    #4A3210 100%);
+
+  /* Slight 95° tilt — for CTAs and rules where horizontal feels static */
+  --gold-gradient-95: linear-gradient(95deg,
+    #4A3210   0%,
+    #B8860B  18%,
+    #F0D68A  38%,
+    #FFF4D0  50%,
+    #FFD700  62%,
+    #B8860B  82%,
+    #4A3210 100%);
+
+  /* Glow halo around foil words and gold elements */
+  --glow-gold:        0 0 16px rgba(184, 134, 11, 0.32);
+  --glow-gold-soft:   0 0 24px rgba(184, 134, 11, 0.18);
+  --glow-gold-strong: 0 0 0 1px rgba(240, 214, 138, 0.22), 0 0 32px rgba(255, 215, 0, 0.40);
+  --glow-foil:        0 2px 18px rgba(184, 134, 11, 0.26);   /* warm grounded catch, not neon haze */
+
+  /* ─────────────────────────────────────────
+     INDIGO — system signal ONLY
+     ───────────────────────────────────────── */
+  --indigo-deep:    #2323FF;     /* gradient depth, button depth */
+  --indigo-base:    #4A4AF6;     /* live dot, focus ring, link */
+  --indigo-soft:    #8B8BFA;     /* link hover, secondary signal */
+  --indigo-bright:  #A5A5FF;     /* 3D highlight tone */
+
+  --glow-indigo:    0 0 12px rgba(74, 74, 246, 0.55);
+
+  /* ─────────────────────────────────────────
+     ROYAL BLUE — the PRIMARY ACTION (v3.3)
+     The calling-card CTA is now a refined royal-blue fill with a
+     faint gold hairline trim — the gold appears as edge light, not
+     surface. Apple/Tesla restraint: one subtle vertical gradient
+     for depth, a hairline top-highlight, a soft blue-cast shadow.
+     Gold FOIL remains text-only (headline emphasis, KPI pop).
+     ───────────────────────────────────────── */
+  --royal-lit:    #2F6BFF;       /* button top stop */
+  --royal-base:   #2563FF;       /* canonical royal blue */
+  --royal-deep:   #1E50DE;       /* button bottom stop */
+  --royal-press:  #163FB0;       /* active/pressed */
+  --btn-blue:     linear-gradient(180deg, #2F6BFF 0%, #1E50DE 100%);
+  --btn-blue-hi:  linear-gradient(180deg, #3B78FF 0%, #2563FF 100%);
+  --btn-gold-trim:      rgba(240, 214, 138, 0.45);   /* faint gold hairline */
+  --btn-gold-trim-lit:  rgba(240, 214, 138, 0.85);   /* trim catches on hover */
+  --glow-royal:   0 6px 20px rgba(37, 99, 255, 0.30);
+
+  /* ─────────────────────────────────────────
+     INK — text
+     ───────────────────────────────────────── */
+  --white:    #FFFFFF;
+  --ink-1:    #FFFFFF;           /* primary text */
+  --ink-2:    #D4DDE8;           /* body, secondary */
+  --ink-3:    #8896AD;           /* muted, captions */
+  --ink-4:    #5C6A82;           /* placeholder, dim labels */
+  --ink-5:    #3A4566;           /* fine print */
+
+  /* ─────────────────────────────────────────
+     BORDERS — hairlines, structural only
+     ───────────────────────────────────────── */
+  --hairline:     rgba(255, 255, 255, 0.06);
+  --hairline-2:   rgba(255, 255, 255, 0.10);
+  --hairline-gold: rgba(240, 214, 138, 0.22);
+  --rule:         #1A3470;
+  --rule-bright:  #2A4480;
+
+  /* ─────────────────────────────────────────
+     GLASS — card material
+     ───────────────────────────────────────── */
+  --glass:        rgba(17, 38, 80, 0.42);
+  --glass-strong: rgba(10, 24, 56, 0.78);
+  --glass-border: rgba(240, 214, 138, 0.10);
+
+  /* ─────────────────────────────────────────
+     STATUS — pills only
+     ───────────────────────────────────────── */
+  --status-live:    #8B8BFA;     /* live indigo soft */
+  --status-pending: #D97706;     /* burnt amber */
+  --status-sold:    #BE1E44;     /* deep wine */
+  --status-coming:  #F0D68A;     /* gold.lit */
+
+  /* ─────────────────────────────────────────
+     SHADOWS — deep, navy-tinted
+     ───────────────────────────────────────── */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.30);
+  --shadow-md: 0 12px 36px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 24px 72px rgba(0, 0, 0, 0.58);
+  --shadow-xl: 0 40px 120px rgba(0, 0, 0, 0.68);
+
+  /* ─────────────────────────────────────────
+     ATMOSPHERIC BACKGROUND — paint behind every page
+     ───────────────────────────────────────── */
+  --atmosphere:
+    radial-gradient(ellipse 1600px 900px at 25% 4%,  rgba(74, 74, 246, 0.14), transparent 56%),
+    radial-gradient(ellipse 1150px 820px at 82% 94%, rgba(184, 134, 11, 0.11), transparent 60%),
+    radial-gradient(ellipse 820px 620px  at 50% 62%, rgba(255, 215,   0, 0.045), transparent 72%),
+    var(--navy-0);
+
+  /* ─────────────────────────────────────────
+     SEMANTIC ROLES  (the public API — parity with brand-light.css)
+     ───────────────────────────────────────── */
+  --surface:        var(--navy-0);
+  --surface-1:      var(--navy-1);
+  --surface-2:      var(--navy-2);
+  --surface-3:      var(--navy-3);
+  --surface-glass:  var(--glass);
+
+  --fg:         var(--ink-1);
+  --fg-strong:  var(--white);
+  --fg-muted:   var(--ink-2);
+  --fg-dim:     var(--ink-3);
+  --fg-fade:    var(--ink-4);
+  --fg-pop:     var(--gold-lit);          /* solid fallback when gradient can't apply */
+  --fg-signal:  var(--indigo-base);       /* live dots, focus rings — NEVER on text */
+  --fg-link:    var(--indigo-base);
+
+  --border:    var(--hairline);
+  --border-2:  var(--hairline-2);
+  --border-gold: var(--hairline-gold);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME APPLICATION
+   ═══════════════════════════════════════════════════════════════ */
+
+body {
+  background: var(--atmosphere);
+  color: var(--fg);
+}
+
+a         { color: var(--ink-2); }
+a:hover   { color: var(--indigo-soft); }
+
+::selection { background: rgba(240, 214, 138, 0.26); color: var(--navy-0); }
+
+/* Scrollbar — a thin translucent gold thread that warms on contact,
+   never a solid gold bar. Restraint reads as expense. */
+html { scrollbar-width: thin; scrollbar-color: rgba(184, 134, 11, 0.45) transparent; }
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(184, 134, 11, 0.42);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background 0.3s var(--ease-standard);
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(240, 214, 138, 0.72); background-clip: padding-box; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   SIGNATURE — Gold-foil emphasis
+   The brand's defining gesture. Italic Cormorant word filled with
+   the polished-gold gradient, sweeping a specular highlight across
+   itself on a ~9s loop.
+   ═══════════════════════════════════════════════════════════════ */
+
+.gold-foil,
+h1 em, h2 em, h3 em {
+  background: var(--gold-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(var(--glow-foil));
+  animation: foilSweep var(--duration-foil) ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CANONICAL COMPONENTS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── EYEBROW ─────────────────────────────────── */
+.eyebrow      { color: var(--gold-lit); }
+.eyebrow.dim  { color: var(--ink-3); }
+
+/* ── HASHMARK — 3 diagonal gold strokes (the graphic period) ── */
+.hashmark {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  height: 14px;
+}
+.hashmark::before,
+.hashmark::after,
+.hashmark > i {
+  content: '';
+  width: 2px;
+  height: 14px;
+  background: var(--gold-lit);
+  transform: skewX(-45deg);
+  opacity: 0.85;
+}
+.hashmark > i { background: var(--gold-bright); }
+
+/* ── GOLD RULE — animated sweep hairline ───────────────────── */
+.gold-rule {
+  display: block;
+  height: 1px;
+  background: var(--gold-gradient);
+  background-size: 240% 100%;
+  animation: goldRule 14s linear infinite;
+  border: 0;
+}
+.gold-rule.short { width: 96px; }
+
+/* ── LIVE DOT — indigo signal, pulsing ─────────────────────── */
+.live-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--indigo-base);
+  box-shadow: 0 0 8px var(--indigo-base);
+  animation: pulse 2.4s ease-in-out infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+/* ── GLASS CARD ──────────────────────────────── */
+.card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  transition:
+    transform var(--duration-normal) var(--ease-cinema),
+    border-color var(--duration-normal) var(--ease-cinema),
+    box-shadow var(--duration-normal) var(--ease-cinema);
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(240, 214, 138, 0.42);
+  box-shadow: var(--shadow-md), var(--glow-gold-soft);
+}
+.card::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: var(--gold-gradient);
+  background-size: 200% 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s var(--ease-cinema);
+}
+.card:hover::after { transform: scaleX(1); animation: goldRule 14s linear infinite; }
+
+/* ── PRIMARY CTA — royal-blue, faint gold trim (v3.3 calling card) ───
+   Refined to restraint: a single subtle vertical gradient for depth,
+   a 1px gold hairline that reads as edge-light (not surface), a crisp
+   white top-highlight, and a soft blue-cast shadow. No sweep, no foil.
+   The gold trim brightens fractionally on hover — the only "tell".   */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: 14px 30px;
+  background: var(--btn-blue);
+  border: 1px solid var(--btn-gold-trim);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: var(--w-med);
+  letter-spacing: var(--tracking-wide);
+  text-transform: none;
+  cursor: pointer;
+  box-shadow:
+    var(--glow-royal),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  transition: transform var(--duration-normal) var(--ease-cinema),
+              box-shadow var(--duration-normal) var(--ease-cinema),
+              border-color var(--duration-normal) var(--ease-cinema),
+              background var(--duration-normal) var(--ease-cinema);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  background: var(--btn-blue-hi);
+  border-color: var(--btn-gold-trim-lit);
+  box-shadow:
+    0 12px 32px rgba(37, 99, 255, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 0 0 1px rgba(240, 214, 138, 0.10);
+}
+.btn:active {
+  transform: translateY(0);
+  background: linear-gradient(180deg, var(--royal-deep), var(--royal-press));
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+.btn:focus-visible {
+  outline: none;
+  border-color: var(--btn-gold-trim-lit);
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 255, 0.35),
+    var(--glow-royal),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* Outline — secondary CTA: gold hairline, transparent body */
+.btn-outline {
+  background: transparent;
+  color: var(--gold-lit);
+  border: 1px solid var(--hairline-gold);
+  box-shadow: none;
+  animation: none;
+}
+.btn-outline:hover {
+  background: rgba(240, 214, 138, 0.05);
+  color: var(--gold-specular);
+  border-color: var(--gold-lit);
+  box-shadow: var(--glow-gold-soft);
+}
+.btn-outline:focus-visible {
+  outline: none;
+  border-color: var(--gold-lit);
+  box-shadow: 0 0 0 3px rgba(240, 214, 138, 0.30);
+}
+
+/* Ghost — tertiary */
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-2);
+  border: 1px solid var(--hairline-2);
+  box-shadow: none;
+  animation: none;
+}
+.btn-ghost:hover {
+  color: var(--gold-lit);
+  border-color: var(--gold-lit);
+  background: transparent;
+}
+.btn-ghost:focus-visible {
+  outline: none;
+  border-color: var(--gold-lit);
+  box-shadow: 0 0 0 3px rgba(240, 214, 138, 0.22);
+}
+
+/* ── INPUT ───────────────────────────────────── */
+.input {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--navy-1);
+  border: 1px solid var(--hairline-2);
+  border-radius: var(--radius-xs);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-weight: var(--w-light);
+  font-size: var(--text-sm);
+  transition: border-color var(--duration-normal) var(--ease-cinema),
+              box-shadow var(--duration-normal) var(--ease-cinema);
+}
+.input::placeholder { color: var(--ink-4); }
+.input:focus {
+  outline: none;
+  border-color: var(--indigo-base);
+  box-shadow: 0 0 0 1px var(--indigo-base), var(--glow-indigo);
+}
+
+/* ── STATUS PILL ─────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  background: rgba(5, 14, 38, 0.6);
+}
+.pill::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+.pill.live    { color: var(--status-live); }
+.pill.pending { color: var(--status-pending); }
+.pill.sold    { color: var(--status-sold); }
+.pill.coming  { color: var(--status-coming); }
+
+/* ── KPI / DATA NUMERAL ──────────────────────── */
+.kpi {
+  font-family: var(--data-font);
+  font-weight: var(--w-med);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-3xl);
+  letter-spacing: -0.02em;
+  color: var(--white);
+  line-height: 1;
+}
+.kpi.pop {
+  background: var(--gold-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: foilSweep 11s ease-in-out infinite;
+}
+
+/* ── REVEAL SYSTEM ───────────────────────────── */
+.rv {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity var(--duration-reveal) var(--ease-cinema),
+    transform var(--duration-reveal) var(--ease-cinema);
+}
+.rv.vis { opacity: 1; transform: translateY(0); }

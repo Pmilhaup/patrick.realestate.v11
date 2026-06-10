@@ -1,0 +1,190 @@
+/* ============================================================================
+   patrick.realestate v12 — "Atelier" brand + motion system
+   The gold is a MATERIAL, not a color. Layered metallic gradients + a live
+   specular sweep give real foil. Navy is the night; gold is the light in it.
+   ========================================================================== */
+
+:root{
+  /* ---- Night (the world) ---- */
+  --void:        #02060F;
+  --navy-edge:   #030814;
+  --navy-0:      #050E26;
+  --navy-1:      #0A1838;
+  --navy-2:      #112650;
+  --navy-3:      #1A3470;
+  --navy-glass:  rgba(10,24,56,.55);
+
+  /* ---- Ink ---- */
+  --ink-1:#FFFFFF; --ink-2:#D8E2F0; --ink-3:#8E9DB6; --ink-4:#5C6A82; --ink-5:#36425C;
+  --rule:#15294f; --rule-bright:#274476;
+
+  /* ---- GOLD (Notre-Dame foil: warm, deep, specular) ----
+     A real metal reads as a gradient from shadow→base→light→specular. */
+  --gold-shadow:   #6E4B14;
+  --gold-deep:     #946D1E;
+  --gold-base:     #C79A3E;
+  --gold-mid:      #E5C36B;
+  --gold-lit:      #F6E4A6;
+  --gold-specular: #FFF8E2;
+  --gold-ember:    #B8860B;
+  --gold-glow:     rgba(246,228,166,.55);
+
+  /* The canonical foil gradient (use for text-clip + surfaces) */
+  --foil: linear-gradient(135deg,
+      var(--gold-deep) 0%, var(--gold-base) 18%, var(--gold-lit) 38%,
+      var(--gold-specular) 47%, var(--gold-lit) 56%, var(--gold-mid) 70%,
+      var(--gold-base) 84%, var(--gold-deep) 100%);
+  --foil-soft: linear-gradient(120deg, var(--gold-base), var(--gold-lit) 45%, var(--gold-mid) 60%, var(--gold-deep));
+
+  /* ---- Accent (cool counterpoint so gold reads as gold) ---- */
+  --royal:#2563FF; --indigo:#6E6CFF; --indigo-soft:#A5A5FF;
+
+  /* ---- Type ---- */
+  --serif:'Cormorant Garamond','Garamond',serif;
+  --sans:'Inter','Helvetica Neue',Arial,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',monospace;
+
+  /* ---- Motion timing tokens (one vocabulary, used everywhere) ---- */
+  --ease-silk: cubic-bezier(.22,1,.36,1);     /* settle */
+  --ease-glide: cubic-bezier(.65,0,.35,1);    /* travel */
+  --ease-ignite: cubic-bezier(.16,1,.3,1);    /* reveal */
+  --t-fast:.45s; --t-med:.9s; --t-slow:1.6s; --t-cine:2.8s;
+
+  --maxw:1280px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+body{
+  background:var(--void); color:var(--ink-2);
+  font-family:var(--sans); font-weight:400; line-height:1.6;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+::selection{background:var(--gold-base); color:var(--void)}
+a{color:inherit; text-decoration:none}
+img{display:block; max-width:100%}
+
+/* ---------------------------------------------------------------- TYPE -- */
+.eyebrow{
+  font:500 11px/1 var(--sans); letter-spacing:.34em; text-transform:uppercase;
+  color:var(--gold-mid);
+}
+.display{ font-family:var(--serif); font-weight:500; line-height:1.02; letter-spacing:.005em;
+  color:var(--ink-1); font-size:clamp(2.6rem, 7vw, 6.5rem); }
+.display em{ font-style:italic; }
+h1,h2,h3{font-family:var(--serif); font-weight:500; color:var(--ink-1); line-height:1.06}
+h2{font-size:clamp(2rem,4.5vw,3.6rem)}
+h3{font-size:clamp(1.4rem,2.6vw,2.1rem)}
+p{max-width:62ch}
+.lede{font-size:clamp(1.05rem,1.5vw,1.3rem); color:var(--ink-2); font-weight:300}
+.data{font-family:var(--mono); font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+
+/* ----------------------------------------------------------- GOLD FOIL -- */
+/* Real foil: gradient clipped to text + a specular highlight that travels. */
+.foil{
+  background:var(--foil);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+  background-size:220% 220%;
+  animation:foil-sweep 7s var(--ease-glide) infinite;
+  filter:drop-shadow(0 1px 0 rgba(0,0,0,.35)) drop-shadow(0 0 22px var(--gold-glow));
+}
+.foil--still{ animation:none; background-position:42% 42%; }
+@keyframes foil-sweep{
+  0%{background-position:14% 18%} 50%{background-position:86% 82%} 100%{background-position:14% 18%}
+}
+/* A foil surface (buttons, rules, medallions) */
+.foil-surface{
+  background:var(--foil); background-size:200% 200%;
+  animation:foil-sweep 9s var(--ease-glide) infinite;
+}
+/* Hairline gold rule */
+.rule-gold{height:1px; border:0; background:linear-gradient(90deg,transparent,var(--gold-base),var(--gold-lit),var(--gold-base),transparent); opacity:.7}
+
+/* Gold-foil logo: paint a real Sotheby's PNG mark in gold via alpha mask.
+   The trademark shape is untouched — we only change its fill to foil. */
+.mark-foil{
+  background:var(--foil); background-size:200% 200%;
+  -webkit-mask:var(--mark) center/contain no-repeat; mask:var(--mark) center/contain no-repeat;
+  animation:foil-sweep 8s var(--ease-glide) infinite;
+}
+
+/* --------------------------------------------------------- SHIMMER ----- */
+/* A single diagonal specular pass — the "sparkle" that reads as light on
+   metal, NOT glitter. Used sparingly on the hero word + medallion. */
+.shimmer{position:relative; overflow:hidden}
+.shimmer::after{
+  content:""; position:absolute; inset:-40%;
+  background:linear-gradient(115deg,transparent 38%,rgba(255,248,226,.0) 44%,
+    rgba(255,248,226,.55) 50%,rgba(255,248,226,.0) 56%, transparent 62%);
+  transform:translateX(-120%); animation:shimmer 6.5s var(--ease-glide) infinite;
+  pointer-events:none;
+}
+@keyframes shimmer{0%,72%{transform:translateX(-120%)}88%,100%{transform:translateX(120%)}}
+
+/* --------------------------------------------------------- BUTTONS ----- */
+.btn{
+  display:inline-flex; align-items:center; gap:.6em;
+  font:500 13px/1 var(--sans); letter-spacing:.12em; text-transform:uppercase;
+  padding:16px 30px; border-radius:2px; cursor:pointer; position:relative;
+  transition:transform var(--t-fast) var(--ease-silk), box-shadow var(--t-fast) var(--ease-silk);
+}
+.btn-gold{ color:var(--void); border:1px solid var(--gold-lit);
+  background:var(--foil); background-size:200% 200%; animation:foil-sweep 9s var(--ease-glide) infinite;
+  box-shadow:0 8px 30px -8px var(--gold-glow);}
+.btn-gold:hover{ transform:translateY(-2px); box-shadow:0 14px 44px -8px var(--gold-glow);}
+.btn-ghost{ color:var(--gold-lit); border:1px solid var(--rule-bright); background:transparent;}
+.btn-ghost:hover{ border-color:var(--gold-base); color:var(--gold-specular); transform:translateY(-2px);}
+
+/* --------------------------------------------------------- NAV --------- */
+.nav{position:fixed; inset:0 0 auto 0; z-index:60; display:flex; align-items:center;
+  justify-content:space-between; padding:20px clamp(20px,4vw,46px);
+  transition:background var(--t-med) var(--ease-silk), padding var(--t-med) var(--ease-silk);}
+.nav.scrolled{ background:linear-gradient(180deg,rgba(3,8,20,.92),rgba(3,8,20,0));
+  backdrop-filter:blur(12px); padding-top:14px; padding-bottom:14px;}
+.nav-mark{height:30px; width:auto; opacity:.96}
+.nav-links{display:flex; gap:30px; align-items:center}
+.nav-links a{font:500 12px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+  transition:color var(--t-fast) var(--ease-silk); position:relative}
+.nav-links a:hover{color:var(--gold-lit)}
+.nav-links a::after{content:""; position:absolute; left:0; bottom:-7px; height:1px; width:0;
+  background:var(--gold-base); transition:width var(--t-fast) var(--ease-glide)}
+.nav-links a:hover::after{width:100%}
+@media(max-width:820px){ .nav-links{display:none} }
+
+/* --------------------------------------------------------- SECTIONS ---- */
+.section{position:relative; padding:clamp(80px,12vh,180px) clamp(20px,5vw,60px)}
+.wrap{max-width:var(--maxw); margin:0 auto}
+.center{text-align:center}
+
+/* Reveal-on-scroll primitives (GSAP toggles .in) */
+.rise{opacity:0; transform:translateY(38px); transition:opacity var(--t-med) var(--ease-ignite), transform var(--t-med) var(--ease-ignite)}
+.rise.in{opacity:1; transform:none}
+.rise.d1{transition-delay:.08s}.rise.d2{transition-delay:.16s}.rise.d3{transition-delay:.24s}.rise.d4{transition-delay:.32s}
+
+/* --------------------------------------------------------- CARDS ------- */
+.card{position:relative; border:1px solid var(--rule); border-radius:6px; overflow:hidden;
+  background:linear-gradient(160deg,var(--navy-1),var(--navy-0));
+  transition:border-color var(--t-fast) var(--ease-silk), transform var(--t-fast) var(--ease-silk), box-shadow var(--t-fast) var(--ease-silk)}
+.card:hover{border-color:var(--gold-base); transform:translateY(-4px); box-shadow:0 26px 60px -24px rgba(0,0,0,.7), 0 0 0 1px rgba(199,154,62,.25)}
+.card-glow{position:absolute; inset:0; opacity:0; background:radial-gradient(420px 220px at var(--mx,50%) var(--my,0%),rgba(199,154,62,.16),transparent 70%); transition:opacity var(--t-fast); pointer-events:none}
+.card:hover .card-glow{opacity:1}
+
+/* --------------------------------------------------------- ZENLIST ----- */
+/* Sub-brand zone: cool/indigo identity, deliberately distinct from the gold. */
+.zen{ --accent:var(--indigo); }
+.zen .eyebrow{color:var(--indigo-soft)}
+.zen .chip{display:inline-flex; align-items:center; gap:8px; font:600 11px/1 var(--sans); letter-spacing:.2em;
+  text-transform:uppercase; color:var(--indigo-soft); border:1px solid rgba(110,108,255,.35);
+  background:rgba(110,108,255,.08); padding:8px 14px; border-radius:30px}
+
+/* --------------------------------------------------------- FOOTER ------ */
+.foot{padding:80px clamp(20px,5vw,60px) 50px; border-top:1px solid var(--rule); background:var(--navy-edge)}
+.foot small{color:var(--ink-4); font-size:11px; letter-spacing:.04em}
+
+/* --------------------------------------------------------- A11Y -------- */
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001s!important; animation-iteration-count:1!important; transition-duration:.001s!important}
+  .foil{animation:none; background-position:45% 45%}
+}

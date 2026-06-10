@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neighborhoods &mdash; Patrick Milhaupt &middot; North Shore</title>
+<meta name="description" content="Seven villages across the North Shore corridor — Lake Forest, Winnetka, Kenilworth, Glencoe, Wilmette, Highland Park, Lake Bluff. Live market snapshots, school context, and an honest read on each.">
+
+<link rel="stylesheet" href="brand/brand-shared.css">
+<link rel="stylesheet" href="brand/brand-dark.css">
+<link rel="stylesheet" href="brand/chapter.css">
+
+<style>
+.village-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 8px; }
+.village-tile {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 24px;
+  background: rgba(10,24,56,0.55);
+  border: 1px solid rgba(197,165,114,0.18);
+  border-radius: 14px;
+  text-decoration: none; color: inherit;
+  transition: border-color .25s ease, transform .35s ease;
+  opacity: 0; transform: translateY(20px);
+}
+.village-tile.vis { opacity: 1; transform: translateY(0); transition: opacity .8s ease, transform .8s ease, border-color .25s ease; }
+.village-tile:hover { border-color: var(--gold-lit, #E0BC7E); transform: translateY(-2px); }
+.village-tile .name { font-family: var(--font-serif); font-size: 28px; font-weight: 400; color: #FFF6E0; letter-spacing: -0.01em; }
+.village-tile .name em { font-style: italic;
+  background: linear-gradient(120deg,#C5A572,#E0BC7E,#F0D68A,#E0BC7E,#C5A572);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.village-tile .stats { display: flex; gap: 18px; flex-wrap: wrap; }
+.village-tile .stat { display: flex; flex-direction: column; gap: 2px; }
+.village-tile .stat .l { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-3, #8896AD); }
+.village-tile .stat .v { font-family: var(--font-mono); font-size: 18px; font-weight: 600; color: #FFF6E0; }
+.village-tile .blurb { font-family: var(--font-sans); font-size: 13px; line-height: 1.55; color: var(--ink-2, #C6CDDA); }
+.village-tile .more { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--gold-lit, #E0BC7E); margin-top: auto; }
+</style>
+</head>
+<body data-liquid-palette="0.50">
+
+<canvas id="paint"></canvas>
+<div class="veil"></div>
+
+<nav class="nav">
+  <a class="lockup" href="index.html">
+    <img src="brand/assets/logos/wordmark-white-md.png" alt="Sotheby's International Realty">
+    <span class="bar"></span>
+    <span class="name">
+      <span class="who">Patrick Milhaupt</span>
+      <span class="role">Global Advisor</span>
+    </span>
+  </a>
+  <div class="nav-links">
+    <a href="properties.html">Properties</a>
+    <a href="neighborhoods.html" class="current">Neighborhoods</a>
+    <a href="intelligence.html">Intelligence</a>
+    <a href="buying.html">Buying</a>
+    <a href="selling.html">Selling</a>
+    <a href="heritage.html">Heritage</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" class="cta">Contact</a>
+  </div>
+</nav>
+
+<aside class="rail" aria-label="Chapter index">
+  <a class="dot active" href="#ch-00" data-rail="0">00<span class="label">&nbsp;&nbsp;Opening</span></a>
+  <a class="dot" href="#ch-01" data-rail="1">01<span class="label">&nbsp;&nbsp;The Corridor</span></a>
+</aside>
+
+<main>
+
+  <section class="chapter" id="ch-00" data-chapter="0" data-palette="0.20">
+    <div class="inner" style="text-align:center; align-items:center;">
+      <div class="ch-head fade-up" style="justify-content:center;">
+        <span class="hashmark"><i></i></span>
+        <div class="meta" style="border:0; padding:0;">
+          <span class="eyebrow">Neighborhoods &middot; North Shore</span>
+        </div>
+      </div>
+      <h1 class="headline" data-headline="">
+        Eighteen miles of <em>coastline</em>,<br>seven distinct micro-markets.
+      </h1>
+      <p class="body fade-up" style="margin: 0 auto; text-align:center;">
+        Each village carries its own architectural vocabulary, its own school feeder, its own price band, its own rhythm. A discerning read on each &mdash; with live data and lived-in context &mdash; is below.
+      </p>
+      <div class="cta-row fade-up" style="justify-content:center;">
+        <a class="btn" href="#ch-01">View the corridor &darr;</a>
+        <a class="btn btn-outline" href="intelligence.html">Open the live dashboard</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch-01" data-chapter="1" data-palette="0.50">
+    <div class="inner" style="max-width: 1280px;">
+      <div class="ch-head fade-up">
+        <span class="num">01</span>
+        <div class="meta">
+          <span class="eyebrow">Chapter One</span>
+          <span class="sub">The Corridor</span>
+        </div>
+      </div>
+      <h2 class="headline" data-headline="">
+        Seven villages.<br><em>One</em> corridor.
+      </h2>
+
+      <div class="village-grid fade-up">
+
+        <a class="village-tile" href="neighborhoods/lake-forest.html">
+          <div class="name">Lake <em>Forest</em></div>
+          <div class="stats"><div class="stat"><span class="l">Median</span><span class="v">$1.32M</span></div><div class="stat"><span class="l">DOM</span><span class="v">34d</span></div><div class="stat"><span class="l">SP/OLP</span><span class="v">98.4%</span></div></div>
+          <p class="blurb">The corridor's anchor. Storied architectural roots, a venerable school district, and the most institutional ownership patterns on the North Shore &mdash; six distinct sub-markets within a single village.</p>
+          <span class="more">Open Lake Forest &rarr;</span>
+        </a>
+
+        <a class="village-tile" href="neighborhoods/winnetka.html">
+          <div class="name"><em>Winnetka</em></div>
+          <div class="stats"><div class="stat"><span class="l">Median</span><span class="v">$2.10M</span></div><div class="stat"><span class="l">DOM</span><span class="v">22d</span></div><div class="stat"><span class="l">SP/OLP</span><span class="v">99.1%</span></div></div>
+          <p class="blurb">The tightest market in the corridor. Walkable, lakefront, and the lowest inventory-to-demand ratio of any North Shore village over a decade of records.</p>
+          <span class="more">Open Winnetka &rarr;</span>
+        </a>
+
+        <a class="village-tile" href="neighborhoods/kenilworth.html">
+          <div class="name"><em>Kenilworth</em></div>
+          <div class="stats"><div class="stat"><span class="l">Median</span><span class="v">$2.35M</span></div><div class="stat"><span class="l">DOM</span><span class="v">26d</span></div><div class="stat"><span class="l">SP/OLP</span><span class="v">98.8%</span></div></div>
+          <p class="blurb">The smallest village by parcel count and the highest median price per square foot. Architectural pedigree carried at scale &mdash; Howard Van Doren Shaw, George Washington Maher, an iconic Prairie-school inheritance.</p>
+          <span class="more">Open Kenilworth &rarr;</span>
+        </a>
+
+        <a class="village-tile" href="neighborhoods/glencoe.html">
+          <div class="name"><em>Glencoe</em></div>
+          <div class="stats"><div class="stat"><span class="l">Median</span><span class="v">$1.95M</span></div><div class="stat"><span class="l">DOM</span><span class="v">28d</span></div><div class="stat"><span class="l">SP/OLP</span><span class="v">98.6%</span></div></div>
+          <p class="blurb">Lakefront ravines, the Chicago Botanic Garden, a quietly venerable school district. The corridor's most consistently appreciating sub-market across the last decade.</p>
+          <span class="more">Open Glencoe &rarr;</span>
+        </a>
+
+        <a class="village-tile" href="neighborhoods/wilmette.html">
+          <div class="name"><em>Wilmette</em></div>
+          <div class="stats"><div class="stat"><span class="l">Median</span><span class="v">$1.18M</span></div><div class="stat"><span class="l">DOM</span><span class="v">18d</span></div><div class="stat"><span class="l">SP/OLP</span><span class="v">99.4%</span></div></div>
+          <p class="blurb">The most accessible gateway to the corridor and consistently the fastest-moving market. Walkable to the L, a strong family-migration story, the lowest days-on-market figure of any North Shore village.</p>
+          <span class="more">Open Wilmette &rarr;</span>
+        </a>
+
+        <a class="village-tile" href="neighborhoods/highland-park.html">
+          <div class="name">Highland <em>Park</em></div>
+          <div class="stats"><div class="stat"><span class="l">Median</span><span class="v">$985K</span></div><div class="stat"><span class="l">DOM</span><span class="v">30d</span></div><div class="stat"><span class="l">SP/OLP</span><span class="v">97.9%</span></div></div>
+          <p class="blurb">The most architecturally varied village on the corridor &mdash; mid-century moderns alongside Tudor revivals alongside contemporary lakefront estates. The widest price-band range north of Chicago, where the Harris estate at Woodbridge Lane currently rests.</p>
+          <span class="more">Open Highland Park &rarr;</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="brand/assets/logos/wordmark-white-md.png" alt="Sotheby's International Realty" class="footer-mark">
+      <div class="footer-name">
+        <div class="footer-who">Patrick Milhaupt</div>
+        <div class="footer-role">Global Advisor</div>
+      </div>
+    </div>
+    <div class="footer-contact">
+      <span class="footer-section-label">The Practice</span>
+      <div class="footer-line">(847) 849-9828</div>
+      <div class="footer-line"><a href="mailto:pmilhaupt@jamesonsir.com">pmilhaupt@jamesonsir.com</a></div>
+      <div class="footer-line">Jameson Sotheby's International Realty</div>
+      <div class="footer-line">North Shore &middot; Chicago</div>
+    </div>
+    <div class="footer-nav-wrap">
+      <span class="footer-section-label">Index</span>
+      <div class="footer-nav">
+        <a href="properties.html">Properties</a>
+        <a href="neighborhoods.html">Neighborhoods</a>
+        <a href="intelligence.html">Intelligence</a>
+        <a href="buying.html">Buying</a>
+        <a href="selling.html">Selling</a>
+        <a href="heritage.html">Heritage</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <div class="footer-legal-row">
+      <span>&copy; 2026 Patrick Milhaupt</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Equal Housing Opportunity</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Illinois Real Estate License</span>
+    </div>
+    <div class="footer-legal-fine">
+      Each office is independently owned and operated. Sotheby&rsquo;s International Realty&reg; and the Sotheby&rsquo;s International Realty logo are registered service marks used with permission. The information presented on this site is believed to be accurate but is not warranted. A practice of Jameson Sotheby&rsquo;s International Realty.
+    </div>
+  </div>
+</footer>
+
+
+
+<script src="lib/three.min.js"></script>
+<script src="lib/lenis.min.js"></script>
+<script src="lib/gsap.min.js"></script>
+<script src="lib/ScrollTrigger.min.js"></script>
+<script src="brand/liquid-bg.js"></script>
+<script>
+(() => {
+  document.querySelectorAll('[data-headline]').forEach(h => {
+    const walk = (node) => {
+      Array.from(node.childNodes).forEach(child => {
+        if (child.nodeType === Node.TEXT_NODE) {
+          const text = child.nodeValue; if (!text.trim()) return;
+          const frag = document.createDocumentFragment();
+          text.split(/(\s+)/).forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); }
+            else {
+              const w = document.createElement('span'); w.className = 'w';
+              const inner = document.createElement('span'); inner.textContent = part;
+              w.appendChild(inner); frag.appendChild(w);
+            }
+          });
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === Node.ELEMENT_NODE) {
+          if (child.tagName === 'BR') return;
+          walk(child);
+        }
+      });
+    };
+    walk(h);
+  });
+  if (typeof Lenis === 'undefined' || typeof gsap === 'undefined') return;
+  const lenis = new Lenis({ duration: 1.4, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true, smoothTouch: false, wheelMultiplier: 1, lerp: 0.08 });
+  document.querySelectorAll('a[href^="#"]').forEach(a => { a.addEventListener('click', e => { const href = a.getAttribute('href'); if (!href || href === '#') return; const target = document.querySelector(href); if (!target) return; e.preventDefault(); lenis.scrollTo(target, { offset: 0, duration: 1.6 }); }); });
+  gsap.registerPlugin(ScrollTrigger);
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(time => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+  if (window.__paintUniforms) { ScrollTrigger.create({ trigger: 'main', start: 'top top', end: 'bottom bottom', onUpdate: self => { window.__paintUniforms.uScroll.value = self.progress; } }); }
+  const chapters = gsap.utils.toArray('.chapter');
+  chapters.forEach((ch, i) => {
+    const headline = ch.querySelector('[data-headline]');
+    const words = headline ? headline.querySelectorAll('.w > span') : [];
+    const fades = ch.querySelectorAll('.fade-up');
+    const tiles = ch.querySelectorAll('.village-tile');
+    const palette = parseFloat(ch.dataset.palette || '0');
+    const tl = gsap.timeline({ scrollTrigger: { trigger: ch, start: 'top 70%', end: 'top 10%', toggleActions: 'play none none reverse' } });
+    if (window.__paintUniforms) tl.to(window.__paintUniforms.uPaletteMix, { value: palette, duration: 1.6, ease: 'power2.out' }, 0);
+    if (fades.length) tl.to(fades, { opacity:1, y:0, duration:1.0, stagger:0.10, ease:'power3.out' }, 0.05);
+    if (words.length) tl.to(words, { y:0, duration:1.1, stagger:0.045, ease:'power3.out' }, 0.15);
+    if (tiles.length) tl.to(tiles, { opacity:1, y:0, duration:0.9, stagger:0.08, ease:'power3.out' }, 0.4);
+    tiles.forEach((t,idx) => setTimeout(()=>t.classList.add('vis'), 300+idx*80));
+    if (i === 0) requestAnimationFrame(() => tl.play(0));
+  });
+  const dots = document.querySelectorAll('.rail .dot');
+  chapters.forEach((ch, i) => { ScrollTrigger.create({ trigger: ch, start: 'top 50%', end: 'bottom 50%', onToggle: self => { if (self.isActive) dots.forEach(d => d.classList.toggle('active', +d.dataset.rail === i)); } }); });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+})();
+</script>
+</body>
+</html>

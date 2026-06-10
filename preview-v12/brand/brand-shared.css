@@ -1,0 +1,270 @@
+/* ═══════════════════════════════════════════════════════════════
+   PATRICK MILHAUPT — BRAND SYSTEM   v3.4 "Dazzle Edition"
+   brand-shared.css
+
+   Shared foundation: typography, spacing, motion, radii.
+   Theme-agnostic. Use with ONE of:
+     - brand-dark.css   → digital / online / website
+     - brand-light.css  → print / marketing / static media
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+
+  /* ─────────────────────────────────────────
+     TYPE — FAMILY STACKS  (three families, strict roles)
+     ───────────────────────────────────────── */
+  --font-serif: 'Cormorant Garamond', 'Garamond', 'Times New Roman', serif;
+  --font-sans:  'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:  'JetBrains Mono', 'SF Mono', Menlo, monospace;
+
+  /* Public role aliases — composition prefers these */
+  --display-font:  var(--font-serif);  /* Cormorant — every headline */
+  --body-font:     var(--font-sans);   /* Inter — UI, body, buttons */
+  --eyebrow-font:  var(--font-sans);   /* Inter — eyebrows, labels */
+  --data-font:     var(--font-mono);   /* JetBrains — every numeral */
+
+  /* ─────────────────────────────────────────
+     TYPE — WEIGHTS
+     ───────────────────────────────────────── */
+  --w-thin:   200;
+  --w-light:  300;
+  --w-reg:    400;
+  --w-med:    500;
+  --w-semi:   600;
+  --w-bold:   700;
+  --w-black:  800;
+
+  --display-weight:  300;   /* Cormorant 300 roman for headlines */
+  --display-emph:    400;   /* Cormorant 400 italic for gold-foil */
+  --body-weight:     300;   /* Inter 300 for body */
+  --eyebrow-weight:  600;   /* Inter 600 for eyebrows */
+
+  /* ─────────────────────────────────────────
+     TYPE — SCALE  (1.250 Major Third)
+     ───────────────────────────────────────── */
+  --text-2xs:  0.625rem;    /* 10px */
+  --text-xs:   0.75rem;     /* 12px */
+  --text-sm:   0.875rem;    /* 14px */
+  --text-base: 1rem;        /* 16px */
+  --text-md:   1.25rem;     /* 20px */
+  --text-lg:   1.563rem;    /* 25px */
+  --text-xl:   1.953rem;    /* 31px */
+  --text-2xl:  2.441rem;    /* 39px */
+  --text-3xl:  3.052rem;    /* 49px */
+  --text-4xl:  3.815rem;    /* 61px */
+  --text-5xl:  4.768rem;    /* 76px */
+  --text-6xl:  5.96rem;     /* 95px */
+
+  /* ─────────────────────────────────────────
+     TYPE — TRACKING
+     ───────────────────────────────────────── */
+  --tracking-tighter: -0.04em;   /* hero display */
+  --tracking-tight:   -0.02em;   /* H2 / H3 */
+  --tracking-normal:   0;
+  --tracking-wide:     0.04em;   /* button labels */
+  --tracking-wider:    0.08em;
+  --tracking-widest:   0.18em;
+  --tracking-caps:     0.32em;   /* signature eyebrow tracking (v3.2) */
+
+  /* ─────────────────────────────────────────
+     TYPE — LEADING
+     ───────────────────────────────────────── */
+  --leading-none:    1.0;
+  --leading-hero:    0.98;       /* Cormorant H1 */
+  --leading-tight:   1.08;
+  --leading-snug:    1.25;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.7;
+
+  /* ─────────────────────────────────────────
+     SPACING — 4px root
+     ───────────────────────────────────────── */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-40: 10rem;
+
+  /* ─────────────────────────────────────────
+     RADIUS
+     ───────────────────────────────────────── */
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --radius-2xl:  28px;
+  --radius-full: 9999px;
+
+  /* ─────────────────────────────────────────
+     MOTION  (two curves only, per v3.2)
+     ───────────────────────────────────────── */
+  --ease-cinema:    cubic-bezier(0.16, 1, 0.3, 1);     /* hero reveals, drops */
+  --ease-standard:  cubic-bezier(0.4, 0, 0.2, 1);      /* UI transitions */
+
+  /* legacy aliases kept for compat — both resolve to the two real curves */
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:    cubic-bezier(0.4, 0, 0.2, 1);
+
+  --duration-fast:    0.2s;
+  --duration-normal:  0.4s;
+  --duration-slow:    0.8s;
+  --duration-reveal:  1.0s;
+  --duration-cinema:  1.6s;
+  --duration-foil:    9s;     /* gold-foil sweep period */
+
+  /* ─────────────────────────────────────────
+     LAYOUT
+     ───────────────────────────────────────── */
+  --max-w-content: 1200px;
+  --max-w-wide:    1440px;
+  --max-w-full:    1680px;
+  --nav-h:         72px;
+  --nav-h-scrolled: 56px;
+  --gutter:        clamp(20px, 4vw, 64px);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   BASE ELEMENT TYPE  (theme-neutral)
+   ═══════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--body-font);
+  font-weight: var(--body-weight);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* HEADLINES — Cormorant Garamond, never italic by default. */
+h1, h2, h3, h4, h5 {
+  font-family: var(--display-font);
+  font-weight: var(--display-weight);
+  font-style: normal;
+  line-height: var(--leading-hero);
+  letter-spacing: var(--tracking-tighter);
+  margin: 0;
+  color: var(--fg-strong, currentColor);
+}
+h1 { font-size: clamp(2.5rem, 8.6vw, 7.5rem); letter-spacing: var(--tracking-tighter); }
+h2 { font-size: clamp(2rem, 4.5vw, 3.5rem);   letter-spacing: var(--tracking-tight); }
+h3 { font-size: clamp(1.5rem, 2.5vw, 2rem);   letter-spacing: -0.005em; }
+h4 { font-family: var(--body-font); font-weight: var(--w-med); font-size: var(--text-md); letter-spacing: var(--tracking-normal); }
+h5 { font-family: var(--body-font); font-weight: var(--w-med); font-size: var(--text-base); letter-spacing: var(--tracking-normal); }
+
+/* SIGNATURE EMPHASIS — gold-foil italic (one to two words per headline).
+   The base treatment is here; the gradient + glow are theme-defined
+   in brand-dark.css so light theme can opt out. */
+h1 em, h2 em, h3 em,
+.gold-foil,
+.emph {
+  font-family: var(--display-font);
+  font-weight: var(--display-emph);     /* 400 */
+  font-style: italic;
+  /* Color treatment provided by theme: dark → gold gradient via background-clip:text;
+     light → solid navy (no foil). */
+  color: var(--fg-pop, currentColor);
+
+  /* Italic Cormorant glyphs lean past their advance-width box; with
+     background-clip:text that overhang paints transparent and the last
+     letter (+ trailing punctuation) gets sheared off. Pad the paint box
+     so the overhang is covered, then cancel it with equal negative margin
+     so the foil word occupies the exact same layout space. Kept as inline
+     (not inline-block) so multi-word emphasis can still wrap on narrow
+     viewports. The signature gesture must never shear. */
+  padding: 0.04em 0.16em 0.10em 0.04em;
+  margin:  0 -0.16em 0 -0.04em;
+}
+
+p {
+  margin: 0;
+  font-family: var(--body-font);
+  font-weight: var(--body-weight);
+  line-height: var(--leading-relaxed);
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--duration-normal) var(--ease-standard);
+}
+
+code, kbd, samp, .mono {
+  font-family: var(--data-font);
+  font-size: 0.92em;
+  font-weight: var(--w-med);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Brand signature: ALL-CAPS eyebrow with 0.32em tracking */
+.eyebrow,
+[data-role="eyebrow"] {
+  font-family: var(--eyebrow-font);
+  font-size: var(--text-2xs);
+  font-weight: var(--eyebrow-weight);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Numerals / data — JetBrains Mono, tabular */
+.data-num,
+[data-role="kpi"] {
+  font-family: var(--data-font);
+  font-weight: var(--w-med);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Utility */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FOIL SWEEP KEYFRAMES  (shared — both themes can choose to use)
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes foilSweep {
+  0%, 100% { background-position:   0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+@keyframes goldRule {
+  0%   { background-position: -120% 0; }
+  100% { background-position:  220% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.92); }
+  50%      { opacity: 1;    transform: scale(1.15); }
+}
+
+@keyframes lightShaft {
+  0%   { transform: translateY(-12%) rotate(8deg); opacity: 0.0; }
+  50%  { opacity: 0.18; }
+  100% { transform: translateY( 12%) rotate(8deg); opacity: 0.0; }
+}
