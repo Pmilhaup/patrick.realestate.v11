@@ -28,3 +28,6 @@ build/
 
 # Logs
 *.log
+
+# INTERNAL TOOLS — never deploy (contain DB keys + PII access)
+backend-tools/
