@@ -426,26 +426,18 @@ section {
 }
 @media (min-width: 700px) {
   .gallery {
-    grid-template-columns: 1.5fr 1fr 1fr;
-    grid-auto-rows: minmax(180px, auto);
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 240px;
     gap: 16px;
   }
-  .gallery .g-1 { grid-row: span 2; }
-  .gallery .g-4 { grid-column: span 2; }
+  .gallery .g-1 { grid-column: span 2; grid-row: span 2; }
 }
 @media (min-width: 1000px) {
   .gallery {
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    grid-auto-rows: 200px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
   }
-  .gallery .g-1 { grid-row: span 2; grid-column: span 2; }
-  .gallery .g-2 { grid-row: span 1; }
-  .gallery .g-3 { grid-row: span 1; }
-  .gallery .g-4 { grid-row: span 1; grid-column: span 2; }
-  .gallery .g-5 { grid-row: span 1; }
-  .gallery .g-6 { grid-row: span 2; }
-  .gallery .g-7 { grid-row: span 1; grid-column: span 2; }
-  .gallery .g-8 { grid-row: span 1; }
+  .gallery .g-1 { grid-column: span 2; grid-row: span 2; }
 }
 .g-item {
   position: relative;
@@ -485,6 +477,21 @@ section {
   transition: opacity 0.4s, transform 0.4s var(--ease-out);
 }
 .g-item:hover .g-cap { opacity: 1; transform: translateY(0); }
+/* ── Lightbox ── */
+.lightbox { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center;
+  background: rgba(3, 6, 12, 0.92); backdrop-filter: blur(6px); }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 92vw; max-height: 84vh; object-fit: contain; border-radius: 4px;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.7); }
+.lb-cap { position: absolute; bottom: 28px; left: 0; right: 0; text-align: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-light); }
+.lb-x { position: absolute; top: 22px; right: 28px; font-size: 30px; line-height: 1; color: #fff; cursor: pointer; opacity: 0.8; }
+.lb-x:hover { opacity: 1; }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 44px; color: #fff; cursor: pointer;
+  opacity: 0.55; padding: 0 22px; user-select: none; transition: opacity 0.2s; }
+.lb-nav:hover { opacity: 1; }
+.lb-prev { left: 6px; } .lb-next { right: 6px; }
+@media (max-width: 700px){ .lb-nav { font-size: 32px; padding: 0 12px; } }
 .g-placeholder {
   width: 100%; height: 100%;
   background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%);
@@ -899,22 +906,27 @@ footer.site-foot .gold-line {
         <span class="eyebrow reveal">A Walk Through</span>
         <h2 class="h-section reveal delay-1">The <em>estate</em>.</h2>
       </div>
-      <span class="fine reveal delay-2">Aerial &amp; architectural photography &middot; full gallery at the showing</span>
+      <span class="fine reveal delay-2">Tap any image to enlarge &middot; architectural &amp; aerial photography</span>
     </div>
     <div class="gallery">
       <div class="g-item g-1 reveal" data-img="hero">
         <img src="1330-w-whitmore/hero.jpg"
              onerror="this.src='../lf-market-assets/1330-w-whitmore.jpg'"
-             alt="1330 W. Whitmore — front exterior">
-        <div class="g-cap">Front exterior &middot; East elevation</div>
+             alt="1330 W. Whitmore — front elevation">
+        <div class="g-cap">Front elevation &middot; stone manor</div>
       </div>
-      <div class="g-item g-2 reveal delay-1"><img src="1330-w-whitmore/02.jpg" loading="lazy" alt="1330 W. Whitmore — west aerial"><div class="g-cap">Stone manor &middot; west aerial</div></div>
-      <div class="g-item g-3 reveal delay-1"><img src="1330-w-whitmore/03.jpg" loading="lazy" alt="1330 W. Whitmore — rear terrace"><div class="g-cap">Rear terrace &middot; outdoor living</div></div>
-      <div class="g-item g-4 reveal delay-2"><img src="1330-w-whitmore/04.jpg" loading="lazy" alt="1330 W. Whitmore — rear elevation"><div class="g-cap">Rear elevation &middot; fire terrace</div></div>
-      <div class="g-item g-5 reveal delay-2"><img src="1330-w-whitmore/05.jpg" loading="lazy" alt="1330 W. Whitmore — the grounds"><div class="g-cap">The setting &middot; 1.2 private acres</div></div>
-      <div class="g-item g-6 reveal delay-3"><img src="1330-w-whitmore/06.jpg" loading="lazy" alt="1330 W. Whitmore — pond and grounds"><div class="g-cap">Pond &amp; grounds</div></div>
-      <div class="g-item g-7 reveal delay-3"><img src="1330-w-whitmore/07.jpg" loading="lazy" alt="1330 W. Whitmore — rear aerial"><div class="g-cap">Rear aerial</div></div>
-      <div class="g-item g-8 reveal delay-4"><img src="1330-w-whitmore/08.jpg" loading="lazy" alt="1330 W. Whitmore — estate aerial"><div class="g-cap">Estate aerial</div></div>
+      <div class="g-item g-2 reveal delay-1"><img src="1330-w-whitmore/02.jpg" loading="lazy" alt="Two-story foyer"><div class="g-cap">Two-story foyer</div></div>
+      <div class="g-item g-3 reveal delay-1"><img src="1330-w-whitmore/03.jpg" loading="lazy" alt="The great room"><div class="g-cap">The great room &middot; exposed beams</div></div>
+      <div class="g-item g-4 reveal delay-2"><img src="1330-w-whitmore/04.jpg" loading="lazy" alt="Living room"><div class="g-cap">Living room &middot; stone fireplace</div></div>
+      <div class="g-item g-5 reveal delay-2"><img src="1330-w-whitmore/05.jpg" loading="lazy" alt="Chef's kitchen"><div class="g-cap">Chef&rsquo;s kitchen</div></div>
+      <div class="g-item g-6 reveal delay-3"><img src="1330-w-whitmore/06.jpg" loading="lazy" alt="Kitchen island"><div class="g-cap">Kitchen &middot; center island</div></div>
+      <div class="g-item g-7 reveal delay-3"><img src="1330-w-whitmore/07.jpg" loading="lazy" alt="Formal dining room"><div class="g-cap">Formal dining</div></div>
+      <div class="g-item g-8 reveal delay-4"><img src="1330-w-whitmore/08.jpg" loading="lazy" alt="The library"><div class="g-cap">The library</div></div>
+      <div class="g-item g-9 reveal delay-1"><img src="1330-w-whitmore/09.jpg" loading="lazy" alt="Primary suite"><div class="g-cap">Primary suite</div></div>
+      <div class="g-item g-10 reveal delay-2"><img src="1330-w-whitmore/10.jpg" loading="lazy" alt="Spa bath"><div class="g-cap">Spa bath</div></div>
+      <div class="g-item g-11 reveal delay-2"><img src="1330-w-whitmore/11.jpg" loading="lazy" alt="Bedroom"><div class="g-cap">Bedroom</div></div>
+      <div class="g-item g-12 reveal delay-3"><img src="1330-w-whitmore/12.jpg" loading="lazy" alt="Rear terrace"><div class="g-cap">Rear terrace &middot; outdoor living</div></div>
+      <div class="g-item g-13 reveal delay-3"><img src="1330-w-whitmore/13.jpg" loading="lazy" alt="Pond and grounds"><div class="g-cap">Pond &amp; grounds</div></div>
     </div>
   </div>
 </section>
@@ -926,7 +938,7 @@ footer.site-foot .gold-line {
   <div class="inner">
     <span class="eyebrow reveal">A Cinematic Walkthrough</span>
     <h2 class="h-section reveal delay-1">The <em>film</em>.</h2>
-    <div class="video-frame reveal delay-2" id="videoFrame" data-src="" style="background-image:linear-gradient(to top,rgba(3,8,20,.7),rgba(3,8,20,.2)),url('1330-w-whitmore/03.jpg');background-size:cover;background-position:center;">
+    <div class="video-frame reveal delay-2" id="videoFrame" data-src="" style="background-image:linear-gradient(to top,rgba(3,8,20,.7),rgba(3,8,20,.2)),url('1330-w-whitmore/hero.jpg');background-size:cover;background-position:center;">
       <div class="poster"></div>
       <div class="label"><b>1330 W. Whitmore Court</b> &middot; Property film &middot; debuting with the listing</div>
     </div>
@@ -1426,6 +1438,36 @@ footer.site-foot .gold-line {
       vf.innerHTML = '<video controls autoplay style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;" src="' + src + '"></video>';
     });
   }
+
+  // ────────────── GALLERY LIGHTBOX ──────────────
+  (function () {
+    const items = [...document.querySelectorAll('.gallery .g-item img')];
+    if (!items.length) return;
+    const shots = items.map(img => ({ src: img.getAttribute('src'), cap: (img.closest('.g-item').querySelector('.g-cap')||{}).textContent || '' }));
+    const lb = document.createElement('div');
+    lb.className = 'lightbox';
+    lb.innerHTML = '<span class="lb-x" aria-label="Close">&times;</span>'
+      + '<span class="lb-nav lb-prev" aria-label="Previous">&#8249;</span>'
+      + '<img alt=""><span class="lb-nav lb-next" aria-label="Next">&#8250;</span>'
+      + '<div class="lb-cap"></div>';
+    document.body.appendChild(lb);
+    const lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
+    let idx = 0;
+    const show = i => { idx = (i + shots.length) % shots.length; lbImg.src = shots[idx].src; lbCap.textContent = shots[idx].cap; };
+    const open = i => { show(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; };
+    const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
+    items.forEach((img, i) => img.closest('.g-item').addEventListener('click', () => open(i)));
+    lb.querySelector('.lb-x').addEventListener('click', close);
+    lb.querySelector('.lb-prev').addEventListener('click', e => { e.stopPropagation(); show(idx - 1); });
+    lb.querySelector('.lb-next').addEventListener('click', e => { e.stopPropagation(); show(idx + 1); });
+    lb.addEventListener('click', e => { if (e.target === lb || e.target === lbImg) close(); });
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+      else if (e.key === 'ArrowRight') show(idx + 1);
+    });
+  })();
 
   // ────────────── INTERACTIVE MARKET CHART (Plotly, dark theme) ──────────────
   if (typeof Plotly !== 'undefined' && document.getElementById('market-chart')) {
