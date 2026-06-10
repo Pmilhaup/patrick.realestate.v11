@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>North Shore Market Map · Patrick Milhaupt</title>
+<meta name="description" content="A live, interactive map of the North Shore luxury market — momentum, pricing, and absorption across Lake Forest, Winnetka, Wilmette and the seven villages, updated daily.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+
+<style>
+  :root{
+    --navy-edge:#030814; --navy-0:#050E26; --navy-1:#0A1838; --navy-2:#112650; --navy-3:#1A3470;
+    --ink-1:#FFFFFF; --ink-2:#D4DDE8; --ink-3:#8896AD; --ink-4:#5C6A82; --rule:#1A3470;
+    --gold-bright:#FFD700; --gold-mid:#D4A760; --gold-lit:#F0D68A; --gold-base:#B8860B;
+    --indigo-bright:#A5A5FF; --indigo-base:#4A4AF6; --royal:#2563FF;
+    --heat:#F0D68A; --firm:#8B8BFA; --bal:#5C6A82;
+    --font-serif:'Cormorant Garamond',Garamond,serif; --font-sans:'Inter',Arial,sans-serif; --font-mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--navy-edge);color:var(--ink-2);font-family:var(--font-sans);overflow:hidden}
+  #map{position:absolute;inset:0}
+
+  /* ── Title plate ── */
+  .plate{position:absolute;top:22px;left:22px;z-index:5;max-width:430px;
+    background:linear-gradient(160deg,rgba(10,24,56,.92),rgba(5,14,38,.86));
+    border:1px solid var(--rule);border-radius:14px;padding:20px 22px 18px;
+    backdrop-filter:blur(14px);box-shadow:0 18px 50px rgba(0,0,0,.55)}
+  .eyebrow{font:500 11px/1 var(--font-sans);letter-spacing:.22em;text-transform:uppercase;color:var(--gold-mid);margin-bottom:9px}
+  .plate h1{font:600 30px/1.05 var(--font-serif);color:var(--ink-1);letter-spacing:.01em}
+  .plate h1 em{font-style:italic;color:var(--gold-lit)}
+  .plate p{font-size:12.5px;line-height:1.5;color:var(--ink-3);margin-top:8px}
+
+  /* ── Metric toggle ── */
+  .metrics{display:flex;gap:6px;margin-top:15px}
+  .metric-btn{flex:1;font:500 11px/1 var(--font-sans);letter-spacing:.04em;color:var(--ink-3);
+    background:rgba(26,52,112,.35);border:1px solid var(--rule);border-radius:8px;padding:9px 6px;cursor:pointer;
+    transition:.18s;text-align:center}
+  .metric-btn:hover{color:var(--ink-1);border-color:var(--gold-base)}
+  .metric-btn.on{color:var(--navy-edge);background:linear-gradient(180deg,var(--gold-lit),var(--gold-mid));border-color:var(--gold-lit);font-weight:600}
+
+  .heat-row{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:11px;color:var(--ink-3)}
+  .switch{position:relative;width:38px;height:20px;border-radius:20px;background:var(--navy-2);border:1px solid var(--rule);cursor:pointer;transition:.2s;flex:none}
+  .switch.on{background:linear-gradient(90deg,var(--royal),var(--indigo-base));border-color:var(--indigo-base)}
+  .switch i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--ink-1);transition:.2s}
+  .switch.on i{left:20px}
+
+  /* ── Legend ── */
+  .legend{position:absolute;bottom:26px;left:22px;z-index:5;
+    background:rgba(5,14,38,.86);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;backdrop-filter:blur(12px)}
+  .legend .lt{font:500 10px/1 var(--font-sans);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px}
+  .legend .row{display:flex;align-items:center;gap:9px;margin:7px 0;font-size:12px;color:var(--ink-2)}
+  .dot{width:13px;height:13px;border-radius:50%;flex:none;box-shadow:0 0 10px currentColor}
+  .legend .sz{font-size:10.5px;color:var(--ink-4);margin-top:10px;border-top:1px solid var(--rule);padding-top:9px}
+
+  /* ── Stamp ── */
+  .stamp{position:absolute;bottom:26px;right:14px;z-index:5;font:400 10.5px/1.4 var(--font-mono);color:var(--ink-4);text-align:right}
+  .stamp b{color:var(--gold-mid);font-weight:500}
+  .live{display:inline-flex;align-items:center;gap:6px;color:var(--indigo-bright)}
+  .live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--indigo-bright);box-shadow:0 0 8px var(--indigo-bright);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* ── Popup ── */
+  .maplibregl-popup-content{background:linear-gradient(160deg,#0A1838,#050E26);border:1px solid var(--gold-base);
+    border-radius:12px;padding:0;box-shadow:0 20px 50px rgba(0,0,0,.6);overflow:hidden;font-family:var(--font-sans)}
+  .maplibregl-popup-tip{border-top-color:var(--gold-base)!important;border-bottom-color:var(--gold-base)!important}
+  .pop-h{padding:13px 16px 10px;border-bottom:1px solid var(--rule)}
+  .pop-h .v{font:600 19px/1 var(--font-serif);color:var(--ink-1)}
+  .pop-h .tier{font:600 10px/1 var(--font-sans);letter-spacing:.12em;text-transform:uppercase;margin-top:6px;display:inline-block;padding:4px 9px;border-radius:20px}
+  .pop-g{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
+  .pop-c{background:var(--navy-0);padding:11px 14px}
+  .pop-c .k{font:500 9.5px/1 var(--font-sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4)}
+  .pop-c .val{font:500 17px/1 var(--font-mono);color:var(--gold-lit);margin-top:6px}
+  .maplibregl-ctrl-attrib{font-size:9px;background:rgba(5,14,38,.7)!important}
+  .maplibregl-ctrl-attrib a{color:var(--ink-4)!important}
+
+  .loading{position:absolute;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;background:var(--navy-edge);transition:opacity .6s}
+  .loading.gone{opacity:0;pointer-events:none}
+  .loading .s{font:500 12px/1 var(--font-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-mid)}
+  @media(max-width:560px){.plate{max-width:calc(100vw - 44px)}.plate h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<div class="plate">
+  <div class="eyebrow">North Shore · Live Market Intelligence</div>
+  <h1>The market, <em>as a map</em></h1>
+  <p>Seven villages, one living picture. Bubble size shows transaction activity; color shows momentum. Updated daily from MLS &amp; Infosparks.</p>
+  <div class="metrics" id="metrics">
+    <div class="metric-btn on" data-m="momentum">Momentum</div>
+    <div class="metric-btn" data-m="price">Median Price</div>
+    <div class="metric-btn" data-m="supply">Months Supply</div>
+  </div>
+  <div class="heat-row">
+    <div class="switch" id="heatSwitch"><i></i></div>
+    <span id="heatLabel">Show individual sales heat</span>
+  </div>
+</div>
+
+<div class="legend" id="legend"></div>
+
+<div class="stamp">
+  <span class="live">LIVE</span> &nbsp;Supabase · MLS reconciled<br>
+  <span id="stampDate">loading…</span> &nbsp;·&nbsp; <b>patrick.realestate</b>
+</div>
+
+<div class="loading" id="loading"><div class="s">Charting the North Shore…</div></div>
+
+<script>
+const SB_URL = 'https://itupjrknklzvmmqicuyc.supabase.co';
+const SB_KEY = 'sb_publishable_fQnZLJnaC-dAHBuGBHJgjQ_RUHCe_7S';
+const sb = (path, body) => fetch(`${SB_URL}/rest/v1/${path}`, {
+  method: body ? 'POST' : 'GET',
+  headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' },
+  body: body ? JSON.stringify(body) : undefined
+}).then(r => r.json());
+
+// Accurate village centroids (the seven North Shore communities Patrick serves)
+const CENTROIDS = {
+  'Lake Forest':   [-87.8406, 42.2586],
+  'Lake Bluff':    [-87.8342, 42.2789],
+  'Highland Park': [-87.8003, 42.1817],
+  'Glencoe':       [-87.7581, 42.1350],
+  'Winnetka':      [-87.7359, 42.1081],
+  'Kenilworth':    [-87.7165, 42.0853],
+  'Wilmette':      [-87.7228, 42.0722],
+};
+const TIER_COLOR = { HEATING:'#F0D68A', FIRMING:'#8B8BFA', BALANCED:'#5C6A82', COOLING:'#BE7A8A' };
+const fmtMoney = v => v==null ? '—' : (v>=1e6 ? '$'+(v/1e6).toFixed(2)+'M' : '$'+Math.round(v/1e3)+'K');
+const fmt = (v,suffix='') => v==null ? '—' : (+v).toLocaleString()+suffix;
+
+let MAP, DATA = [], METRIC = 'momentum', HEAT_ON = false;
+
+const map = new maplibregl.Map({
+  container: 'map',
+  style: {
+    version: 8,
+    sources: { carto: { type:'raster',
+      tiles:['https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png','https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'],
+      tileSize:256, attribution:'© OpenStreetMap, © CARTO · Market data: MRED MLS' } },
+    layers: [{ id:'bg', type:'background', paint:{'background-color':'#030814'} },
+             { id:'carto', type:'raster', source:'carto', paint:{'raster-opacity':0.82,'raster-saturation':-0.15} }]
+  },
+  center: [-87.79, 42.165], zoom: 11.1, pitch: 38, bearing: -12, attributionControl:false
+});
+map.addControl(new maplibregl.AttributionControl({compact:true}), 'bottom-right');
+map.addControl(new maplibregl.NavigationControl({showCompass:false}), 'top-right');
+
+function metricValue(d){
+  if (METRIC==='momentum') return +d.composite_score;
+  if (METRIC==='price')    return d.trailing30_median_price ? +d.trailing30_median_price : null;
+  return d.months_supply!=null ? +d.months_supply : null;
+}
+function bubbleRadius(d){
+  const sales = +d.trailing30_closed_sales || 1;
+  return 14 + Math.sqrt(sales) * 6.5;   // area ∝ activity
+}
+function bubbleColor(d){
+  if (METRIC==='momentum') return TIER_COLOR[d.tier] || '#5C6A82';
+  // price & supply: gold ramp (low→high)
+  const vals = DATA.map(metricValue).filter(v=>v!=null);
+  const min=Math.min(...vals), max=Math.max(...vals);
+  let t = (metricValue(d)-min)/((max-min)||1);
+  if (METRIC==='supply') t = 1-t;            // less supply = hotter
+  const lerp=(a,b)=>Math.round(a+(b-a)*t);
+  return `rgb(${lerp(92,240)},${lerp(106,214)},${lerp(130,138)})`;
+}
+
+function buildGeoJSON(){
+  return { type:'FeatureCollection', features: DATA.filter(d=>CENTROIDS[d.village]).map(d=>({
+    type:'Feature', geometry:{type:'Point',coordinates:CENTROIDS[d.village]},
+    properties:{ village:d.village, tier:d.tier, color:bubbleColor(d), radius:bubbleRadius(d),
+      score:+d.composite_score, price:d.trailing30_median_price, sales:+d.trailing30_closed_sales,
+      supply:d.months_supply, conf:d.confidence, pctlist:d.median_pct_of_list_price }
+  }))};
+}
+
+function render(){
+  const gj = buildGeoJSON();
+  if (map.getSource('villages')) { map.getSource('villages').setData(gj); }
+  else {
+    map.addSource('villages',{type:'geojson',data:gj});
+    map.addLayer({ id:'v-glow', type:'circle', source:'villages',
+      paint:{ 'circle-radius':['*',['get','radius'],1.7],'circle-color':['get','color'],
+        'circle-blur':1, 'circle-opacity':0.32 }});
+    map.addLayer({ id:'v-core', type:'circle', source:'villages',
+      paint:{ 'circle-radius':['get','radius'],'circle-color':['get','color'],
+        'circle-opacity':0.92,'circle-stroke-width':1.5,'circle-stroke-color':'#FFF4D0' }});
+    map.addLayer({ id:'v-label', type:'symbol', source:'villages',
+      layout:{ 'text-field':['get','village'],'text-font':['Open Sans Semibold'],
+        'text-size':12,'text-offset':[0,1.6],'text-anchor':'top' },
+      paint:{ 'text-color':'#FFFFFF','text-halo-color':'#030814','text-halo-width':1.6 }});
+    wirePopups();
+  }
+  // recolor/resize on metric change
+  if (map.getLayer('v-core')){
+    map.setPaintProperty('v-core','circle-radius',['get','radius']);
+    map.setPaintProperty('v-core','circle-color',['get','color']);
+    map.setPaintProperty('v-glow','circle-color',['get','color']);
+  }
+  drawLegend();
+}
+
+function wirePopups(){
+  const pop = new maplibregl.Popup({closeButton:false, offset:16, maxWidth:'320px'});
+  ['v-core','v-glow'].forEach(layer=>{
+    map.on('mouseenter',layer,()=>map.getCanvas().style.cursor='pointer');
+    map.on('mouseleave',layer,()=>{map.getCanvas().style.cursor='';pop.remove();});
+    map.on('mousemove',layer,e=>{
+      const p=e.features[0].properties, tc=TIER_COLOR[p.tier]||'#5C6A82';
+      pop.setLngLat(e.lngLat).setHTML(`
+        <div class="pop-h">
+          <div class="v">${p.village}</div>
+          <span class="tier" style="background:${tc}22;color:${tc};border:1px solid ${tc}66">${p.tier||'—'} · ${p.conf||''} confidence</span>
+        </div>
+        <div class="pop-g">
+          <div class="pop-c"><div class="k">Momentum</div><div class="val">${(+p.score).toFixed(0)}<span style="font-size:11px;color:#5C6A82">/100</span></div></div>
+          <div class="pop-c"><div class="k">Median (30d)</div><div class="val">${fmtMoney(p.price?+p.price:null)}</div></div>
+          <div class="pop-c"><div class="k">Closed (30d)</div><div class="val">${fmt(p.sales)}</div></div>
+          <div class="pop-c"><div class="k">Months Supply</div><div class="val">${p.supply!=null?(+p.supply).toFixed(1):'—'}</div></div>
+        </div>`).addTo(map);
+    });
+  });
+}
+
+function drawLegend(){
+  const el=document.getElementById('legend');
+  if(METRIC==='momentum'){
+    el.innerHTML=`<div class="lt">Momentum Tier</div>
+      <div class="row"><span class="dot" style="background:#F0D68A;color:#F0D68A"></span>Heating — demand outpacing supply</div>
+      <div class="row"><span class="dot" style="background:#8B8BFA;color:#8B8BFA"></span>Firming — steady, tightening</div>
+      <div class="row"><span class="dot" style="background:#5C6A82;color:#5C6A82"></span>Balanced — even footing</div>
+      <div class="sz">● size = closed sales (last 30 days)</div>`;
+  } else {
+    const label = METRIC==='price'?'Median Sale Price':'Months of Supply';
+    const lo = METRIC==='price'?'Lower':'Tighter (hotter)', hi=METRIC==='price'?'Higher':'Looser';
+    el.innerHTML=`<div class="lt">${label}</div>
+      <div class="row"><span class="dot" style="background:rgb(240,214,138);color:#F0D68A"></span>${METRIC==='price'?'Higher':'Tighter — less inventory'}</div>
+      <div class="row"><span class="dot" style="background:rgb(92,106,130);color:#5C6A82"></span>${METRIC==='price'?'Lower':'Looser — more inventory'}</div>
+      <div class="sz">● size = closed sales (last 30 days)</div>`;
+  }
+}
+
+// Optional per-sale heat layer (activates as geocoding backfills raw_sales lat/long)
+async function toggleHeat(on){
+  HEAT_ON=on;
+  document.getElementById('heatSwitch').classList.toggle('on',on);
+  if(!on){ if(map.getLayer('sales-heat')) map.setLayoutProperty('sales-heat','visibility','none'); return; }
+  if(!map.getSource('sales')){
+    document.getElementById('heatLabel').textContent='Loading sales…';
+    const rows = await sb('raw_sales?select=latitude,longitude,close_price&latitude=not.is.null&close_date=gte.2023-01-01&limit=8000');
+    if(!Array.isArray(rows) || rows.length===0){
+      document.getElementById('heatLabel').textContent='Sales heat — geocoding in progress (back soon)';
+      document.getElementById('heatSwitch').classList.remove('on'); HEAT_ON=false; return;
+    }
+    map.addSource('sales',{type:'geojson',data:{type:'FeatureCollection',
+      features:rows.map(r=>({type:'Feature',geometry:{type:'Point',coordinates:[+r.longitude,+r.latitude]},
+        properties:{w:Math.min((+r.close_price||5e5)/3e6,1)}}))}});
+    map.addLayer({ id:'sales-heat', type:'heatmap', source:'sales',
+      paint:{ 'heatmap-weight':['get','w'],'heatmap-intensity':0.7,
+        'heatmap-color':['interpolate',['linear'],['heatmap-density'],
+          0,'rgba(5,14,38,0)',0.3,'#1A3470',0.55,'#4A4AF6',0.78,'#D4A760',1,'#FFD700'],
+        'heatmap-radius':22,'heatmap-opacity':0.75 }}, 'v-glow');
+    document.getElementById('heatLabel').textContent=`Sales heat · ${rows.length.toLocaleString()} sales`;
+  } else { map.setLayoutProperty('sales-heat','visibility','visible'); }
+}
+
+document.getElementById('metrics').addEventListener('click',e=>{
+  const b=e.target.closest('.metric-btn'); if(!b) return;
+  document.querySelectorAll('.metric-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); METRIC=b.dataset.m; render();
+});
+document.getElementById('heatSwitch').addEventListener('click',()=>toggleHeat(!HEAT_ON));
+
+map.on('load', async ()=>{
+  try{
+    const mom = await sb('rpc/get_smart_momentum',{scope_filter:'all'});
+    // join latest snapshot per village
+    const snaps = await sb('daily_snapshots?select=village,snapshot_date,trailing30_median_price,trailing30_closed_sales,months_supply,median_pct_of_list_price&order=snapshot_date.desc&limit=140');
+    const latest={}; snaps.forEach(s=>{ if(!latest[s.village]) latest[s.village]=s; });
+    DATA = mom.map(m=>({ ...m, ...(latest[m.village]||{}) }));
+    const d = snaps[0]?.snapshot_date || '';
+    document.getElementById('stampDate').textContent = d ? new Date(d+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+    render();
+    setTimeout(()=>{ map.easeTo({pitch:42,bearing:-6,duration:4200}); },800);
+  }catch(err){ console.error(err); document.getElementById('legend').innerHTML='<div class="lt" style="color:#BE7A8A">Live data unavailable</div>'; }
+  finally{ document.getElementById('loading').classList.add('gone'); }
+});
+</script>
+</body>
+</html>
