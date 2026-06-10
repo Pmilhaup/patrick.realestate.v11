@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "purpose": "Registry that drives every property site from one template. Add an entry here + drop photos in the listing's asset folder, and the generator stamps out listings/<slug>.html in the 1330 design.",
+    "version": 1,
+    "updated": "2026-06-10",
+    "asset_convention": "Final web images live IN the deploy repo at listings/<slug>/ (hero.jpg, 02.jpg..NN.jpg, og.jpg). Source print/edited files stay in 08_Listings/<address>/Photos/Edited/Web/ and are web-optimized into the repo by the build step. Never reference ../../08_Listings from a deployed page — it 404s in production."
+  },
+  "listings": [
+    {
+      "slug": "1330-w-whitmore",
+      "status": "active",
+      "featured": true,
+      "address": "1330 W. Whitmore Court",
+      "city": "Lake Forest",
+      "state": "IL",
+      "zip": "60045",
+      "price": 3250000,
+      "beds": 5,
+      "baths_full": 5,
+      "baths_half": 1,
+      "sqft": 7200,
+      "lot_acres": 1.2,
+      "year_built": 2002,
+      "style": "Stone Manor",
+      "headline": "A stone manor on a private cul-de-sac.",
+      "village_tagline": "Lake Forest School District 67 / 115",
+      "hero": "1330-w-whitmore/hero.jpg",
+      "og_image": "https://patrick.realestate/listings/1330-w-whitmore/og.jpg",
+      "gallery": [
+        { "src": "1330-w-whitmore/hero.jpg", "cap": "Front elevation · stone manor" },
+        { "src": "1330-w-whitmore/02.jpg", "cap": "Stone manor · west aerial" },
+        { "src": "1330-w-whitmore/03.jpg", "cap": "Rear terrace · outdoor living" },
+        { "src": "1330-w-whitmore/04.jpg", "cap": "Rear elevation · fire terrace" },
+        { "src": "1330-w-whitmore/05.jpg", "cap": "The setting · 1.2 private acres" },
+        { "src": "1330-w-whitmore/06.jpg", "cap": "Pond & grounds" },
+        { "src": "1330-w-whitmore/07.jpg", "cap": "Rear aerial" },
+        { "src": "1330-w-whitmore/08.jpg", "cap": "Estate aerial" }
+      ],
+      "video": null,
+      "floor_plan": null,
+      "page": "listings/1330-w-whitmore.html",
+      "live": true
+    },
+    {
+      "slug": "28-aberdeen-court",
+      "status": "active",
+      "featured": false,
+      "address": "28 Aberdeen Court",
+      "city": "Bannockburn",
+      "state": "IL",
+      "zip": "",
+      "price": null,
+      "beds": null, "baths_full": null, "baths_half": null, "sqft": null,
+      "lot_acres": null, "year_built": null, "style": "",
+      "headline": "",
+      "hero": null,
+      "gallery": [],
+      "video": null,
+      "page": null,
+      "live": false,
+      "_todo": "Source folder exists at 08_Listings/28 Aberdeen Court, Bannockburn, IL. Needs: price + specs + web photos. Then run the generator."
+    }
+  ],
+  "_sold_note": "Sold listings can be auto-seeded from Supabase raw_sales (price, beds, baths, sqft, close_date, address) — data-driven pages. They render best once each has photos in its listings/<slug>/ folder; until then they show specs + market context."
+}
