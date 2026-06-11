@@ -477,6 +477,17 @@ section {
   transition: opacity 0.4s, transform 0.4s var(--ease-out);
 }
 .g-item:hover .g-cap { opacity: 1; transform: translateY(0); }
+/* ── Neighborhood map ── */
+.neighborhood-map {
+  margin-top: 40px; border-radius: 8px; overflow: hidden;
+  border: 1px solid rgba(201, 169, 110, 0.22);
+  box-shadow: 0 28px 80px rgba(0,0,0,0.5);
+  background: #0c1320;
+}
+.neighborhood-map iframe {
+  display: block; width: 100%; height: min(70vh, 620px); border: 0;
+}
+@media (max-width: 700px){ .neighborhood-map iframe { height: 480px; } }
 /* ── Lightbox ── */
 .lightbox { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center;
   background: rgba(3, 6, 12, 0.92); backdrop-filter: blur(6px); }
@@ -864,6 +875,13 @@ footer.site-foot .gold-line {
           tucked off the porte-coch&egrave;re. Ceiling heights step from twelve feet in the central hall to ten in the bedrooms, holding the proportion
           that distinguishes a great Lake Forest house from a merely large one.
         </p>
+        <p class="body-text reveal delay-5">
+          The appointments earn the address. A gourmet kitchen anchored by Sub-Zero refrigeration and a Wolf professional range,
+          its distressed-alder cabinetry opening to a breakfast room over the open lands. A full-paneled alder library with custom
+          shelving and a fireplace. A sunroom under cathedral ceilings and barn-wood beams, a wall of glass to the preserve beyond.
+          Below, a level built to host &mdash; recreation room with a barn-wood mantel and wet bar, a wired theater, an exercise room,
+          and a sixth bedroom suite. White-oak floors throughout; a Vermont-slate roof with copper dormers and a custom cupola above.
+        </p>
         <div class="pull reveal delay-5">
           A residence the data <em>and</em> the eye agree on:<br>
           the kind of house that does not need to argue for itself.
@@ -994,14 +1012,15 @@ footer.site-foot .gold-line {
         <span class="eyebrow reveal">The Neighborhood</span>
         <h2 class="h-section reveal delay-1">Central <em>Lake Forest</em>.</h2>
         <p class="body-text reveal delay-2">
-          1330 W. Whitmore Court sits inside the central Lake Forest corridor, fifteen minutes by car from the Metra into Chicago,
-          ten minutes to Lake Bluff and Onwentsia, six minutes from Lake Forest's downtown Market Square,
-          and seven minutes from the Deerpath Inn and the Lake Forest Country Day School campus.
+          Set amidst acres of Open Lands and forest preserve, 1330 W. Whitmore Court occupies a quiet cul-de-sac
+          at the edge of <em>Middlefork Savanna</em> &mdash; one of the finest tallgrass savannas in the Midwest, more than
+          700 acres of restored prairie, oak woodland, and trail. Historic <em>Elawa Farm</em> sits just to the north,
+          and downtown Lake Forest is minutes east.
         </p>
         <p class="body-text reveal delay-3">
-          The cul-de-sac itself is one of three semi-private streets that thread off Whitmore &mdash;
-          quiet, full of mature oak canopy, and adjacent to the Skokie River Forest Preserve, which provides
-          permanent open space along the entire eastern boundary of the lot.
+          That preserve is the home's permanent neighbor: protected open space wrapping the property line, the source
+          of the uncompromising four-season views the brochure first promised &mdash; from the travertine foyer straight
+          through to the sunroom's wall of windows and the bluestone patio beyond.
         </p>
       </div>
 
@@ -1017,6 +1036,10 @@ footer.site-foot .gold-line {
         </div>
       </div>
     </div>
+    <div class="neighborhood-map reveal delay-2">
+      <iframe src="1330-w-whitmore/neighborhood.html" title="1330 W. Whitmore — interactive neighborhood map" loading="lazy"></iframe>
+    </div>
+    <p class="fine reveal" style="margin-top:14px;text-align:center">Interactive map &middot; hover or tap any marker for distances and detail</p>
   </div>
 </section>
 
