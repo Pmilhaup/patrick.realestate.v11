@@ -489,18 +489,36 @@ section {
 }
 @media (max-width: 700px){ .neighborhood-map iframe { height: 480px; } }
 /* ── Zenlist private-network (Zenlist blue) ── */
-.zen-band { padding: clamp(54px,8vh,100px) 24px; text-align: center;
-  background: linear-gradient(135deg,#1E4FC0 0%,#2D6CE0 52%,#3F7FE8 100%); position: relative; }
-.zen-band .ze { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .3em;
-  text-transform: uppercase; color: #cfe0ff; }
+.zen-band { position: relative; overflow: hidden; padding: clamp(64px,9vh,120px) 24px; text-align: center;
+  background: linear-gradient(125deg,#10307a 0%,#1E4FC0 28%,#2D6CE0 52%,#3F7FE8 78%,#5B8FF0 100%);
+  background-size: 260% 260%; animation: zenPan 18s ease infinite; }
+@keyframes zenPan { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+.zen-blob { position: absolute; border-radius: 50%; filter: blur(64px); opacity: .55; pointer-events: none; z-index: 1; }
+.zen-blob.b1 { width: 380px; height: 380px; background: #6E9CF2; top: -130px; left: -70px; animation: zenFloat1 15s ease-in-out infinite; }
+.zen-blob.b2 { width: 320px; height: 320px; background: #163C9E; bottom: -140px; right: -70px; animation: zenFloat2 19s ease-in-out infinite; }
+.zen-blob.b3 { width: 240px; height: 240px; background: #9DBEFF; top: 26%; right: 16%; animation: zenFloat1 23s ease-in-out infinite reverse; }
+@keyframes zenFloat1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(46px,-34px)} }
+@keyframes zenFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-36px,44px)} }
+.zen-glass { position: relative; z-index: 2; max-width: 660px; margin: 0 auto;
+  padding: clamp(36px,5vw,58px) clamp(26px,4vw,52px);
+  background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.24); border-radius: 20px;
+  backdrop-filter: blur(20px) saturate(1.25); -webkit-backdrop-filter: blur(20px) saturate(1.25);
+  box-shadow: 0 36px 90px rgba(6,20,68,0.42), inset 0 1px 0 rgba(255,255,255,0.28); }
+.zen-band .ze { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: #d8e6ff; }
 .zen-band h2 { color: #fff; margin-top: 14px; }
-.zen-band h2 em { color: #dbe6ff; font-style: italic; }
-.zen-band p { color: #dde7ff; max-width: 560px; margin: 16px auto 0; line-height: 1.6; }
-.zen-btn { display: inline-flex; align-items: center; gap: 9px; margin-top: 28px; padding: 16px 32px;
-  border-radius: 4px; background: #fff; color: #1E4FC0; font-family: var(--sans, 'Inter', sans-serif);
-  font-size: 13px; font-weight: 600; letter-spacing: .04em; text-decoration: none;
-  transition: transform .3s var(--ease-out, ease), box-shadow .3s; }
-.zen-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 44px rgba(0,0,0,.32); }
+.zen-band h2 em { color: #cfe0ff; font-style: italic; }
+.zen-band p { color: #e8efff; max-width: 520px; margin: 16px auto 0; line-height: 1.6; }
+.zen-btn { display: inline-flex; align-items: center; gap: 9px; margin-top: 28px; padding: 16px 34px; border-radius: 7px;
+  background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  font-family: var(--sans, 'Inter', sans-serif); font-size: 13px; font-weight: 600; letter-spacing: .04em; text-decoration: none;
+  transition: transform .35s var(--ease-out, ease), box-shadow .35s, background .35s, border-color .35s; }
+.zen-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.3); border-color: #fff; box-shadow: 0 18px 48px rgba(6,20,68,.45); }
+@media (prefers-reduced-motion: reduce){ .zen-band{ animation: none; } .zen-blob{ animation: none; } }
+/* ── Intro splash overlay ── */
+#intro { position: fixed; inset: 0; z-index: 99999; background: #050E26; transition: opacity .9s ease; }
+#intro.hide { opacity: 0; pointer-events: none; }
+#introGl { display: block; width: 100%; height: 100%; }
 .zen-inline { color: #3F7FE8; text-decoration: none; border-bottom: 1px solid rgba(63,127,232,.4); }
 .zen-inline:hover { color: #2D6CE0; border-color: #2D6CE0; }
 /* header + footer link helpers */
@@ -839,6 +857,7 @@ footer.site-foot .gold-line {
 </style>
 </head>
 <body data-liquid-palette="0.62">
+<div id="intro"><canvas id="introGl"></canvas></div>
 
 <!-- ═══════════════ MOTION LAYERS ═══════════════ -->
 <canvas id="paint"></canvas>
@@ -1081,17 +1100,20 @@ footer.site-foot .gold-line {
      ZENLIST — THE PRIVATE NETWORK
      ═══════════════════════════════════════════════════════════════ -->
 <section class="zen-band">
+  <span class="zen-blob b1"></span><span class="zen-blob b2"></span><span class="zen-blob b3"></span>
   <div class="inner">
-    <div class="ze reveal">Powered by Zenlist</div>
-    <h2 class="h-section reveal delay-1">Join the <em>private network</em>.</h2>
-    <p class="reveal delay-2">
-      The most sought-after North Shore homes move before they ever reach the public market.
-      Create a private Zenlist account to see off-market and coming-soon listings the moment they surface &mdash;
-      shared with you directly by Milhaupt &middot; Jakaitis.
-    </p>
-    <a class="zen-btn reveal delay-3" href="https://zenlist.realestate" target="_blank" rel="noopener">
-      Request Private Access &rarr;
-    </a>
+    <div class="zen-glass reveal">
+      <div class="ze">Powered by Zenlist</div>
+      <h2 class="h-section" style="margin-top:12px">Join the <em>private network</em>.</h2>
+      <p>
+        The most sought-after North Shore homes move before they ever reach the public market.
+        Create a private Zenlist account to see off-market and coming-soon listings the moment they surface &mdash;
+        shared with you directly by Milhaupt &middot; Jakaitis.
+      </p>
+      <a class="zen-btn" href="https://zenlist.realestate" target="_blank" rel="noopener">
+        Request Private Access &rarr;
+      </a>
+    </div>
   </div>
 </section>
 
@@ -1117,7 +1139,7 @@ footer.site-foot .gold-line {
       </div>
     </div>
     <div class="advisors-more reveal delay-4">
-      <a href="../brag-book.html" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(201,169,110,.4);border-radius:4px;color:var(--gold-light,#C9A96E);font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:.3s" onmouseover="this.style.borderColor='#C9A96E';this.style.background='rgba(201,169,110,.06)'" onmouseout="this.style.borderColor='rgba(201,169,110,.4)';this.style.background='transparent'">Explore the Milhaupt &middot; Jakaitis Brag Book &rarr;</a>
+      <a href="../brag-book.html" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(201,169,110,.4);border-radius:4px;color:var(--gold-light,#C9A96E);font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:.3s" onmouseover="this.style.borderColor='#C9A96E';this.style.background='rgba(201,169,110,.06)'" onmouseout="this.style.borderColor='rgba(201,169,110,.4)';this.style.background='transparent'">Learn more about the agents &rarr;</a>
     </div>
   </div>
 </section>
@@ -1156,7 +1178,7 @@ footer.site-foot .gold-line {
   <div class="foot-links">
     <a href="../intelligence.html">Market Intelligence</a>
     <a href="../index.html">patrick.realestate</a>
-    <a href="../brag-book.html">Brag Book</a>
+    <a href="../brag-book.html">About the Agents</a>
     <a class="zen" href="https://zenlist.realestate" target="_blank" rel="noopener">Join the Private Network</a>
   </div>
   <div class="row">Jameson Sotheby&rsquo;s International Realty &middot; Lake Forest Office</div>
@@ -1178,6 +1200,73 @@ footer.site-foot .gold-line {
 </script>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.min.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   INTRO SPLASH — Sotheby's International Realty mark, three.js fade (~3s)
+   Fail-safe: always reveals the page even if WebGL/texture fails.
+   ═══════════════════════════════════════════════════════════════════ */
+(function(){
+  var intro = document.getElementById('intro');
+  if (!intro) return;
+  var done = false;
+  function finish(){ if (done) return; done = true; intro.classList.add('hide'); setTimeout(function(){ if (intro.parentNode) intro.remove(); }, 950); }
+  var hardStop = setTimeout(finish, 3800); // never trap the user
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canvas = document.getElementById('introGl');
+
+  // Fallback: plain logo fade if no WebGL / reduced motion
+  if (typeof THREE === 'undefined' || reduce) {
+    var im = document.createElement('img'); im.src = '1330-w-whitmore/sir-wordmark.png';
+    im.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(46vw,420px);opacity:0;transition:opacity .8s ease';
+    intro.appendChild(im); requestAnimationFrame(function(){ im.style.opacity = '1'; });
+    setTimeout(function(){ im.style.opacity = '0'; }, reduce ? 900 : 2100);
+    setTimeout(finish, reduce ? 1400 : 3000); return;
+  }
+
+  var renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true }); }
+  catch (e) { finish(); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 0.1, 100);
+  camera.position.z = 5;
+
+  var aspect = 2048/709, w = 3.3, h = w/aspect;
+  var mat = new THREE.MeshBasicMaterial({ transparent:true, opacity:0, depthWrite:false });
+  new THREE.TextureLoader().load('1330-w-whitmore/sir-wordmark.png', function(t){ if (t.colorSpace !== undefined) t.colorSpace = THREE.SRGBColorSpace; mat.map = t; mat.needsUpdate = true; });
+  var logo = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); scene.add(logo);
+
+  var glowMat = new THREE.MeshBasicMaterial({ color:0xC9A96E, transparent:true, opacity:0, blending:THREE.AdditiveBlending, depthWrite:false });
+  var glow = new THREE.Mesh(new THREE.PlaneGeometry(w*1.5, h*2.6), glowMat); glow.position.z = -0.3; scene.add(glow);
+
+  var N = 360, pos = new Float32Array(N*3);
+  for (var i=0;i<N;i++){ pos[i*3]=(Math.random()-0.5)*7.2; pos[i*3+1]=(Math.random()-0.5)*4.6; pos[i*3+2]=(Math.random()-0.5)*2; }
+  var g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  var dust = new THREE.Points(g, new THREE.PointsMaterial({ color:0xF0D68A, size:0.022, transparent:true, opacity:0, blending:THREE.AdditiveBlending, depthWrite:false }));
+  scene.add(dust);
+
+  window.addEventListener('resize', function(){ camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+
+  function env(t){ if (t < 0.85) return t/0.85; if (t < 2.0) return 1; if (t < 3.0) return 1-(t-2.0)/1.0; return 0; }
+  var t0 = performance.now();
+  (function loop(){
+    var t = (performance.now()-t0)/1000, e = env(t);
+    mat.opacity = e; glowMat.opacity = e*0.32; dust.material.opacity = e*0.8;
+    logo.scale.setScalar(0.93 + 0.07*Math.min(1, t/2));
+    logo.position.y = Math.sin(t*0.6)*0.03;
+    dust.rotation.z = t*0.05;
+    var p = dust.geometry.attributes.position.array;
+    for (var i=0;i<N;i++){ p[i*3+1]-=0.0032; if (p[i*3+1] < -2.4) p[i*3+1]=2.4; }
+    dust.geometry.attributes.position.needsUpdate = true;
+    camera.position.x = Math.sin(t*0.3)*0.1;
+    renderer.render(scene, camera);
+    if (t < 3.05) requestAnimationFrame(loop);
+    else { clearTimeout(hardStop); finish(); try{ renderer.dispose(); }catch(e){} }
+  })();
+})();
+</script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════
    GOLD-DUST SHADER v2 — "Millions in liquid"
