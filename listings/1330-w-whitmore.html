@@ -488,6 +488,34 @@ section {
   display: block; width: 100%; height: min(70vh, 620px); border: 0;
 }
 @media (max-width: 700px){ .neighborhood-map iframe { height: 480px; } }
+/* ── Zenlist private-network (Zenlist blue) ── */
+.zen-band { padding: clamp(54px,8vh,100px) 24px; text-align: center;
+  background: linear-gradient(135deg,#1E4FC0 0%,#2D6CE0 52%,#3F7FE8 100%); position: relative; }
+.zen-band .ze { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .3em;
+  text-transform: uppercase; color: #cfe0ff; }
+.zen-band h2 { color: #fff; margin-top: 14px; }
+.zen-band h2 em { color: #dbe6ff; font-style: italic; }
+.zen-band p { color: #dde7ff; max-width: 560px; margin: 16px auto 0; line-height: 1.6; }
+.zen-btn { display: inline-flex; align-items: center; gap: 9px; margin-top: 28px; padding: 16px 32px;
+  border-radius: 4px; background: #fff; color: #1E4FC0; font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px; font-weight: 600; letter-spacing: .04em; text-decoration: none;
+  transition: transform .3s var(--ease-out, ease), box-shadow .3s; }
+.zen-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 44px rgba(0,0,0,.32); }
+.zen-inline { color: #3F7FE8; text-decoration: none; border-bottom: 1px solid rgba(63,127,232,.4); }
+.zen-inline:hover { color: #2D6CE0; border-color: #2D6CE0; }
+/* header + footer link helpers */
+.topbar-left { display: flex; align-items: center; gap: 18px; }
+.topbar-link { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-2, #cdd5e0); text-decoration: none; transition: color .3s; }
+.topbar-link:hover { color: var(--gold-light, #C9A96E); }
+@media (max-width: 640px){ .topbar-link { display: none; } }
+.foot-links { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; margin: 4px 0 18px; }
+.foot-links a { font-family: var(--mono); font-size: 12px; letter-spacing: .04em;
+  color: var(--text-3, #8896ad); text-decoration: none; transition: color .3s; }
+.foot-links a:hover { color: var(--gold-light, #C9A96E); }
+.foot-links a.zen { color: #5a8ff0; }
+.foot-links a.zen:hover { color: #8ab2ff; }
+.advisors-more { text-align: center; margin-top: 34px; }
 /* ── Lightbox ── */
 .lightbox { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center;
   background: rgba(3, 6, 12, 0.92); backdrop-filter: blur(6px); }
@@ -821,7 +849,10 @@ footer.site-foot .gold-line {
 
 <!-- ═══════════════ TOP BAR ═══════════════ -->
 <nav class="topbar" id="topbar">
-  <a href="../index.html" class="back">Milhaupt &middot; Jakaitis</a>
+  <div class="topbar-left">
+    <a href="../index.html" class="back">Milhaupt &middot; Jakaitis</a>
+    <a href="../intelligence.html" class="topbar-link">Market Intelligence</a>
+  </div>
   <div class="price-tag">$3,250,000</div>
   <a href="#showing" class="cta">Private Showing</a>
 </nav>
@@ -1046,6 +1077,27 @@ footer.site-foot .gold-line {
 <!-- ═══════════════════════════════════════════════════════════════
      CHAPTER 06 — THE ADVISORS
      ═══════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     ZENLIST — THE PRIVATE NETWORK
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="zen-band">
+  <div class="inner">
+    <div class="ze reveal">Powered by Zenlist</div>
+    <h2 class="h-section reveal delay-1">Join the <em>private network</em>.</h2>
+    <p class="reveal delay-2">
+      The most sought-after North Shore homes move before they ever reach the public market.
+      Create a private Zenlist account to see off-market and coming-soon listings the moment they surface &mdash;
+      shared with you directly by Milhaupt &middot; Jakaitis.
+    </p>
+    <a class="zen-btn reveal delay-3" href="https://zenlist.realestate" target="_blank" rel="noopener">
+      Request Private Access &rarr;
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 06 — THE ADVISORS
+     ═══════════════════════════════════════════════════════════════ -->
 <section id="advisors">
   <div class="inner">
     <span class="eyebrow reveal">Your Advisors</span>
@@ -1063,6 +1115,9 @@ footer.site-foot .gold-line {
         <a href="tel:8478407842" class="phone">847.840.7842</a>
         <a href="mailto:ejakaitis@jamesonsir.com" class="email">ejakaitis@jamesonsir.com</a>
       </div>
+    </div>
+    <div class="advisors-more reveal delay-4">
+      <a href="../brag-book.html" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(201,169,110,.4);border-radius:4px;color:var(--gold-light,#C9A96E);font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:.3s" onmouseover="this.style.borderColor='#C9A96E';this.style.background='rgba(201,169,110,.06)'" onmouseout="this.style.borderColor='rgba(201,169,110,.4)';this.style.background='transparent'">Explore the Milhaupt &middot; Jakaitis Brag Book &rarr;</a>
     </div>
   </div>
 </section>
@@ -1090,11 +1145,20 @@ footer.site-foot .gold-line {
       <textarea id="ms" placeholder="Mornings · weekends · etc."></textarea>
       <button type="submit">Request a Showing</button>
     </form>
+    <p class="fine reveal delay-4" style="margin-top: 24px;">
+      Prefer to watch the market first? <a class="zen-inline" href="https://zenlist.realestate" target="_blank" rel="noopener">Join the private network on Zenlist</a> for off-market and coming-soon access.
+    </p>
   </div>
 </section>
 
 <footer class="site-foot">
   <div class="gold-line"></div>
+  <div class="foot-links">
+    <a href="../intelligence.html">Market Intelligence</a>
+    <a href="../index.html">patrick.realestate</a>
+    <a href="../brag-book.html">Brag Book</a>
+    <a class="zen" href="https://zenlist.realestate" target="_blank" rel="noopener">Join the Private Network</a>
+  </div>
   <div class="row">Jameson Sotheby&rsquo;s International Realty &middot; Lake Forest Office</div>
   <div class="row">Patrick Milhaupt &middot; Global Real Estate Advisor &middot; patrick.realestate</div>
   <div class="row">Equal Housing Opportunity</div>
